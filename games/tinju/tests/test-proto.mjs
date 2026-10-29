@@ -126,7 +126,7 @@ const linkTo = (res, id) => res.chain.find(x => x.to === id);
   check('boot: 39 songs -> exit 1', b.code === 1 && /songs/.test(b.err));
   b = bootTry('boot-14.txt', bankText(BANK.map((s, i) => (i === 0 ? { ...s, lines: ['abcdefghijklmn', ...s.lines.slice(1)] } : s))));
   check('boot: a 14-char line -> exit 1', b.code === 1 && /14 chars/.test(b.err));
-  b = bootTry('boot-missing-head.txt', BANK_TEXT.replace('Senja di Pelabuhan Kecil | Grup Contoh 01', 'Senja di Pelabuhan Kecil'));
+  b = bootTry('boot-missing-head.txt', BANK_TEXT.replace(/^([^#\n][^\n]*?) \| [^\n]+$/m, '$1'));
   check('boot: a block without "title | artist" -> exit 1', b.code === 1 && /title \| artist/.test(b.err));
   b = spawnSync(process.execPath, [path.join(SRV, 'server.js')], { env: { ...process.env, PORT: String(P(9)), HOST: '127.0.0.1', TK_LYRICS: path.join(TMP, 'does-not-exist.txt') }, timeout: 2500, encoding: 'utf8' });
   check('boot: missing file -> exit 1', b.status === 1 && /cannot read/.test(b.stderr));
