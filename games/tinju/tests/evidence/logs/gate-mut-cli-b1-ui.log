@@ -1,0 +1,5 @@
+PASS U-01 (B1, worst-case bank 29/45 chars): whole line box and line inside the 320x480 viewport for HOST and both GUESTS, every round (guest1 scrolled to bottom, guest2 to top before each reveal)  | 36/36 page-rounds ok, 45-char reveals seen 6 
+PASS U-13: 0 page errors and 0 console errors across every page in this run  | errors=0 
+PASS no request left 127.0.0.1 in any page of this run (external URLs)
+
+== gate-ui MUTB1: PASS 3 / FAIL 0 ==

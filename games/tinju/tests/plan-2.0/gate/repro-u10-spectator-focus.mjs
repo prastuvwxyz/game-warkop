@@ -1,0 +1,21 @@
+import { createRequire } from 'node:module'; import { spawn } from 'node:child_process';
+const pw = createRequire('/home/prastuvwxyz/.nalar/workspaces/stella/bullscows/node_modules/x.js')('playwright');
+const T = process.argv[2], port = process.argv[3];
+const srv = spawn(process.execPath, [T + '/server/server.js'], { env: { PATH: process.env.PATH, PORT: port, HOST: '127.0.0.1', TK_COUNTDOWN_MS: '700', TK_HP: '1' }, stdio: 'ignore' });
+await new Promise(r => setTimeout(r, 800));
+const b = await pw.chromium.launch({ executablePath: '/home/prastuvwxyz/.cache/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-linux64/chrome-headless-shell' });
+const mk = async d => { const c = await b.newContext(d); const p = await c.newPage(); await p.goto(`http://127.0.0.1:${port}/tinju/`); return p; };
+const D = { viewport: { width: 1280, height: 800 } };
+const h = await mk(D), h2 = await mk(D), g = await mk(pw.devices['iPhone 12']);
+await h.fill('#name', 'H'); await h.click('#btnCreate'); await h.waitForFunction(() => window.__tinju.state && window.__tinju.state.code);
+const code = await h.evaluate(() => window.__tinju.state.code);
+for (const [p, n] of [[h2, 'H2'], [g, 'G']]) { await p.goto(`http://127.0.0.1:${port}/tinju/?room=` + code); await p.fill('#name', n); await p.click('#btnJoin'); }
+await h.waitForFunction(() => window.__tinju.state.players.length === 3); await h.click('#btnStart');
+await g.waitForFunction(() => window.__tinju.state.state === 'line', null, { timeout: 8000 });
+console.log('G round 1 (entrant) focus:', await g.evaluate(() => document.activeElement.id));
+for (const [p, e] of [[h, 2000], [h2, 2000], [g, 4000]]) await p.evaluate(e => window.__tinju.send({ t: 'done', round: window.__tinju.line.round, elapsed: e, typos: 0 }), e);
+await g.waitForFunction(() => window.__tinju.state.state === 'line' && window.__tinju.line.round === 2, null, { timeout: 8000 }); await new Promise(r => setTimeout(r, 400));
+console.log('G round 2 (KO, spectator):', JSON.stringify(await g.evaluate(() => { const r = document.getElementById('specbar').getBoundingClientRect(); return { focus: document.activeElement.id, entrant: window.__tinju.line.entrant, vh: innerHeight, specbar: [Math.round(r.top), Math.round(r.bottom)] }; })));
+await g.tap('#emojis [data-e="1"]'); await new Promise(r => setTimeout(r, 200));
+console.log('G after tapping an emoji:', await g.evaluate(() => document.activeElement.id || document.activeElement.tagName));
+await b.close(); srv.kill();

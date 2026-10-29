@@ -1,0 +1,19 @@
+2026-10-29T19:05:52.032Z lyrics loaded {"songs":40,"lines":200,"normal":160,"ulti":40}
+2026-10-29T19:05:52.041Z tinju listening 127.0.0.1:3540 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T19:05:52.526Z room create 6HH9D Host
+2026-10-29T19:05:52.882Z room join 6HH9D Guest1
+2026-10-29T19:05:53.232Z room join 6HH9D Guest2
+2026-10-29T19:05:53.277Z match start 6HH9D match#1 seed=2685638978 players=3
+2026-10-29T19:05:54.346Z round 6HH9D 1 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:05:57.028Z round 6HH9D 2 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:05:59.718Z round 6HH9D 3 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:02.411Z round 6HH9D 4 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:05.873Z round 6HH9D 5 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:09.195Z round 6HH9D 6 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:11.880Z round 6HH9D 7 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:14.578Z round 6HH9D 8 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:17.263Z round 6HH9D 9 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:19.951Z round 6HH9D 10 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:22.641Z round 6HH9D 11 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:25.330Z round 6HH9D 12 n=3 done=3 links=2 ko=0 order=d5a0460f,b658783b,10e5310a arrival=d5a0460f,b658783b,10e5310a
+2026-10-29T19:06:25.353Z SIGTERM

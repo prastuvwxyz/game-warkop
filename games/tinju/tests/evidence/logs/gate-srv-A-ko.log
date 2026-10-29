@@ -1,0 +1,13 @@
+2026-10-29T18:45:47.800Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:45:47.809Z tinju listening 127.0.0.1:3401 base /tinju hp 1 base_per_char 0.6 rank_weight 1
+2026-10-29T18:45:47.817Z room create GSVFF Bot0
+2026-10-29T18:45:47.819Z room join GSVFF Bot1
+2026-10-29T18:45:47.823Z room join GSVFF Bot2
+2026-10-29T18:45:47.826Z room join GSVFF Bot3
+2026-10-29T18:45:47.829Z room join GSVFF Bot4
+2026-10-29T18:45:47.833Z match start GSVFF match#1 seed=426989717 players=5
+2026-10-29T18:45:47.990Z round GSVFF 1 n=5 done=5 links=2 ko=2 order=7149c946,4abb1dd4,c81ab4a7,074f34ce,6bd63c8a arrival=7149c946,4abb1dd4,c81ab4a7,074f34ce,6bd63c8a
+2026-10-29T18:45:48.341Z round GSVFF 2 n=3 done=3 links=2 ko=2 order=7149c946,4abb1dd4,c81ab4a7 arrival=7149c946,4abb1dd4,c81ab4a7
+2026-10-29T18:45:48.380Z match end GSVFF ko 7149c946
+2026-10-29T18:45:48.384Z match start GSVFF match#2 seed=426989717 players=5
+2026-10-29T18:45:48.537Z SIGTERM

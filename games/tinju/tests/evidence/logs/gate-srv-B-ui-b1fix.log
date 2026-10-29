@@ -1,0 +1,19 @@
+2026-10-29T18:59:40.379Z lyrics loaded {"songs":40,"lines":200,"normal":160,"ulti":40}
+2026-10-29T18:59:40.388Z tinju listening 127.0.0.1:3470 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:59:40.892Z room create RJ8F6 Host
+2026-10-29T18:59:41.248Z room join RJ8F6 Guest1
+2026-10-29T18:59:41.598Z room join RJ8F6 Guest2
+2026-10-29T18:59:41.643Z match start RJ8F6 match#1 seed=2078605728 players=3
+2026-10-29T18:59:42.736Z round RJ8F6 1 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T18:59:45.425Z round RJ8F6 2 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T18:59:48.114Z round RJ8F6 3 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T18:59:50.804Z round RJ8F6 4 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T18:59:54.217Z round RJ8F6 5 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T18:59:56.906Z round RJ8F6 6 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T18:59:59.595Z round RJ8F6 7 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T19:00:02.291Z round RJ8F6 8 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T19:00:04.981Z round RJ8F6 9 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T19:00:07.671Z round RJ8F6 10 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T19:00:10.333Z round RJ8F6 11 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T19:00:13.002Z round RJ8F6 12 n=3 done=3 links=2 ko=0 order=c7c82a38,ab29aac3,92a0103f arrival=c7c82a38,ab29aac3,92a0103f
+2026-10-29T19:00:13.025Z SIGTERM

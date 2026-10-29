@@ -1,0 +1,21 @@
+PASS U-01 (B1, worst-case bank 29/45 chars): whole line box and line inside the 320x480 viewport for HOST and both GUESTS, every round (guest1 scrolled to bottom, guest2 to top before each reveal)  | 36/36 page-rounds ok, 45-char reveals seen 6 
+PASS U-01 (B1, real bank, 10 players all at 320x480, odd guests scrolled to bottom): line inside the viewport on all 10, 12 rounds  | 120/120, longest line seen 44 
+PASS U-02: 10-player room at 320x480: no horizontal overflow on lobby, ring and result screens
+FAIL U-14: avatar row shows the 9 others as static images, no running animation  | {"kids":9,"imgs":9,"running":1}
+PASS U-03: hidden input autocapitalize=off autocorrect=off spellcheck=false inputmode=text, 16px, not display:none (iPhone 12)  | {"ac":"off","acor":"off","sp":"false","im":"text","fs":"16px","disp":"block"}
+FAIL U-04: a wrong char goes red and blocks: typed stays empty, bad = the wrong char, typos 1, red tile drawn  | {"typed":"","bad":"","typos":0,"done":false,"sentDone":false,"redTile":false}
+FAIL U-04: backspace removes the red char, typos stays 1  | {"typed":"","bad":"","typos":0,"done":false,"sentDone":false}
+FAIL U-05: line done and sent; a trailing space after the last char adds no typo and no error  | {"typed":"","bad":"","typos":0,"done":false,"sentDone":false}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 15000ms exceeded.
+    at waitFor (/tmp/ana-g2/mine/gate-ui.mjs:41:58)
+    at /tmp/ana-g2/mine/gate-ui.mjs:137:35
+    at /tmp/ana-g2/mine/gate-ui.mjs:137:26 {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v24.22.1

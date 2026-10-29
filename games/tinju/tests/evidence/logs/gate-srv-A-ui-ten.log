@@ -1,0 +1,78 @@
+2026-10-29T18:51:17.702Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:51:17.712Z tinju listening 127.0.0.1:3451 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:51:18.319Z room create 39BWS H
+2026-10-29T18:51:18.684Z room join 39BWS G1
+2026-10-29T18:51:19.034Z room join 39BWS G2
+2026-10-29T18:51:19.400Z room join 39BWS G3
+2026-10-29T18:51:19.766Z room join 39BWS G4
+2026-10-29T18:51:20.134Z room join 39BWS G5
+2026-10-29T18:51:20.499Z room join 39BWS G6
+2026-10-29T18:51:20.899Z room join 39BWS G7
+2026-10-29T18:51:21.283Z room join 39BWS G8
+2026-10-29T18:51:21.667Z room join 39BWS G9
+2026-10-29T18:51:22.062Z match start 39BWS match#1 seed=2079660792 players=10
+2026-10-29T18:51:23.176Z round 39BWS 1 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,3d942437,ead2b8fa,5800425d,18edcedc,9ec2b3db,9ba6f9a0,f211c7c0,5ffd7102,5b4ad4f9
+2026-10-29T18:51:26.942Z round 39BWS 2 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,3d942437,18edcedc,5800425d,9ba6f9a0,5ffd7102,f211c7c0,5b4ad4f9,9ec2b3db,ead2b8fa
+2026-10-29T18:51:30.718Z round 39BWS 3 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=3d942437,b6687786,5800425d,18edcedc,5ffd7102,9ba6f9a0,9ec2b3db,ead2b8fa,f211c7c0,5b4ad4f9
+2026-10-29T18:51:34.722Z round 39BWS 4 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,5800425d,18edcedc,ead2b8fa,5ffd7102,5b4ad4f9,3d942437,f211c7c0,9ec2b3db,9ba6f9a0
+2026-10-29T18:51:38.487Z round 39BWS 5 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,3d942437,5ffd7102,f211c7c0,9ec2b3db,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ba6f9a0
+2026-10-29T18:51:42.239Z round 39BWS 6 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,3d942437,18edcedc,5b4ad4f9,9ec2b3db,f211c7c0,5800425d,9ba6f9a0,ead2b8fa,5ffd7102
+2026-10-29T18:51:45.992Z round 39BWS 7 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,3d942437,18edcedc,5800425d,9ec2b3db,5b4ad4f9,ead2b8fa,f211c7c0,5ffd7102,9ba6f9a0
+2026-10-29T18:51:49.727Z round 39BWS 8 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,3d942437,18edcedc,5b4ad4f9,9ec2b3db,ead2b8fa,5800425d,5ffd7102,f211c7c0,9ba6f9a0
+2026-10-29T18:51:53.478Z round 39BWS 9 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,3d942437,18edcedc,9ec2b3db,9ba6f9a0,5800425d,5b4ad4f9,f211c7c0,5ffd7102,ead2b8fa
+2026-10-29T18:51:57.240Z round 39BWS 10 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,18edcedc,5ffd7102,3d942437,5800425d,9ec2b3db,ead2b8fa,f211c7c0,5b4ad4f9,9ba6f9a0
+2026-10-29T18:52:01.001Z round 39BWS 11 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,3d942437,5b4ad4f9,18edcedc,9ba6f9a0,f211c7c0,9ec2b3db,5800425d,ead2b8fa,5ffd7102
+2026-10-29T18:52:04.746Z round 39BWS 12 n=10 done=10 links=9 ko=0 order=b6687786,3d942437,18edcedc,5800425d,5b4ad4f9,ead2b8fa,9ec2b3db,f211c7c0,5ffd7102,9ba6f9a0 arrival=b6687786,3d942437,ead2b8fa,5800425d,9ba6f9a0,5b4ad4f9,5ffd7102,9ec2b3db,f211c7c0,18edcedc
+2026-10-29T18:52:05.025Z SIGTERM
+2026-10-29T18:53:29.522Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:53:29.532Z tinju listening 127.0.0.1:3451 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:53:30.294Z room create 6QWDM H
+2026-10-29T18:53:30.662Z room join 6QWDM G1
+2026-10-29T18:53:31.030Z room join 6QWDM G2
+2026-10-29T18:53:31.413Z room join 6QWDM G3
+2026-10-29T18:53:31.796Z room join 6QWDM G4
+2026-10-29T18:53:32.177Z room join 6QWDM G5
+2026-10-29T18:53:32.578Z room join 6QWDM G6
+2026-10-29T18:53:32.978Z room join 6QWDM G7
+2026-10-29T18:53:33.378Z room join 6QWDM G8
+2026-10-29T18:53:33.832Z room join 6QWDM G9
+2026-10-29T18:53:34.274Z match start 6QWDM match#1 seed=873012855 players=10
+2026-10-29T18:53:35.400Z round 6QWDM 1 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,cdf5b43b,457e9abd,51abe115,a05e7c9c,1ba8d95e,e265238c,6d360bd7,db7e4792,1a140b5c
+2026-10-29T18:53:39.166Z round 6QWDM 2 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,cdf5b43b,db7e4792,457e9abd,1a140b5c,e265238c,51abe115,a05e7c9c,1ba8d95e,6d360bd7
+2026-10-29T18:53:42.936Z round 6QWDM 3 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,cdf5b43b,6d360bd7,1a140b5c,e265238c,a05e7c9c,1ba8d95e,db7e4792,51abe115,457e9abd
+2026-10-29T18:53:46.870Z round 6QWDM 4 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,cdf5b43b,6d360bd7,1a140b5c,51abe115,457e9abd,e265238c,db7e4792,a05e7c9c,1ba8d95e
+2026-10-29T18:53:50.628Z round 6QWDM 5 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,6d360bd7,cdf5b43b,e265238c,51abe115,1ba8d95e,db7e4792,1a140b5c,a05e7c9c,457e9abd
+2026-10-29T18:53:54.388Z round 6QWDM 6 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,6d360bd7,cdf5b43b,a05e7c9c,457e9abd,db7e4792,e265238c,1ba8d95e,1a140b5c,51abe115
+2026-10-29T18:53:58.153Z round 6QWDM 7 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,cdf5b43b,6d360bd7,1a140b5c,51abe115,1ba8d95e,e265238c,a05e7c9c,db7e4792,457e9abd
+2026-10-29T18:54:01.898Z round 6QWDM 8 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,e265238c,1a140b5c,cdf5b43b,a05e7c9c,1ba8d95e,db7e4792,51abe115,6d360bd7,457e9abd
+2026-10-29T18:54:05.640Z round 6QWDM 9 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,6d360bd7,e265238c,db7e4792,51abe115,1ba8d95e,cdf5b43b,a05e7c9c,1a140b5c,457e9abd
+2026-10-29T18:54:09.388Z round 6QWDM 10 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,1a140b5c,6d360bd7,e265238c,cdf5b43b,a05e7c9c,db7e4792,457e9abd,1ba8d95e,51abe115
+2026-10-29T18:54:13.140Z round 6QWDM 11 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=26575d33,cdf5b43b,1a140b5c,a05e7c9c,6d360bd7,e265238c,457e9abd,1ba8d95e,51abe115,db7e4792
+2026-10-29T18:54:16.885Z round 6QWDM 12 n=10 done=10 links=9 ko=0 order=26575d33,cdf5b43b,6d360bd7,e265238c,1a140b5c,a05e7c9c,1ba8d95e,db7e4792,457e9abd,51abe115 arrival=cdf5b43b,26575d33,6d360bd7,1a140b5c,db7e4792,e265238c,51abe115,a05e7c9c,1ba8d95e,457e9abd
+2026-10-29T18:54:18.704Z SIGTERM
+2026-10-29T18:55:20.858Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:55:20.867Z tinju listening 127.0.0.1:3451 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:55:21.552Z room create SPDCM H
+2026-10-29T18:55:21.909Z room join SPDCM G1
+2026-10-29T18:55:22.260Z room join SPDCM G2
+2026-10-29T18:55:22.623Z room join SPDCM G3
+2026-10-29T18:55:22.991Z room join SPDCM G4
+2026-10-29T18:55:23.358Z room join SPDCM G5
+2026-10-29T18:55:23.740Z room join SPDCM G6
+2026-10-29T18:55:24.123Z room join SPDCM G7
+2026-10-29T18:55:24.507Z room join SPDCM G8
+2026-10-29T18:55:24.891Z room join SPDCM G9
+2026-10-29T18:55:25.252Z match start SPDCM match#1 seed=3303622660 players=10
+2026-10-29T18:55:26.370Z round SPDCM 1 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,699d1ea1,e11c51ca,def42fad,73a0e8f8,8baf11cb,da9d5913,ae168f60,f59c24a8
+2026-10-29T18:55:30.139Z round SPDCM 2 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,def42fad,73a0e8f8,699d1ea1,e11c51ca,f59c24a8,ae168f60,8baf11cb,da9d5913
+2026-10-29T18:55:33.894Z round SPDCM 3 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,699d1ea1,8baf11cb,ae168f60,da9d5913,def42fad,73a0e8f8,e11c51ca,f59c24a8
+2026-10-29T18:55:37.870Z round SPDCM 4 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,699d1ea1,def42fad,8baf11cb,e11c51ca,da9d5913,73a0e8f8,f59c24a8,ae168f60
+2026-10-29T18:55:41.635Z round SPDCM 5 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,699d1ea1,8fdfcab6,def42fad,8baf11cb,e11c51ca,f59c24a8,da9d5913,73a0e8f8,ae168f60
+2026-10-29T18:55:45.396Z round SPDCM 6 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=8fdfcab6,9145ac61,699d1ea1,e11c51ca,73a0e8f8,def42fad,da9d5913,8baf11cb,ae168f60,f59c24a8
+2026-10-29T18:55:49.160Z round SPDCM 7 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,def42fad,699d1ea1,73a0e8f8,e11c51ca,ae168f60,8baf11cb,da9d5913,f59c24a8
+2026-10-29T18:55:52.912Z round SPDCM 8 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,f59c24a8,e11c51ca,da9d5913,8baf11cb,ae168f60
+2026-10-29T18:55:56.657Z round SPDCM 9 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,699d1ea1,ae168f60,def42fad,73a0e8f8,8baf11cb,e11c51ca,da9d5913,f59c24a8
+2026-10-29T18:56:00.419Z round SPDCM 10 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,73a0e8f8,699d1ea1,def42fad,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60
+2026-10-29T18:56:04.161Z round SPDCM 11 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,699d1ea1,da9d5913,ae168f60,def42fad,e11c51ca,f59c24a8,8baf11cb,73a0e8f8
+2026-10-29T18:56:07.925Z round SPDCM 12 n=10 done=10 links=9 ko=0 order=9145ac61,8fdfcab6,699d1ea1,def42fad,73a0e8f8,e11c51ca,da9d5913,f59c24a8,8baf11cb,ae168f60 arrival=9145ac61,8fdfcab6,def42fad,699d1ea1,f59c24a8,ae168f60,8baf11cb,da9d5913,e11c51ca,73a0e8f8
+2026-10-29T18:56:09.750Z SIGTERM

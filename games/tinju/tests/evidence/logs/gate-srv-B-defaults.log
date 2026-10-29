@@ -1,0 +1,9 @@
+2026-10-29T18:57:31.153Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:57:31.161Z tinju listening 127.0.0.1:3422 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:57:31.168Z room create HMTUK Bot0
+2026-10-29T18:57:31.170Z room join HMTUK Bot1
+2026-10-29T18:57:31.174Z room join HMTUK Bot2
+2026-10-29T18:57:31.177Z room join HMTUK Bot3
+2026-10-29T18:57:31.180Z match start HMTUK match#1 seed=2117618876 players=4
+2026-10-29T18:57:54.582Z round HMTUK 1 n=4 done=3 links=3 ko=0 order=1d3f84bd,0782f2f2,63f3980c,5d3ab883 arrival=1d3f84bd,63f3980c,0782f2f2
+2026-10-29T18:57:54.589Z SIGTERM

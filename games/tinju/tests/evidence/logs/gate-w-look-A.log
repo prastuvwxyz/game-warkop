@@ -1,0 +1,5 @@
+PASS desktop: HTTP 200 · version 2.0.0 · overflow home/lobby/game false/false/false · lobby rows 10 · avatars 9 · B1 3/3 · domino true · frames 90, max gap 17 ms, p95 17 ms (informational, software rendering) · console errors 0 · external requests 0
+PASS iPhone 12: HTTP 200 · version 2.0.0 · overflow home/lobby/game false/false/false · lobby rows 10 · avatars 9 · B1 3/3 · domino true · frames 91, max gap 17 ms, p95 17 ms (informational, software rendering, 4x CPU throttle) · console errors 0 · external requests 0
+PASS 320x480: HTTP 200 · version 2.0.0 · overflow home/lobby/game false/false/false · lobby rows 10 · avatars 9 · B1 3/3 · domino true · frames 91, max gap 17 ms, p95 17 ms (informational, software rendering, 4x CPU throttle) · console errors 0 · external requests 0
+look: 3/3 pass · screenshots in /tmp/ana-g2/A/games/tinju/tests/evidence
+exit=0

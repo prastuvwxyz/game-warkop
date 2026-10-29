@@ -1,0 +1,41 @@
+2026-10-29T19:03:19.037Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T19:03:19.047Z tinju listening 127.0.0.1:3510 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T19:03:19.100Z room create AHFSB Bot0
+2026-10-29T19:03:19.103Z room join AHFSB Bot1
+2026-10-29T19:03:19.106Z room join AHFSB Bot2
+2026-10-29T19:03:19.110Z room join AHFSB Bot3
+2026-10-29T19:03:19.113Z room join AHFSB Bot4
+2026-10-29T19:03:19.117Z match start AHFSB match#1 seed=1870379045 players=5
+2026-10-29T19:03:20.474Z round AHFSB 1 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:21.978Z round AHFSB 2 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:23.483Z round AHFSB 3 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:24.989Z round AHFSB 4 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:26.493Z round AHFSB 5 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:27.997Z round AHFSB 6 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:29.502Z round AHFSB 7 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:31.004Z round AHFSB 8 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:32.510Z round AHFSB 9 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:34.012Z round AHFSB 10 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:35.516Z round AHFSB 11 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:37.020Z round AHFSB 12 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:38.527Z round AHFSB 13 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:40.028Z round AHFSB 14 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:41.532Z round AHFSB 15 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:43.036Z round AHFSB 16 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:44.541Z round AHFSB 17 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:46.045Z round AHFSB 18 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:47.549Z round AHFSB 19 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=5ac1ae99,deb8cd4c,42b35cb7,162eaecc,cf02d11d
+2026-10-29T19:03:49.051Z round AHFSB 20 n=5 done=5 links=4 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7
+2026-10-29T19:03:49.363Z room create SJ9A2 Bot0
+2026-10-29T19:03:49.367Z room join SJ9A2 Bot1
+2026-10-29T19:03:49.370Z room join SJ9A2 Bot2
+2026-10-29T19:03:49.374Z room join SJ9A2 Bot3
+2026-10-29T19:03:49.377Z room join SJ9A2 Bot4
+2026-10-29T19:03:49.381Z room join SJ9A2 Bot5
+2026-10-29T19:03:49.384Z room join SJ9A2 Bot6
+2026-10-29T19:03:49.387Z room join SJ9A2 Bot7
+2026-10-29T19:03:49.390Z room join SJ9A2 Bot8
+2026-10-29T19:03:49.393Z room join SJ9A2 Bot9
+2026-10-29T19:03:49.402Z room create VA8CU Solo
+2026-10-29T19:03:49.410Z SIGTERM
+2026-10-29T19:03:49.412Z round AHFSB 21 n=5 done=0 links=0 ko=0 order=cf02d11d,deb8cd4c,162eaecc,5ac1ae99,42b35cb7 arrival=

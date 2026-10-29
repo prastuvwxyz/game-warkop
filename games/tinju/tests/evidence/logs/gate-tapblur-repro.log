@@ -1,0 +1,20 @@
+== copy A
+auto-focused at reveal: {"a":"typer","hint":false}
+after blur: {"a":"BODY","hint":true}
+after tap #linebox #1: {"a":"typer","hint":false}
+after tap #linebox #2: {"a":"BODY","hint":true}
+after tap #linebox #3: {"a":"typer","hint":false}
+after tap #line: {"a":"BODY","hint":true}
+after tap #focusHint: {"a":"typer","hint":false}
+typing after hint {"typed":"k","bad":"","typos":0,"done":false,"sentDone":false}
+desktop click #linebox -> BODY
+== copy B
+auto-focused at reveal: {"a":"typer","hint":false}
+after blur: {"a":"BODY","hint":true}
+after tap #linebox #1: {"a":"typer","hint":false}
+after tap #linebox #2: {"a":"BODY","hint":true}
+after tap #linebox #3: {"a":"typer","hint":false}
+after tap #line: {"a":"BODY","hint":true}
+after tap #focusHint: {"a":"typer","hint":false}
+typing after hint {"typed":"","bad":"k","typos":1,"done":false,"sentDone":false}
+desktop click #linebox -> BODY

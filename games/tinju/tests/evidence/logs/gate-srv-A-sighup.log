@@ -1,0 +1,40 @@
+2026-10-29T18:47:46.765Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:47:46.775Z tinju listening 127.0.0.1:3407 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:47:46.784Z room create SHW2Q Bot0
+2026-10-29T18:47:46.786Z room join SHW2Q Bot1
+2026-10-29T18:47:46.790Z match start SHW2Q match#1 seed=2815137060 players=2
+2026-10-29T18:47:46.854Z round SHW2Q 1 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:46.953Z round SHW2Q 2 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:47.055Z round SHW2Q 3 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:47.059Z lyrics reload REJECTED, keeping the old bank: need >= 150 lines shorter than 30 chars (normal rounds), have 40
+2026-10-29T18:47:47.462Z round SHW2Q 4 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:47.562Z round SHW2Q 5 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:47.662Z round SHW2Q 6 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:47.762Z round SHW2Q 7 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:47.862Z round SHW2Q 8 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:47.963Z round SHW2Q 9 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.063Z round SHW2Q 10 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.164Z round SHW2Q 11 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.264Z round SHW2Q 12 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.366Z round SHW2Q 13 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.467Z round SHW2Q 14 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.567Z round SHW2Q 15 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.669Z round SHW2Q 16 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.769Z round SHW2Q 17 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.870Z round SHW2Q 18 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:48.970Z round SHW2Q 19 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:49.069Z round SHW2Q 20 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:49.169Z round SHW2Q 21 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:49.269Z round SHW2Q 22 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:49.369Z round SHW2Q 23 n=2 done=2 links=1 ko=0 order=4970c01b,46d4790e arrival=4970c01b,46d4790e
+2026-10-29T18:47:49.374Z room create JTX8F Bot0
+2026-10-29T18:47:49.378Z room join JTX8F Bot1
+2026-10-29T18:47:49.381Z match start JTX8F match#1 seed=2240342183 players=2
+2026-10-29T18:47:49.445Z round JTX8F 1 n=2 done=2 links=1 ko=0 order=85b0f44a,f2f1c659 arrival=85b0f44a,f2f1c659
+2026-10-29T18:47:49.545Z round JTX8F 2 n=2 done=2 links=1 ko=0 order=85b0f44a,f2f1c659 arrival=85b0f44a,f2f1c659
+2026-10-29T18:47:49.645Z round JTX8F 3 n=2 done=2 links=1 ko=0 order=85b0f44a,f2f1c659 arrival=85b0f44a,f2f1c659
+2026-10-29T18:47:49.746Z round JTX8F 4 n=2 done=2 links=1 ko=0 order=85b0f44a,f2f1c659 arrival=85b0f44a,f2f1c659
+2026-10-29T18:47:49.846Z round JTX8F 5 n=2 done=2 links=1 ko=0 order=85b0f44a,f2f1c659 arrival=85b0f44a,f2f1c659
+2026-10-29T18:47:49.947Z round JTX8F 6 n=2 done=2 links=1 ko=0 order=85b0f44a,f2f1c659 arrival=85b0f44a,f2f1c659
+2026-10-29T18:47:49.949Z lyrics reload REJECTED, keeping the old bank: need >= 40 songs, have 1 | "Rusak": "terlalu pendek": full form is 14 chars, need 15-45 | need >= 200 lines, have 1 | need >= 150 lines shorter than 30 chars (normal rounds), have 0 | need >= 40 lines of 30+ chars (ULTI rounds), have 0
+2026-10-29T18:47:50.351Z SIGTERM

@@ -1,0 +1,41 @@
+2026-10-29T19:04:20.558Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T19:04:20.567Z tinju listening 127.0.0.1:3530 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T19:04:20.617Z room create 5UQZV Bot0
+2026-10-29T19:04:20.620Z room join 5UQZV Bot1
+2026-10-29T19:04:20.624Z room join 5UQZV Bot2
+2026-10-29T19:04:20.626Z room join 5UQZV Bot3
+2026-10-29T19:04:20.629Z room join 5UQZV Bot4
+2026-10-29T19:04:20.632Z match start 5UQZV match#1 seed=3449415089 players=5
+2026-10-29T19:04:21.991Z round 5UQZV 1 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:23.494Z round 5UQZV 2 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:25.000Z round 5UQZV 3 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:26.504Z round 5UQZV 4 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:28.009Z round 5UQZV 5 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:29.512Z round 5UQZV 6 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:31.016Z round 5UQZV 7 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:32.518Z round 5UQZV 8 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:34.023Z round 5UQZV 9 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:35.527Z round 5UQZV 10 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:37.031Z round 5UQZV 11 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:38.533Z round 5UQZV 12 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:40.037Z round 5UQZV 13 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:41.542Z round 5UQZV 14 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:43.045Z round 5UQZV 15 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:44.549Z round 5UQZV 16 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:46.054Z round 5UQZV 17 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:47.559Z round 5UQZV 18 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:49.064Z round 5UQZV 19 n=5 done=5 links=4 ko=0 order=7d336f89,e71d6d35,6e272fdf,b5741d0e,4d226028 arrival=4d226028,b5741d0e,6e272fdf,e71d6d35,7d336f89
+2026-10-29T19:04:50.569Z round 5UQZV 20 n=5 done=5 links=4 ko=0 order=6e272fdf,4d226028,e71d6d35,b5741d0e,7d336f89 arrival=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf
+2026-10-29T19:04:50.881Z room create Z6C93 Bot0
+2026-10-29T19:04:50.884Z room join Z6C93 Bot1
+2026-10-29T19:04:50.888Z room join Z6C93 Bot2
+2026-10-29T19:04:50.891Z room join Z6C93 Bot3
+2026-10-29T19:04:50.894Z room join Z6C93 Bot4
+2026-10-29T19:04:50.898Z room join Z6C93 Bot5
+2026-10-29T19:04:50.901Z room join Z6C93 Bot6
+2026-10-29T19:04:50.905Z room join Z6C93 Bot7
+2026-10-29T19:04:50.908Z room join Z6C93 Bot8
+2026-10-29T19:04:50.912Z room join Z6C93 Bot9
+2026-10-29T19:04:50.921Z room create 3HG79 Solo
+2026-10-29T19:04:50.929Z SIGTERM
+2026-10-29T19:04:50.931Z round 5UQZV 21 n=5 done=0 links=0 ko=0 order=7d336f89,b5741d0e,e71d6d35,4d226028,6e272fdf arrival=

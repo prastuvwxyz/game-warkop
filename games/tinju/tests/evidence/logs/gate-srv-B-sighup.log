@@ -1,0 +1,40 @@
+2026-10-29T18:59:31.916Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:59:31.925Z tinju listening 127.0.0.1:3427 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:59:31.935Z room create Y9F8U Bot0
+2026-10-29T18:59:31.938Z room join Y9F8U Bot1
+2026-10-29T18:59:31.942Z match start Y9F8U match#1 seed=3690141264 players=2
+2026-10-29T18:59:32.006Z round Y9F8U 1 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:32.109Z round Y9F8U 2 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:32.209Z round Y9F8U 3 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:32.213Z lyrics reloaded {"songs":40,"lines":200,"normal":160,"ulti":40}
+2026-10-29T18:59:32.616Z round Y9F8U 4 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:32.717Z round Y9F8U 5 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:32.817Z round Y9F8U 6 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:32.919Z round Y9F8U 7 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.019Z round Y9F8U 8 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.119Z round Y9F8U 9 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.220Z round Y9F8U 10 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.323Z round Y9F8U 11 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.424Z round Y9F8U 12 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.524Z round Y9F8U 13 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.625Z round Y9F8U 14 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.727Z round Y9F8U 15 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.828Z round Y9F8U 16 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:33.931Z round Y9F8U 17 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:34.033Z round Y9F8U 18 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:34.134Z round Y9F8U 19 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:34.234Z round Y9F8U 20 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:34.337Z round Y9F8U 21 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:34.439Z round Y9F8U 22 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:34.541Z round Y9F8U 23 n=2 done=2 links=1 ko=0 order=df6d040f,092b5d46 arrival=df6d040f,092b5d46
+2026-10-29T18:59:34.549Z room create HN85F Bot0
+2026-10-29T18:59:34.551Z room join HN85F Bot1
+2026-10-29T18:59:34.555Z match start HN85F match#1 seed=3202819393 players=2
+2026-10-29T18:59:34.619Z round HN85F 1 n=2 done=2 links=1 ko=0 order=cdd324e5,31e1da41 arrival=cdd324e5,31e1da41
+2026-10-29T18:59:34.722Z round HN85F 2 n=2 done=2 links=1 ko=0 order=cdd324e5,31e1da41 arrival=cdd324e5,31e1da41
+2026-10-29T18:59:34.823Z round HN85F 3 n=2 done=2 links=1 ko=0 order=cdd324e5,31e1da41 arrival=cdd324e5,31e1da41
+2026-10-29T18:59:34.924Z round HN85F 4 n=2 done=2 links=1 ko=0 order=cdd324e5,31e1da41 arrival=cdd324e5,31e1da41
+2026-10-29T18:59:35.024Z round HN85F 5 n=2 done=2 links=1 ko=0 order=cdd324e5,31e1da41 arrival=cdd324e5,31e1da41
+2026-10-29T18:59:35.123Z round HN85F 6 n=2 done=2 links=1 ko=0 order=cdd324e5,31e1da41 arrival=cdd324e5,31e1da41
+2026-10-29T18:59:35.127Z lyrics reload REJECTED, keeping the old bank: need >= 40 songs, have 1 | "Rusak": "terlalu pendek": full form is 14 chars, need 15-45 | need >= 200 lines, have 1 | need >= 150 lines shorter than 30 chars (normal rounds), have 0 | need >= 40 lines of 30+ chars (ULTI rounds), have 0
+2026-10-29T18:59:35.531Z SIGTERM

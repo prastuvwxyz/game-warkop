@@ -1,0 +1,21 @@
+CFG: BASE_PER_CHAR 0.6 RANK_WEIGHT 1 EXTRA_LAST_HIT 0 HP 100; bank normal 161 ulti 94; 1000 matches per row, seed 1000+match
+  lines=plan N=10: maxKO<=3 971/1000  maxKO>=5 1  secs p10/p50/p90 184/206/231  KO-rounds p50 7  first KO p50 r5  fastest wins 66.7%
+  lines=plan N=5: maxKO<=3 1000/1000  maxKO>=5 0  secs p10/p50/p90 117/137/162  KO-rounds p50 4  first KO p50 r5  fastest wins 83.4%
+  lines=plan N=2: maxKO<=3 1000/1000  maxKO>=5 0  secs p10/p50/p90 45/58/87  KO-rounds p50 1  first KO p50 r5  fastest wins 94.5%
+FAIL K-1 [plan model (lines 15-40)] 10 bots: <=3 KOs in one round in >=95 % AND never >=5  | 97.1 %, 1 matches with >=5
+PASS K-2 [plan model (lines 15-40)] 10 bots: median 120-240 s, p10 >= 90, p90 <= 300  | 184/206/231
+PASS K-3 [plan model (lines 15-40)] 2 bots: median 40-60 s  | 45/58/87
+PASS K-4 [plan model (lines 15-40)] 10 bots: rounds with >=1 KO, median >= 5  | 7
+PASS K-5 [plan model (lines 15-40)] 10 bots: round of first KO, median >= 4  | 5
+  K-6 [plan model (lines 15-40)] report only: 5 bots 117/137/162 s, fastest bot wins 83.4%
+  lines=bank N=10: maxKO<=3 937/1000  maxKO>=5 8  secs p10/p50/p90 188/209/234  KO-rounds p50 7  first KO p50 r6  fastest wins 72.9%
+  lines=bank N=5: maxKO<=3 1000/1000  maxKO>=5 0  secs p10/p50/p90 117/137/165  KO-rounds p50 4  first KO p50 r5  fastest wins 82.1%
+  lines=bank N=2: maxKO<=3 1000/1000  maxKO>=5 0  secs p10/p50/p90 46/59/86  KO-rounds p50 1  first KO p50 r5  fastest wins 94.3%
+FAIL K-1 [real bank lengths (plain r1-3, normal <30, ULTI >=30)] 10 bots: <=3 KOs in one round in >=95 % AND never >=5  | 93.7 %, 8 matches with >=5
+PASS K-2 [real bank lengths (plain r1-3, normal <30, ULTI >=30)] 10 bots: median 120-240 s, p10 >= 90, p90 <= 300  | 188/209/234
+PASS K-3 [real bank lengths (plain r1-3, normal <30, ULTI >=30)] 2 bots: median 40-60 s  | 46/59/86
+PASS K-4 [real bank lengths (plain r1-3, normal <30, ULTI >=30)] 10 bots: rounds with >=1 KO, median >= 5  | 7
+PASS K-5 [real bank lengths (plain r1-3, normal <30, ULTI >=30)] 10 bots: round of first KO, median >= 4  | 6
+  K-6 [real bank lengths (plain r1-3, normal <30, ULTI >=30)] report only: 5 bots 117/137/165 s, fastest bot wins 82.1%
+
+== sim-ko-engine: PASS 8 / FAIL 2 ==

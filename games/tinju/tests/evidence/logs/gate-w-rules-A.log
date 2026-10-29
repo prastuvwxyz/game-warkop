@@ -1,0 +1,92 @@
+PASS CFG defaults: RANK_WEIGHT 1, EXTRA_LAST_HIT 0, BASE_PER_CHAR 0.7, CAP 60, RECV_CAP 60, MAX_PLAYERS 10
+PASS CFG: TK_* env overrides numbers; junk and empty fall back to the default
+PASS O-01 base 3, 2 entrants -> 34
+PASS O-02 base 3, 2 entrants -> 9
+PASS O-03 base 3, 2 entrants -> 60
+PASS O-04 base 3, 2 entrants -> 9
+PASS O-05 base 3, 2 entrants -> 9
+PASS O-06 base 3, 2 entrants -> 9
+PASS O-07 base 3, 2 entrants -> 9
+PASS O-08 base 3, 2 entrants -> 18
+PASS O-09 base 3, 2 entrants -> 18
+PASS O-10 base 3, 2 entrants -> 18
+PASS O-11 base 3, 2 entrants -> 18
+PASS O-12 base 3, 2 entrants -> 23
+PASS O-13 base 3, 2 entrants -> 23
+PASS O-14 base 3, 2 entrants -> 23
+PASS O-15 base 3, 2 entrants -> 23
+PASS O-16 base 3, 2 entrants -> 23
+PASS O-17 base 3, 2 entrants -> 34
+PASS O-18 base 3, 2 entrants -> 23
+PASS O-19 base 3, 2 entrants -> 6
+PASS O-20 base 3, 2 entrants -> 8
+PASS O-21 base 3, 2 entrants -> 23
+PASS O-22 base 3, 2 entrants -> 51
+PASS O-23 base 3, 2 entrants -> 60
+PASS O-24 base 3, 2 entrants -> 56
+PASS O-25 base 3, 2 entrants -> 23
+PASS O-26 base 3, 2 entrants -> 60
+PASS O-27 base 3, 2 entrants -> 30
+PASS O-28 base 3, 2 entrants -> 60
+PASS O-29 base 3, 2 entrants -> 60
+PASS O-01…O-29 (29 rows) all reproduce the 1.0 damage on 2 entrants at base 3
+PASS O-01…O-33 at base 1: 33/33 exact (damage, applied) and equal to A-na's oracle link()
+PASS O-01 link fields: clean tier, d 1200, critical, margin 1.25, no combo, weight 1
+PASS O-03: unfinished hitee -> d null, tier clean, ulti flag on the link
+PASS 2 players, same elapsed and typos: no hit, HP and streaks unchanged (draw)
+PASS nobody finished: no hits, HP unchanged
+PASS equal elapsed: fewer typos ranks first and hits (typo tie-break)
+PASS winner by elapsed, not by entrants/dones order (B listed and inserted first but slower is hit)
+PASS D-1: A>B 19, B>C 31; HP 100/81/69
+PASS D-2: tie at the end — A hits B and C for 30 each; B and C do not hit each other; HP 100/51/39
+PASS D-2 streaks: A +1, tied B and C (hit, dealt nothing) reset
+PASS D-1 streaks: A +1, B +1 (hit and hits), C reset
+PASS D-3: 28, 38, 15, 38; HP 100/72/62/85/62; A's fire spent
+PASS D-4: ULTI, two unfinished — 60 x4 (cap); D and E are hit by C only; HP 100/12/2/25/2
+PASS D-5: 10 players, typo tie-break inside the chain; every HP as in the plan
+PASS D-6: 10 players, two combos, two unfinished, two KOs — every HP as in the plan
+PASS D-6: KO list is P4 and P9 (P4 lands on exactly 0; P9 45-50 floors at 0); P4's own hit still lands
+PASS D-6: P7 combo hit (62.5 -> 63) is capped at 60; P8>P9 unfinished clean is 50 before the HP floor
+PASS D-7 flag on: B>C 50, extra A>C 60 (cap) — C receives 110, capped at 60 total: HP 100/40/40
+PASS D-7 flag off (default): no extra hit, C = 50
+PASS EXTRA_LAST_HIT default is 0
+PASS extra hit needs >= 3 ranks (2 players: none)
+PASS D-8: one finisher, two unfinished — 38 each, HP 100/62/62
+PASS D-9: nobody finishes in 5 players — no hits, HP and streaks unchanged
+PASS D-9: streaks unchanged when nobody finishes
+PASS cross-check vs A-na oracle domino(): same HP for a 5-player round with one unfinished
+PASS 3-way tie in front: seat 1 hits D; seats 2 and 3 hit nobody and nobody hits them
+PASS 3-way tie in front: streak — hitter +1, the other tied seats reset (they hit nobody)
+PASS tied ranks share a competition rank (1,1,1,4)
+PASS tie in the middle: A hits B and C; seat 2 (B) hits D once; C hits nobody
+PASS 2 players fully tied: draw
+PASS the rank's hitter is its lowest seat (not array position)
+PASS tie then a last player: seat 1 (W) hits V, not Y (seat 3)
+PASS rank weight, D-1 with 3 players: A>B 19 x 1/2 = 10 (9.5 rounds up), B>C 31 x 2/2; HP 100/90/69
+PASS rank weight is exposed per link (damage before weight, weight, applied after)
+PASS 2 players: weight is 1, so 1.0 is untouched
+PASS unfinished victims count as last: weight 1
+PASS tied victims share the rank of their first seat: n=3, k=1 -> weight 1/2 for both
+PASS RANK_WEIGHT=0 is pure domino (weight 1 everywhere)
+PASS 600 random rounds (N 2-10, ties, unfinished, base 0.5-3): HP equals the independent reference (600/600)
+PASS invariant: nobody receives more than 60 in a round, HP never < 0
+PASS invariant: the first finisher never loses HP (flag off)
+PASS invariant: inputs are not mutated, and the result does not depend on array / insertion order
+PASS streak: A hits three rounds in a row -> fire on after the 3rd
+PASS combo: the 4th round A hits x1.25 and the fire is cleared
+PASS the last finisher (C) hits nobody every round: streak and fire stay 0; B (hits C) climbs
+PASS typing: correct prefix is kept, no typos
+PASS typing: a wrong char turns bad, counts 1 typo, input mirror = typed + bad
+PASS typing: more characters are ignored while a bad char is pending (mirror unchanged, no extra typo)
+PASS typing: backspace removes the red char first; typed prefix intact
+PASS typing: backspace over a correct char shortens typed
+PASS typing: completing the line sets done
+PASS typing: a trailing space predicted after the last char is ignored (done stays, no typo)
+PASS typing: curly apostrophe maps to the straight one (no typo)
+PASS typing: a predictive keyboard inserting "ain " in one event is read char by char
+PASS typing: a replacement that is not an append is re-read from the start and counts one typo
+PASS typing: case matters (round >= 4 lines keep capitals)
+PASS typing: each fresh wrong char after a backspace is a new typo
+PASS typing: done returns the final mirror and further input changes nothing
+
+== test-rules: PASS 90 / FAIL 0 ==

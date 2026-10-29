@@ -1,0 +1,5 @@
+FAIL P-17 (B3): line.revealAt >= countdown.endsAt on all 10 sockets, 200/200 rounds  | early 200/200, min revealAt-endsAt -4 ms, matches ended by bank 0
+FAIL P-17 (B3): no line frame arrives before countdown.endsAt (local clock = server clock, same box); min countdown->line receive gap >= COUNTDOWN 100 - 20  | frames early 200, min receive gap 91 ms
+PASS P-18: identical line payload on all 10 sockets, 200/200; receive spread < 50 ms  | identical 200/200, max spread 1 ms
+
+== gate-proto MUTB3: PASS 1 / FAIL 2 ==

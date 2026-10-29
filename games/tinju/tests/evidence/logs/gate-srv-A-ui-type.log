@@ -1,0 +1,40 @@
+2026-10-29T18:52:05.065Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:52:05.074Z tinju listening 127.0.0.1:3452 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:52:05.495Z room create AXYE5 Phone
+2026-10-29T18:52:05.998Z room join AXYE5 D1
+2026-10-29T18:52:06.444Z room join AXYE5 D2
+2026-10-29T18:52:06.516Z match start AXYE5 match#1 seed=4239539695 players=3
+2026-10-29T18:54:18.745Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:54:18.755Z tinju listening 127.0.0.1:3452 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:54:19.178Z room create 5EE4M Phone
+2026-10-29T18:54:19.659Z room join 5EE4M D1
+2026-10-29T18:54:20.061Z room join 5EE4M D2
+2026-10-29T18:54:20.142Z match start 5EE4M match#1 seed=1277652935 players=3
+2026-10-29T18:54:21.376Z round 5EE4M 1 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:23.932Z round 5EE4M 2 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:26.493Z round 5EE4M 3 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:29.059Z round 5EE4M 4 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:31.647Z round 5EE4M 5 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:34.222Z round 5EE4M 6 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:36.782Z round 5EE4M 7 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:39.348Z round 5EE4M 8 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:41.910Z round 5EE4M 9 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:44.484Z round 5EE4M 10 n=3 done=3 links=2 ko=0 order=f4aed0b9,3dd0f428,e42bec14 arrival=f4aed0b9,3dd0f428,e42bec14
+2026-10-29T18:54:46.079Z SIGTERM
+2026-10-29T18:56:09.807Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:56:09.817Z tinju listening 127.0.0.1:3452 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:56:10.261Z room create 46JJT Phone
+2026-10-29T18:56:10.656Z room join 46JJT D1
+2026-10-29T18:56:11.052Z room join 46JJT D2
+2026-10-29T18:56:11.142Z match start 46JJT match#1 seed=837637059 players=3
+2026-10-29T18:56:12.365Z round 46JJT 1 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:14.927Z round 46JJT 2 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:17.494Z round 46JJT 3 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:20.057Z round 46JJT 4 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:22.653Z round 46JJT 5 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:25.212Z round 46JJT 6 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:27.768Z round 46JJT 7 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:30.334Z round 46JJT 8 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:32.894Z round 46JJT 9 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:35.457Z round 46JJT 10 n=3 done=3 links=2 ko=0 order=589b3cbf,334054cb,64400884 arrival=589b3cbf,334054cb,64400884
+2026-10-29T18:56:37.015Z SIGTERM

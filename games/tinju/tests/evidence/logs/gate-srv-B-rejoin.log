@@ -1,0 +1,11 @@
+2026-10-29T18:58:59.763Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:58:59.773Z tinju listening 127.0.0.1:3425 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:58:59.781Z room create ZGU3Y Bot0
+2026-10-29T18:58:59.785Z room join ZGU3Y Bot1
+2026-10-29T18:58:59.789Z room join ZGU3Y Bot2
+2026-10-29T18:58:59.792Z room join ZGU3Y Bot3
+2026-10-29T18:58:59.795Z room join ZGU3Y Bot4
+2026-10-29T18:58:59.799Z match start ZGU3Y match#1 seed=837361850 players=5
+2026-10-29T18:59:00.603Z round ZGU3Y 1 n=5 done=5 links=4 ko=0 order=c0cdf942,df218bb7,3889684a,ed2b8c4b,2aeac207 arrival=c0cdf942,df218bb7,3889684a,ed2b8c4b,2aeac207
+2026-10-29T18:59:22.720Z round ZGU3Y 2 n=5 done=4 links=4 ko=0 order=c0cdf942,df218bb7,ed2b8c4b,2aeac207,3889684a arrival=c0cdf942,df218bb7,ed2b8c4b,2aeac207
+2026-10-29T18:59:23.813Z SIGTERM

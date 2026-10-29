@@ -1,0 +1,19 @@
+2026-10-29T18:50:44.036Z lyrics loaded {"songs":40,"lines":200,"normal":160,"ulti":40}
+2026-10-29T18:50:44.045Z tinju listening 127.0.0.1:3450 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:50:44.720Z room create BVEYB Host
+2026-10-29T18:50:45.087Z room join BVEYB Guest1
+2026-10-29T18:50:45.452Z room join BVEYB Guest2
+2026-10-29T18:50:45.531Z match start BVEYB match#1 seed=1186130940 players=3
+2026-10-29T18:50:46.626Z round BVEYB 1 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:50:49.311Z round BVEYB 2 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:50:52.001Z round BVEYB 3 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:50:54.692Z round BVEYB 4 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:50:58.083Z round BVEYB 5 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:51:01.504Z round BVEYB 6 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:51:04.193Z round BVEYB 7 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:51:06.902Z round BVEYB 8 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:51:09.590Z round BVEYB 9 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:51:12.253Z round BVEYB 10 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:51:14.943Z round BVEYB 11 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:51:17.634Z round BVEYB 12 n=3 done=3 links=2 ko=0 order=c5e569a5,b3e1c1fb,472e95bc arrival=c5e569a5,b3e1c1fb,472e95bc
+2026-10-29T18:51:17.657Z SIGTERM

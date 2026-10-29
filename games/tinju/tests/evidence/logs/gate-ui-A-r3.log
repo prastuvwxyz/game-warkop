@@ -1,0 +1,20 @@
+PASS U-01 (B1, real bank, 10 players all at 320x480, odd guests scrolled to bottom): line inside the viewport on all 10, 12 rounds  | 120/120, longest line seen 42 
+PASS U-02: 10-player room at 320x480: no horizontal overflow on lobby, ring and result screens
+PASS U-14: avatar row = 9 static <img>; no looping (infinite) animation and no animation on the images (one-shot damage float-ups / colour transitions allowed)  | {"kids":9,"imgs":9,"running":[{"el":"DIV.dm","name":"floatup","it":1},{"el":"DIV.dm","name":"floatup","it":1},{"el":"DIV.av","name":"border-bottom-color","it":1},{"el":"DIV.av","name":"border-left-color","it":1},{"el":"DIV.av","name":"border-right-color","it":1},{"el":"DIV.av","name":"border-top-color","it":1},{"el":"DIV.dm","name":"floatup","it":1},{"el":"DIV.av","name":"border-bottom-color","it":1},{"el":"DIV.av","name":"border-left-color","it":1},{"el":"DIV.av","name":"border-right-color","it":1},{"el":"DIV.av","name":"border-top-color","it":1},{"el":"DIV.dm","name":"floatup","it":1}]}
+PASS U-03: hidden input autocapitalize=off autocorrect=off spellcheck=false inputmode=text, 16px, not display:none (iPhone 12)  | {"ac":"off","acor":"off","sp":"false","im":"text","fs":"16px","disp":"block"}
+PASS U-04: a wrong char goes red and blocks: typed stays empty, bad = the wrong char, typos 1, red tile drawn  | {"typed":"","bad":"#","typos":1,"done":false,"sentDone":false,"redTile":true}
+PASS U-04: backspace removes the red char, typos stays 1  | {"typed":"","bad":"","typos":1,"done":false,"sentDone":false}
+PASS U-05: line done and sent; a trailing space after the last char adds no typo and no error  | {"typed":"malu bertanya sesat di jalan","bad":"","typos":1,"done":true,"sentDone":true}
+PASS U-05: a predictive "word " replacement mid-line is read as correct chars, no false typo  | {"typed":"hei ","bad":"","typos":0,"done":false,"sentDone":false}
+PASS U-06: iPhone 12, one tap in round 1, then 10 rounds: the hidden input has focus at every line reveal  | 10/10 
+PASS U-04/U-06: the line typed for real on the iPhone 12 page completes and sends done in 10/10 rounds  | 10/10 
+PASS U-07: avatar row order after the domino = server finishing order (middle player view), 10 rounds  | 10/10 
+PASS U-08: big boxers = who hit you (left) / who you hit (right), middle player, 10 rounds  | 10/10 
+PASS U-10: KO'd player (iPhone 12): emoji bar visible with 8 emoji, line marked spectator  | {"bar":true,"n":8,"entrant":false,"out":"ko"}
+FAIL U-10: spectator typing does nothing and the input is not focused  | {"typing":{"typed":"","bad":"","typos":0,"done":false,"sentDone":false},"foc":"typer"}
+PASS U-10: tapping an emoji reaches another player's socket
+PASS U-02: end screen at 320x480, 320x568, desktop, iPhone 12: no horizontal overflow; end card shown  | {"top":394.375,"bottom":571.34375,"vh":480,"hidden":false}
+PASS U-13: 0 page errors and 0 console errors across every page in this run  | errors=0 
+PASS no request left 127.0.0.1 in any page of this run (external URLs)
+
+== gate-ui A: PASS 17 / FAIL 1 ==
