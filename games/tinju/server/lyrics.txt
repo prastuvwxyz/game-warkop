@@ -1,348 +1,378 @@
-# Tinju Kata 2.0 lyric bank -- PLACEHOLDER CONTENT.
-# Every title, artist and line below is invented for the build (no real song is quoted).
-# Replace this file with the real bank (same format) and send SIGHUP to the server; running matches keep their snapshot.
-# Format: blocks separated by a blank line; first line `title | artist`; then 4-6 lines. ASCII only, 15-45 chars (plain form too).
+# Tinju Kata 2.0 lyric bank -- starter bank (Stella, 2026-10-30).
+# Only traditional / public-domain material: lagu daerah (anonymous), lagu wajib whose composers died before 1956
+# (W.R. Supratman 1938, C. Simanjuntak 1946), peribahasa and pantun. The pop / TikTok block is Pras's to add:
+# same format, append below, then `systemctl --user kill -s HUP tinju` (no release).
+# Format: blocks separated by a blank line; first line `title | artist`; then 4-8 lines. ASCII only, 15-45 chars.
 
-Senja di Pelabuhan Kecil | Grup Contoh 01
-Bulan bernyanyi sendirian
-Kakak melipat perahu kertas
-Kita melipat perahu kertas
-Adik menyapa pagi, tapi kakak menutup jendela
-Sahabat menyebut namamu
+Indonesia Raya | W.R. Supratman
+Indonesia tanah airku
+Tanah tumpah darahku
+Di sanalah aku berdiri
+Jadi pandu ibuku
+Marilah kita berseru, Indonesia bersatu!
+Hiduplah tanahku, hiduplah negeriku
+Bangunlah jiwanya, bangunlah badannya
+Untuk Indonesia Raya
 
-Kereta Terakhir | Penyanyi Contoh 02
-Bapak menunggu di stasiun
-Dia menunggu kereta malam?
-Kota bernyanyi sendirian
-Laut pergi tanpa pamit, aku menyalakan lampu
-Jalan datang membawa kabar?
-Laut menyapa pagi, malam menyimpan cerita
+Ibu Kita Kartini | W.R. Supratman
+Ibu kita Kartini, putri sejati
+Putri Indonesia, harum namanya
+Ibu kita Kartini, pendekar bangsa
+Pendekar kaumnya untuk merdeka
+Wahai ibu kita Kartini
+Sungguh besar cita-citanya
 
-Payung Biru | Grup Contoh 03
-Ibu berhenti sebentar, laut duduk di tangga!
-Kota menghitung bintang
-Kakak menyanyi di teras
-Kakak menyebut namamu
-Bulan pergi tanpa pamit
+Di Timur Matahari | W.R. Supratman
+Di timur matahari mulai bercahya
+Bangun dan berdiri kawan semua
+Marilah mengatur barisan kita
+Pemuda pemudi Indonesia
 
-Warung Kopi Jam Dua | Grup Contoh 04
-Adik berlari ke pantai, laut duduk di tangga?
-Bulan membawa payung biru
-Kamu menjaga api kecil!
-Sahabat menyalakan lampu
-Kopi mencari arah pulang.
+Maju Tak Gentar | C. Simanjuntak
+Maju tak gentar, membela yang benar
+Maju tak gentar, hak kita diserang
+Maju serentak, mengusir penyerang
+Maju serentak, tentu kita menang
+Bergerak bergerak, serentak serentak
+Menerkam menerjang terjang
+Majulah majulah menang
 
-Surat untuk Besok | Grup Contoh 05
-Ibu menyebut namamu, angin menutup jendela
-Sahabat menunggu kereta malam
-Kota menjaga api kecil
-Ibu duduk di tangga - adik duduk di tangga!
-Kita menjaga api kecil
-Dia mengayuh pelan
+Tanah Tumpah Darahku | C. Simanjuntak
+Tanah tumpah darahku yang suci mulia
+Indah dan permai bagaikan intan permata
+Tanah airku tanah bahagia
 
-Perahu Kertas Kita | Trio Contoh 06
-Sahabat menulis surat lama
-Adik menunggu kereta malam
-Aku menulis surat lama
-Sahabat menyapa pagi
-Senja duduk di tangga - bapak berjalan pelan?
+Rasa Sayange | Lagu daerah Maluku
+Rasa sayange, rasa sayang sayange
+Lihat Nona dari jauh rasa sayang sayange
+Kalau ada sumur di ladang
+Boleh kita menumpang mandi
+Kalau ada umurku panjang
+Boleh kita berjumpa lagi
 
-Lampu Teras | Trio Contoh 07
-Malam mencari arah pulang
-Hujan membawa payung biru?
-Senja melukis langit sore.
-Kopi menyebut namamu, bapak berlari ke pantai
-Bulan memeluk angin dingin!
+Ampar-Ampar Pisang | Lagu daerah Kalimantan Selatan
+Ampar ampar pisang, pisangku balum masak
+Masak sabigi dihurung bari-bari
+Manggalepak manggalepok
+Patah kayu bengkok
+Bengkok dimakan api, apinya cangcurupan
+Nang mana batis kutung dikitipi dawang
 
-Hujan Bulan Ini | Duo Contoh 08
-Sahabat memeluk angin dingin?
-Kota bermain di halaman.
-Bulan tertawa tanpa suara - adik menyapa pagi
-Bapak bernyanyi sendirian
-Malam duduk di tangga
+Soleram | Lagu daerah Riau
+Soleram, soleram
+Soleram anak yang manis
+Anak manis janganlah dicium sayang
+Kalau dicium merahlah pipinya
+Satu dua tiga dan empat
+Lima enam tujuh delapan
+Kalau tuan dapat kawan baru sayang
+Kawan lama ditinggalkan jangan
 
-Jalan Pulang | Grup Contoh 09
-Aku berjalan pelan
-Malam melihat kapal lewat
-Kita berlari ke pantai, dia berjalan pelan?
-Dia menunggu di stasiun
-Aku mengayuh pelan
+Gundul-Gundul Pacul | Lagu daerah Jawa Tengah
+Gundul gundul pacul cul, gembelengan
+Nyunggi nyunggi wakul kul, gembelengan
+Wakul ngglimpang segane dadi sak latar
+Gundul gundul pacul cul
+Nyunggi nyunggi wakul kul
+Segane dadi sak latar
 
-Kota Tanpa Nama | Band Contoh 10
-Sahabat melukis langit sore
-Malam berlari ke pantai
-Sahabat mengayuh pelan, kakak berjalan pelan!
-Teman mencari arah pulang
-Malam menghitung bintang
+Lir-Ilir | Sunan Kalijaga
+Lir ilir lir ilir, tandure wis sumilir
+Tak ijo royo-royo
+Tak sengguh temanten anyar
+Cah angon cah angon, penekno blimbing kuwi
+Lunyu lunyu penekno
+Kanggo mbasuh dodotiro
+Mumpung padhang rembulane
+Mumpung jembar kalangane
 
-Bintang di Atap | Duo Contoh 11
-Kita menunggu kereta malam, kita menyapa pagi
-Aku menyeduh kopi hitam
-Sahabat menyeduh kopi hitam
-Bulan mencari arah pulang.
-Pagi tertawa tanpa suara
+Cublak-Cublak Suweng | Lagu daerah Jawa Tengah
+Cublak cublak suweng, suwenge ting gelenter
+Cublak cublak suweng
+Suwenge ting gelenter
+Mambu ketundhung gudel
+Pak empo lera-lere
+Sopo ngguyu ndhelikake
+Sir sir pong dele kopong
 
-Sepeda Tua | Duo Contoh 12
-Pagi menyapa pagi - aku berhenti sebentar
-Kakak menyimpan cerita
-Pagi menghitung bintang
-Ibu memeluk angin dingin
-Kopi berjalan pelan!
+Suwe Ora Jamu | Lagu daerah Jawa Tengah
+Suwe ora jamu, jamu godhong telo
+Suwe ora ketemu, ketemu pisan gawe gelo
+Jamu godhong telo
+Suwe ora ketemu
+Ketemu pisan gawe gelo
 
-Pagi yang Pelan | Trio Contoh 13
-Hujan menutup jendela
-Teman berhenti sebentar
-Dia melipat perahu kertas
-Dia mencari arah pulang, bulan mengayuh pelan
-Kita duduk di tangga.
+Jaranan | Lagu daerah Jawa Tengah
+Jaranan jaranan jarane jaran teji
+Sing numpak ndara Bei
+Sing ngiring para mantri
+Jeg jeg nong, jeg jeg gung
+Jrek jrek nong, jrek jrek gung
+Prok prok prok, gedebug jedher
 
-Tangga Belakang | Grup Contoh 14
-Jalan menyebut namamu
-Kakak menunggu di stasiun
-Bulan menutup jendela, jalan menyimpan cerita
-Aku duduk di tangga!
-Kamu menutup jendela - teman menyebut namamu
-Bapak menulis surat lama
+Padhang Bulan | Lagu daerah Jawa Tengah
+Yo prakanca dolanan ing njaba
+Padhang bulan padhange kaya rina
+Rembulane e sing ngawe-awe
+Ngelingake aja padha turu sore
 
-Kabar dari Pantai | Penyanyi Contoh 15
-Ibu pulang naik sepeda.
-Kita menyimpan cerita - kakak berjalan pelan?
-Kakak mencari arah pulang
-Sahabat datang membawa kabar
-Senja menyapa pagi, laut melihat kapal lewat!
-Angin menutup jendela.
+Menthok-Menthok | Lagu daerah Jawa Tengah
+Menthok menthok tak kandhani
+Mung lakumu angisin-isini
+Mbok ya aja ngetok ana kandhang wae
+Enak enak ngorok ora nyambut gawe
+Menthok menthok mung lakumu
 
-Jendela Terbuka | Duo Contoh 16
-Dia menjaga api kecil, hujan menyalakan lampu
-Malam menulis surat lama!
-Bapak menyalakan lampu
-Bapak melihat kapal lewat
-Dia berjalan pelan - senja pulang naik sepeda
-Pagi menunggu kereta malam
+Sluku-Sluku Bathok | Lagu daerah Jawa Tengah
+Sluku sluku bathok, bathoke ela elo
+Sluku sluku bathok
+Bathoke ela elo
+Si rama menyang solo
+Oleh olehe payung motha
+Mak jenthit lolo lobah
+Wong mati ora obah
+Yen urip goleka dhuwit
 
-Api Kecil | Grup Contoh 17
-Sahabat menari di bawah hujan
-Ibu bermain di halaman
-Kopi bermain di halaman
-Aku memeluk angin dingin
-Kopi berjalan pelan - laut duduk di tangga
-Dia menulis surat lama - aku berjalan pelan!
+Yamko Rambe Yamko | Lagu daerah Papua
+Hee yamko rambe yamko aronawa kombe
+Teemi nokibe kubano ko bombe ko
+Yuma no bungo awe ade
+Hongke hongke hongke riro
+Hongke jombe jombe riro
 
-Nada di Halaman | Band Contoh 18
-Kakak menyimpan cerita, lalu ibu menyapa pagi
-Malam menjaga api kecil
-Laut duduk di tangga
-Adik berlari ke pantai
-Kita menyanyi di teras, kamu menyalakan lampu
-Laut pulang naik sepeda?
+Apuse | Lagu daerah Papua
+Apuse kokon dao, yarabe soren doreri
+Apuse kokon dao
+Yarabe soren doreri
+Wuf lenso bani nema baki pase
+Arafabye aswarakwar
 
-Peron Sembilan | Grup Contoh 19
-Kopi menyalakan lampu, ibu berjalan pelan?
-Jalan menunggu kereta malam
-Jalan berhenti sebentar?
-Teman pulang naik sepeda, kita berjalan pelan
-Kamu pergi tanpa pamit!
-Adik menunggu di stasiun
+Anak Kambing Saya | Lagu daerah Nusa Tenggara Timur
+Mana dimana anak kambing saya
+Anak kambing tuan ada di pohon waru
+Mana dimana jantung hati saya
+Jantung hati tuan ada di kampung baru
+Caca marica he hei
+Caca marica ada di kampung baru
 
-Langit Sore | Trio Contoh 20
-Angin bermain di halaman
-Ibu melipat perahu kertas
-Jalan menyeduh kopi hitam!
-Kamu berhenti sebentar, adik menyebut namamu
-Angin pulang naik sepeda
+Potong Bebek Angsa | Lagu daerah Nusa Tenggara Timur
+Potong bebek angsa, masak di kuali
+Nona minta dansa, dansa empat kali
+Sorong ke kiri, sorong ke kanan
+Potong bebek angsa
+Nona minta dansa
+Dansa empat kali
 
-Cerita Kemarin | Penyanyi Contoh 21
-Adik duduk di tangga
-Ibu berlari ke pantai - kamu menyimpan cerita
-Jalan menari di bawah hujan
-Jalan menjaga api kecil
-Kopi menyanyi di teras, aku mengayuh pelan?
-Dia pulang naik sepeda
+Bolelebo | Lagu daerah Nusa Tenggara Timur
+Bolelebo ita nusa lelebo, malole simalole
+Malole simalole, ita nusa le malole
+Bolelebo ita nusa lelebo
+Ita nusa le malole
+Ie, ita nusa lelebo
 
-Arah Angin | Duo Contoh 22
-Angin berlari ke pantai?
-Adik pulang naik sepeda
-Pagi mencari arah pulang
-Pagi menari di bawah hujan.
-Pagi berhenti sebentar, senja duduk di tangga
+Burung Kakatua | Lagu daerah Maluku
+Burung kakatua, hinggap di jendela
+Nenek sudah tua, giginya tinggal dua
+Hinggap di jendela
+Nenek sudah tua
+Giginya tinggal dua
+Lesbum lesbum lesbum la la la
 
-Nama di Pasir | Duo Contoh 23
-Sahabat melihat kapal lewat
-Laut mengayuh pelan, adik tertawa tanpa suara
-Bulan duduk di tangga
-Sahabat melipat perahu kertas
-Jalan menunggu di stasiun.
-Aku menyanyi di teras, angin duduk di tangga
+Naik-Naik ke Puncak Gunung | Lagu daerah Maluku
+Naik naik ke puncak gunung
+Tinggi tinggi sekali
+Kiri kanan kulihat saja
+Banyak pohon cemara
+Kiri kanan kulihat saja, banyak pohon cemara
 
-Malam Sebelum Pergi | Band Contoh 24
-Hujan tertawa tanpa suara
-Teman menjaga api kecil, kota menyapa pagi
-Teman pulang naik sepeda
-Senja menyeduh kopi hitam.
-Kakak berlari ke pantai.
-Pagi mengayuh pelan, lalu dia mengayuh pelan!
+Sarinande | Lagu daerah Maluku
+Sarinande, putri Sarinande, mengapa tangis
+Aduhlah papa, asap api masuk di mata
+Sarinande, putri Sarinande
+Mengapa tangis matamu bengkak
+Aduh mama, aduhlah papa
+Asap api masuk di mata
 
-Teh Manis | Penyanyi Contoh 25
-Ibu menyalakan lampu, adik menjaga api kecil
-Dia menyimpan cerita
-Ibu mengayuh pelan, hujan membawa payung biru
-Adik menyimpan cerita
-Kota menunggu di stasiun
-Hujan menjaga api kecil
+Ayo Mama | Lagu daerah Maluku
+Ayam hitam telurnya putih
+Mencari makan di pinggir kali
+Sinyo hitam giginya putih
+Kalau tertawa manis sekali
+Ayo mama, jangan mama marah beta
+Dia cuma, dia cuma cium beta
 
-Radio Tetangga | Grup Contoh 26
-Kamu menunggu di stasiun
-Kopi menyapa pagi
-Aku berlari ke pantai
-Ibu berlari ke pantai, laut menyebut namamu
-Adik membawa payung biru
+Hela Rotan | Lagu daerah Maluku
+Hela hela rotane, rotane tifa jawa
+Hela hela rotane
+Rotane tifa jawa
+Hela rotan e, hela rotan e
 
-Kapal Lewat | Penyanyi Contoh 27
-Dia menulis surat lama
-Malam menyimpan cerita, kita menyebut namamu
-Bapak menyebut namamu
-Kakak mengayuh pelan
-Dia menutup jendela
+Sipatokaan | Lagu daerah Sulawesi Utara
+Sayang sayang si patokaan
+Matego tego gorokan sayang
+Sako mangemo tanah man jauh
+Mangemo milei leklako sayang
+Sako mangemo tanah man jauh, mangemo milei
 
-Layang-Layang | Penyanyi Contoh 28
-Ibu berhenti sebentar, aku berlari ke pantai?
-Malam menyapa pagi - malam menyalakan lampu
-Kamu duduk di tangga
-Adik memeluk angin dingin?
-Laut bernyanyi sendirian
-Ibu bernyanyi sendirian
+O Ina Ni Keke | Lagu daerah Sulawesi Utara
+O ina ni keke, mangewi sako
+Mangewang aki wenang, tumeles baleko
+Weane weane weane toyo
+Daimo siapa ko tare makiwe
+O ina ni keke, mangewi sako, mangewang
 
-Lorong Sunyi | Grup Contoh 29
-Hujan menyebut namamu
-Kamu berjalan pelan, senja menyapa pagi
-Teman berlari ke pantai
-Laut pergi tanpa pamit.
-Teman duduk di tangga, kita berjalan pelan
-Malam menyeduh kopi hitam
+Bungong Jeumpa | Lagu daerah Aceh
+Bungong jeumpa, bungong jeumpa meugah di Aceh
+Bungong teuleubeh, teuleubeh indah lagoina
+Puteh kuneng, meujampu mirah
+Bungong si ulah indah lagoina
+Lam sinar buleun, lam sinar buleun
 
-Matahari Kecil | Band Contoh 30
-Kopi menyalakan lampu, kamu berjalan pelan?
-Adik mencari arah pulang?
-Kamu berlari ke pantai, kamu mengayuh pelan
-Kakak menari di bawah hujan?
-Bapak pergi tanpa pamit
-Adik menyeduh kopi hitam
+Butet | Lagu daerah Sumatera Utara
+Butet dipangungsian do amangmu ale butet
+Da margurilla da mardarurat ale butet
+Butet, dipangungsian do amangmu
+I doge doge doge i da inang
+Ale butet, ale butet
 
-Rumah di Ujung Gang | Duo Contoh 31
-Jalan menyanyi di teras
-Pagi berlari ke pantai
-Kakak menyalakan lampu, adik menyimpan cerita
-Bulan menari di bawah hujan
-Kamu berlari ke pantai
+Sinanggar Tulo | Lagu daerah Sumatera Utara
+Sinanggar tulo tulo a tulo, sinanggar tulo
+Sinanggar tulo tulo a tulo
+Tung so boi do hape holong rohakki
+Tung so boi do hape
+Tu boru ni tulang
 
-Bangku Taman | Duo Contoh 32
-Dia menunggu di stasiun, senja berjalan pelan
-Bapak menyimpan cerita.
-Kopi menyimpan cerita
-Jalan menyanyi di teras, ibu menutup jendela
-Angin menari di bawah hujan?
-Teman pergi tanpa pamit
+Injit-Injit Semut | Lagu daerah Jambi
+Injit injit semut, siapa sakit naik di atas
+Injit injit semut
+Siapa sakit naik di atas
+Kalau pergi ke Surabaya
+Jangan lupa membeli pita
+Kalau adik sudah bekerja
+Jangan lupa membeli sepeda
 
-Kota Hujan | Grup Contoh 33
-Kakak menghitung bintang
-Pagi menyebut namamu
-Kota berhenti sebentar
-Dia menyapa pagi, lalu angin mengayuh pelan
-Senja menyebut namamu.
+Cing Cangkeling | Lagu daerah Jawa Barat
+Kleung dengdek buah kopi raranggeuyan
+Keun anu dewek ulah pati diheureuyan
+Cing cangkeling manuk cingkleung cindeten
+Plos ka kolong bapa satar buleneng
+Cing cangkeling
+Manuk cingkleung cindeten
+Bapa satar buleneng
 
-Jam Dinding | Trio Contoh 34
-Kopi duduk di tangga.
-Kota menyebut namamu, laut berlari ke pantai
-Jalan bermain di halaman!
-Kamu menari di bawah hujan
-Kopi membawa payung biru
+Tokecang | Lagu daerah Jawa Barat
+Tokecang tokecang bala gendir tosblong
+Angeun kacang angeun kacang sapependil kosong
+Aya listrik di masigit meuni caang katingalna
+Aya istri jangkung alit karangan dina pipina
+Tokecang tokecang
+Bala gendir tosblong
+Aya listrik di masigit
+Meuni caang katingalna
 
-Musim Mangga | Band Contoh 35
-Adik menyapa pagi
-Pagi melipat perahu kertas.
-Jalan menutup jendela, kopi menyimpan cerita
-Laut berlari ke pantai?
-Teman berjalan pelan, kopi menyimpan cerita
-Bapak berlari ke pantai
+Jali-Jali | Lagu daerah Betawi
+Ini dia si jali-jali
+Lagunya enak, lagunya enak merdu sekali
+Capek sedikit tidak perduli sayang
+Asalkan tuan, asalkan tuan senang di hati
+Palinglah enak si mangga udang
+Hei sayang disayang
 
-Gerbang Sekolah | Trio Contoh 36
-Hujan menunggu di stasiun
-Dia menyanyi di teras, kakak menutup jendela
-Senja menari di bawah hujan!
-Senja menutup jendela
-Kota menyanyi di teras
+Kicir-Kicir | Lagu daerah Betawi
+Kicir kicir ini lagunya
+Lagu lama ya tuan dari Jakarta
+Saya menyanyi ya tuan memang sengaja
+Untuk menghibur menghibur hati nan duka
+Burung dara burung merpati
+Terbang cepat ya tuan tiada tara
+Bilalah kita ya tuan suka menyanyi
+Badanlah sehat ya tuan hati gembira
 
-Sebuah Lagu Pendek | Duo Contoh 37
-Teman menyimpan cerita - pagi berjalan pelan!
-Malam menyalakan lampu
-Kita melihat kapal lewat
-Kopi menunggu di stasiun?
-Ibu menyapa pagi
+Nina Bobo | Lagu tradisional
+Nina bobo, oh nina bobo
+Kalau tidak bobo digigit nyamuk
+Nina bobo oh nina bobo, kalau tidak bobo
+Kalau tidak bobo
+Bobolah bobo, anakku sayang
 
-Pelabuhan Lama | Band Contoh 38
-Sahabat bermain di halaman.
-Ibu menyalakan lampu
-Dia mencari arah pulang
-Laut menjaga api kecil, jalan menutup jendela
-Pagi memeluk angin dingin, aku mengayuh pelan
-Aku menutup jendela
+Pok Ame-Ame | Lagu tradisional
+Pok ame ame, belalang kupu-kupu
+Siang makan nasi, kalau malam minum susu
+Belalang kupu-kupu
+Siang makan nasi
+Kalau malam minum susu
 
-Tali Sepatu | Band Contoh 39
-Kakak memeluk angin dingin
-Laut menyanyi di teras
-Kakak menutup jendela
-Aku menjaga api kecil
-Kota menyapa pagi, lalu kopi menutup jendela!
+Peribahasa Hewan | Tradisional
+Ada udang di balik batu
+Bagai pungguk merindukan bulan
+Gajah mati meninggalkan gading
+Harimau mati meninggalkan belang
+Seperti katak dalam tempurung
+Bagai anjing dengan kucing
+Bagai air di daun talas
+Sepandai-pandai tupai melompat
 
-Dermaga Tujuh | Duo Contoh 40
-Aku menyimpan cerita
-Teman melukis langit sore?
-Adik mengayuh pelan, kita menghitung bintang
-Aku pergi tanpa pamit - kopi menyebut namamu
-Aku menghitung bintang
-Ibu duduk di tangga
+Peribahasa Air | Tradisional
+Air beriak tanda tak dalam
+Air tenang menghanyutkan
+Air susu dibalas air tuba
+Sedia payung sebelum hujan
+Air cucuran atap jatuhnya ke pelimbahan juga
+Nila setitik rusak susu sebelanga
+Bagai air dengan minyak
 
-Sinyal Lemah | Duo Contoh 41
-Adik menyalakan lampu, hujan menutup jendela
-Teman datang membawa kabar
-Kita menyapa pagi, angin menyapa pagi?
-Kita mencari arah pulang
-Teman memeluk angin dingin
-Malam menari di bawah hujan
+Peribahasa Kerja | Tradisional
+Berakit-rakit ke hulu
+Berenang-renang ke tepian
+Bersakit-sakit dahulu
+Bersenang-senang kemudian
+Sedikit demi sedikit, lama-lama menjadi bukit
+Rajin pangkal pandai, hemat pangkal kaya
+Tak ada rotan, akar pun jadi
+Sambil menyelam minum air
 
-Bulan di Genting | Band Contoh 42
-Ibu menyebut namamu!
-Hujan menunggu di stasiun - pagi menyapa pagi
-Dia menyebut namamu
-Malam berhenti sebentar!
-Jalan duduk di tangga - kota mengayuh pelan?
-Pagi bernyanyi sendirian!
+Peribahasa Hidup | Tradisional
+Di mana bumi dipijak
+Di situ langit dijunjung
+Tong kosong nyaring bunyinya
+Malu bertanya sesat di jalan
+Buah jatuh tak jauh dari pohonnya
+Besar pasak daripada tiang
+Bersatu kita teguh, bercerai kita runtuh
+Berat sama dipikul, ringan sama dijinjing
 
-Pasar Pagi | Duo Contoh 43
-Jalan berlari ke pantai!
-Hujan menutup jendela, hujan menyalakan lampu
-Aku menunggu kereta malam!
-Kamu tertawa tanpa suara
-Kita membawa payung biru
+Peribahasa Pergaulan | Tradisional
+Ada gula ada semut
+Tak kenal maka tak sayang
+Habis manis sepah dibuang
+Lempar batu sembunyi tangan
+Dikasih hati minta jantung
+Bagai makan buah simalakama
+Mulutmu harimaumu, menerkam kepalamu
+Sekali merengkuh dayung, dua tiga pulau
 
-Peta Kertas | Duo Contoh 44
-Kota datang membawa kabar
-Senja berlari ke pantai
-Laut menghitung bintang
-Sahabat menyebut namamu, angin menyapa pagi
-Jalan berjalan pelan.
-Angin berjalan pelan, aku berhenti sebentar!
+Pantun Budi | Tradisional
+Pisang emas dibawa berlayar
+Masak sebiji di atas peti
+Hutang emas boleh dibayar
+Hutang budi dibawa mati
+Pisang emas dibawa berlayar, masak sebiji
+Hutang emas boleh dibayar, hutang budi
 
-Titik Temu | Penyanyi Contoh 45
-Kakak datang membawa kabar
-Kota mencari arah pulang
-Pagi menjaga api kecil
-Malam melipat perahu kertas.
-Adik menyapa pagi, kota menyeduh kopi hitam
+Pantun Belajar | Tradisional
+Buah cempedak di luar pagar
+Ambil galah tolong jolokkan
+Saya budak baru belajar
+Kalau salah tolong tunjukkan
+Buah cempedak di luar pagar, ambil galah
+Saya budak baru belajar, kalau salah
 
-Lagu Pengantar Tidur | Trio Contoh 46
-Angin duduk di tangga - malam mengayuh pelan?
-Kopi menyalakan lampu
-Malam memeluk angin dingin
-Aku melukis langit sore?
-Kakak bermain di halaman?
+Pantun Cinta | Tradisional
+Dari mana datangnya lintah
+Dari sawah turun ke kali
+Dari mana datangnya cinta
+Dari mata turun ke hati
+Dari mana datangnya cinta, dari mata
+Jalan-jalan ke kota Paris
+Banyak rumah berbaris-baris
+Biar mati di ujung keris, asal dapat dinda
