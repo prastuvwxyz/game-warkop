@@ -5,12 +5,12 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { DIR, sleep, makeChecker, startServer, Client } from './test-lib.mjs';
+import { SRV, SHARED, sleep, makeChecker, startServer, Client } from './test-lib.mjs';
 
 const PORT = Number(process.argv[2] || 3201), KOPORT = PORT + 1;
 if ([3100, 3200].includes(PORT) || [3100, 3200].includes(KOPORT)) { console.error('refusing to use 3100/3200'); process.exit(2); }
 const { check, summary } = makeChecker('test-proto');
-const WORDS = createRequire(import.meta.url)('./words.js');
+const WORDS = createRequire(import.meta.url)('../server/words.js');
 
 const main = startServer(PORT, { TK_COUNTDOWN_MS: 250, TK_RESULT_MS: 50, TK_GRACE_MS: 300, TK_WORD_CAP_MS: 3000, TK_WALKOVER_MS: 1500, TK_HP: 10000 }, `server-proto-main.log`);
 const kos = startServer(KOPORT, { TK_COUNTDOWN_MS: 100, TK_RESULT_MS: 50, TK_GRACE_MS: 300, TK_WORD_CAP_MS: 3000, TK_WALKOVER_MS: 1500 }, `server-proto-ko.log`);
@@ -355,16 +355,17 @@ async function playToKo(A, B, firstWord) {
 // the LAST element (the first one popped) is "sepeda" / "Kopi-Susu!". Nothing else in server.js is touched.
 {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tinju-fixed-'));
-  let src = fs.readFileSync(path.join(DIR, 'server.js'), 'utf8');
+  const tsrv = path.join(tmp, 'server'); fs.mkdirSync(tsrv); fs.symlinkSync(fs.realpathSync(SHARED), path.join(tmp, 'shared'));
+  let src = fs.readFileSync(path.join(SRV, 'server.js'), 'utf8');
   const re = /function shuffle\(a\) \{[^\n]*\}\n/;
   const patched = re.test(src);
   src = src.replace(re, 'function shuffle(a) { return a; }\n');
-  fs.writeFileSync(path.join(tmp, 'server.js'), src);
-  fs.mkdirSync(path.join(tmp, 'public')); fs.writeFileSync(path.join(tmp, 'public', 'index.html'), 'x');
+  fs.writeFileSync(path.join(tsrv, 'server.js'), src);
+  fs.writeFileSync(path.join(tmp, 'index.html'), 'x');
   const normal = WORDS.normal.filter(w => w !== 'sepeda').concat(['sepeda']);
   const ulti = WORDS.ulti.filter(w => w !== 'Kopi-Susu!').concat(['Kopi-Susu!']);
-  fs.writeFileSync(path.join(tmp, 'words.js'), 'module.exports=' + JSON.stringify({ normal, ulti }) + ';');
-  const fx = startServer(PORT + 2, { TK_COUNTDOWN_MS: 100, TK_RESULT_MS: 50, TK_GRACE_MS: 300, TK_WORD_CAP_MS: 3000, TK_HP: 10000, TK_ULTI_MIN: 4, TK_ULTI_MAX: 4 }, 'server-proto-fixed.log', tmp);
+  fs.writeFileSync(path.join(tsrv, 'words.js'), 'module.exports=' + JSON.stringify({ normal, ulti }) + ';');
+  const fx = startServer(PORT + 2, { TK_COUNTDOWN_MS: 100, TK_RESULT_MS: 50, TK_GRACE_MS: 300, TK_WORD_CAP_MS: 3000, TK_HP: 10000, TK_ULTI_MIN: 4, TK_ULTI_MAX: 4 }, 'server-proto-fixed.log', tsrv);
   await fx.ready;
   check('fixed-bag copy: only shuffle() was replaced (identity)', patched);
   {
@@ -390,10 +391,11 @@ async function playToKo(A, B, firstWord) {
 // ---------- S13: boot validation ----------
 {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tinju-boot-'));
-  fs.copyFileSync(path.join(DIR, 'server.js'), path.join(tmp, 'server.js'));
-  fs.mkdirSync(path.join(tmp, 'public')); fs.writeFileSync(path.join(tmp, 'public', 'index.html'), 'x');
-  fs.writeFileSync(path.join(tmp, 'words.js'), "module.exports={normal:['abc','Halo'],ulti:['nopunct']};");
-  const r = spawnSync(process.execPath, [path.join(tmp, 'server.js')], { env: { ...process.env, PORT: String(KOPORT + 5) }, encoding: 'utf8', timeout: 5000 });
+  const tsrv = path.join(tmp, 'server'); fs.mkdirSync(tsrv); fs.symlinkSync(fs.realpathSync(SHARED), path.join(tmp, 'shared'));
+  fs.copyFileSync(path.join(SRV, 'server.js'), path.join(tsrv, 'server.js'));
+  fs.writeFileSync(path.join(tmp, 'index.html'), 'x');
+  fs.writeFileSync(path.join(tsrv, 'words.js'), "module.exports={normal:['abc','Halo'],ulti:['nopunct']};");
+  const r = spawnSync(process.execPath, [path.join(tsrv, 'server.js')], { env: { ...process.env, PORT: String(KOPORT + 5) }, encoding: 'utf8', timeout: 5000 });
   check('boot with invalid words.js exits 1 and names the failed rules', r.status === 1 && /normal: need >= 400/.test(r.stderr) && /ulti: need 8-14/.test(r.stderr), `status=${r.status} ${r.stderr.slice(0, 120)}`);
   fs.rmSync(tmp, { recursive: true, force: true });
 }

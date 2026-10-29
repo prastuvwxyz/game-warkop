@@ -96,7 +96,9 @@ await A.waitForFunction(() => window.__bc.state.players.length === 1);
 check('B leave → home; A sees 1 player', true);
 check('B localStorage session cleared', (await B.evaluate(() => localStorage.getItem('bc_sess'))) === null);
 // join nonexistent → toast
-await B.fill('#joinCode', 'ZZZZZ'); await B.click('#btnJoin'); await B.waitForSelector('.toast.show'); check('join bad code → toast error', /tidak ditemukan/.test(await B.textContent('#toast')));
+// wait for this toast's text: the music hint toast (2.2 s, shown once the game started) may still be up
+await B.fill('#joinCode', 'ZZZZZ'); await B.click('#btnJoin');
+check('join bad code → toast error', await B.waitForFunction(() => /tidak ditemukan/.test(document.querySelector('.toast.show')?.textContent || ''), null, { timeout: 5000 }).then(() => true, () => false));
 // viewport fit 320
 const C = await (await browser.newContext({ viewport: { width: 320, height: 568 } })).newPage(); await C.goto(URL); await sleep(200);
 check('320px: no horizontal overflow', await C.evaluate(() => document.documentElement.scrollWidth <= 320));

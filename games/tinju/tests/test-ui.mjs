@@ -2,7 +2,7 @@
 // Two browsers in one room play a full match to KO, for: desktop, iPhone 12, a 320 px phone, and a reduced-motion desktop.
 // Spawns its own server (HP 350, fast timings) on <port>. Screenshots are written next to this file (shot-*.png).
 import path from 'node:path';
-import { DIR, sleep, makeChecker, startServer, launchBrowser, devices } from './test-lib.mjs';
+import { EVIDENCE, sleep, makeChecker, startServer, launchBrowser, devices } from './test-lib.mjs';
 
 const PORT = Number(process.argv[2] || 3201);
 if ([3100, 3200].includes(PORT)) { console.error('refusing to use 3100/3200'); process.exit(2); }
@@ -49,7 +49,7 @@ async function overflow(p) {
     return { vw, sw, bad }; });
 }
 const animsSince = (p, i) => p.evaluate(n => __tinju.anims.slice(n).map(a => a.l + ':' + a.r), i);
-async function shot(p, name, prof) { await p.screenshot({ path: path.join(DIR, `shot-${name}-${prof}.png`) }); }
+async function shot(p, name, prof) { await p.screenshot({ path: path.join(EVIDENCE, `shot-${name}-${prof}.png`) }); }
 
 async function runProfile(prof, label, ctxOpts, o = {}) {
   const T = s => `[${label}] ${s}`;

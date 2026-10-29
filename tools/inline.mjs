@@ -13,8 +13,9 @@ let html = read('index.html');
 html = html.replace(/<link rel="stylesheet" href="([^"]+)">\n/g, (_, href) => '<style>\n' + read(href) + '</style>\n');
 const scripts = [...html.matchAll(/<script src="([^"]+)"><\/script>\n/g)];
 if (scripts.length) {
-  const bodies = scripts.map(([, src]) => read(src)).map((s) => (s.startsWith(US) ? s.slice(US.length) : s));
+  // the first file keeps its 'use strict' line (if any); the files after it drop theirs
+  const bodies = scripts.map(([, src]) => read(src)).map((s, i) => (i > 0 && s.startsWith(US) ? s.slice(US.length) : s));
   const first = scripts[0].index, last = scripts.at(-1).index + scripts.at(-1)[0].length;
-  html = html.slice(0, first) + '<script>\n' + US + bodies.join('') + '</script>\n' + html.slice(last);
+  html = html.slice(0, first) + '<script>\n' + bodies.join('') + '</script>\n' + html.slice(last);
 }
 process.stdout.write(html);

@@ -1,11 +1,11 @@
 'use strict';
 // Tinju Kata — 1v1 real-time typing-boxing server. Node >= 20, zero dependencies.
-// HTTP: GET <BASE>/ -> public/index.html, GET <BASE>/health -> JSON.
+// HTTP: GET <BASE>/ -> ../index.html + ../src/*, GET <BASE>/health -> JSON.
 // WS:   <BASE>/ws (RFC 6455, text frames only, JSON messages).
 // Round engine, protocol and damage function follow tinju-rfc.md (Jiwoo, 2026-10-29).
-const http = require('http');
 const crypto = require('crypto');
-const fs = require('fs');
+const { send, upgrade } = require('../shared/server/ws.js');
+const { createHttpServer } = require('../shared/server/static.js');
 const path = require('path');
 const WORDS = require('./words.js');
 
@@ -14,7 +14,6 @@ const HOST = process.env.HOST || '127.0.0.1';
 const BASE = (process.env.BASE || '/tinju').replace(/\/$/, '');
 const MAX_ROOMS = 500, MAX_PLAYERS = 2, MIN_PLAYERS = 2;
 const ROOM_IDLE_MS = 2 * 3600e3, ROOM_ALL_OFFLINE_MS = 10 * 60e3, LOBBY_OFFLINE_GRACE_MS = 60e3;
-const MAX_FRAME = 4096, MSG_RATE = 20; // msgs per second per socket
 
 // All tuning constants live here. Each may be overridden by env TK_<KEY> (used by the tests).
 const CFG_DEFAULTS = { HP: 100, COUNTDOWN_MS: 2400, GRACE_MS: 1500, WORD_CAP_MS: 20000, RESULT_MS: 1400, WALKOVER_MS: 20000,
@@ -26,7 +25,7 @@ for (const k of Object.keys(CFG_DEFAULTS)) {
   CFG[k] = (e !== undefined && e !== '' && Number.isFinite(Number(e))) ? Number(e) : CFG_DEFAULTS[k];
 }
 
-const INDEX = path.join(__dirname, 'public', 'index.html');
+const ROOT = path.join(__dirname, '..'); // games/<slug>/ — index.html, src/, shared/
 const CODE_ALPHA = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const rooms = new Map();
 const log = (...a) => console.log(new Date().toISOString(), ...a);
@@ -357,88 +356,8 @@ setInterval(() => {
   }
 }, 60e3).unref();
 
-// ---------- minimal WebSocket (RFC 6455) ----------
-function send(ws, obj) {
-  if (ws.destroyed || !ws.writable) return;
-  const payload = Buffer.from(JSON.stringify(obj));
-  let header;
-  if (payload.length < 126) header = Buffer.from([0x81, payload.length]);
-  else if (payload.length < 65536) { header = Buffer.alloc(4); header[0] = 0x81; header[1] = 126; header.writeUInt16BE(payload.length, 2); }
-  else { header = Buffer.alloc(10); header[0] = 0x81; header[1] = 127; header.writeBigUInt64BE(BigInt(payload.length), 2); }
-  ws.write(Buffer.concat([header, payload]));
-}
-function sendClose(ws, code = 1000) { try { const b = Buffer.alloc(4); b[0] = 0x88; b[1] = 2; b.writeUInt16BE(code, 2); ws.write(b); } catch (e) {} ws.end(); }
-function attachWs(ws) {
-  ws.ctx = { room: null, player: null };
-  let buf = Buffer.alloc(0), sockAlive = true, rate = 0;
-  const rateTimer = setInterval(() => { rate = 0; }, 1000);
-  const hb = setInterval(() => {
-    if (!sockAlive) { ws.destroy(); return; }
-    sockAlive = false; try { ws.write(Buffer.from([0x89, 0])); } catch (e) {}
-  }, 30000);
-  ws.on('data', chunk => {
-    buf = Buffer.concat([buf, chunk]);
-    if (buf.length > MAX_FRAME * 4) { sendClose(ws, 1009); return; }
-    for (;;) {
-      if (buf.length < 2) return;
-      const fin = (buf[0] & 0x80) !== 0, op = buf[0] & 0x0f, masked = (buf[1] & 0x80) !== 0;
-      let len = buf[1] & 0x7f, off = 2;
-      if (len === 126) { if (buf.length < 4) return; len = buf.readUInt16BE(2); off = 4; }
-      else if (len === 127) { if (buf.length < 10) return; const big = buf.readBigUInt64BE(2); if (big > BigInt(MAX_FRAME)) { sendClose(ws, 1009); return; } len = Number(big); off = 10; }
-      if (len > MAX_FRAME) { sendClose(ws, 1009); return; }
-      if (!masked) { sendClose(ws, 1002); return; }
-      if (buf.length < off + 4 + len) return;
-      const mask = buf.subarray(off, off + 4); const data = Buffer.from(buf.subarray(off + 4, off + 4 + len));
-      for (let i = 0; i < len; i++) data[i] ^= mask[i & 3];
-      buf = buf.subarray(off + 4 + len);
-      sockAlive = true;
-      if (!fin) { sendClose(ws, 1003); return; } // fragmentation not supported
-      if (op === 0x8) { sendClose(ws, 1000); return; }
-      if (op === 0x9) { const pong = Buffer.concat([Buffer.from([0x8a, data.length]), data]); ws.write(pong); continue; }
-      if (op === 0xa) continue;
-      if (op !== 0x1) { sendClose(ws, 1003); return; }
-      if (++rate > MSG_RATE) { sendClose(ws, 1008); return; }
-      let msg; try { msg = JSON.parse(data.toString('utf8')); } catch (e) { fail(ws, 'JSON tidak valid'); continue; }
-      try { handle(ws, msg); } catch (e) { log('handle error', e); fail(ws, 'Kesalahan server'); }
-    }
-  });
-  const cleanup = () => { clearInterval(hb); clearInterval(rateTimer); onDisconnect(ws); };
-  ws.on('close', cleanup); ws.on('error', cleanup); ws.on('end', () => ws.end());
-}
-
-// ---------- HTTP ----------
-const server = http.createServer((req, res) => {
-  const url = new URL(req.url, 'http://x');
-  let p = url.pathname;
-  if (p === BASE) { res.writeHead(301, { Location: BASE + '/' + url.search }); return res.end(); }
-  if (!p.startsWith(BASE + '/')) { res.writeHead(404); return res.end('not found'); }
-  p = p.slice(BASE.length);
-  if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
-  if (p === '/health') {
-    const players = [...rooms.values()].reduce((n, r) => n + r.players.size, 0);
-    res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
-    return res.end(JSON.stringify({ ok: true, rooms: rooms.size, players, uptime: Math.round(process.uptime()) }));
-  }
-  if (p === '/' || p === '/index.html') {
-    fs.readFile(INDEX, (err, data) => {
-      if (err) { res.writeHead(500); return res.end('index missing'); }
-      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache',
-        'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer' });
-      res.end(req.method === 'HEAD' ? undefined : data);
-    });
-    return;
-  }
-  res.writeHead(404); res.end('not found');
-});
-server.on('upgrade', (req, socket, head) => {
-  const url = new URL(req.url, 'http://x');
-  const key = req.headers['sec-websocket-key'];
-  if (url.pathname !== BASE + '/ws' || !key || String(req.headers.upgrade).toLowerCase() !== 'websocket') { socket.write('HTTP/1.1 400 Bad Request\r\n\r\n'); return socket.destroy(); }
-  const accept = crypto.createHash('sha1').update(key + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest('base64');
-  socket.write('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ' + accept + '\r\n\r\n');
-  socket.setNoDelay(true); socket.setTimeout(0);
-  attachWs(socket);
-  if (head && head.length) socket.emit('data', head);
-});
+// ---------- HTTP + WebSocket (shared/server) ----------
+const server = createHttpServer({ base: BASE, root: ROOT, health: () => ({ rooms: rooms.size, players: [...rooms.values()].reduce((n, r) => n + r.players.size, 0) }) });
+server.on('upgrade', (req, socket, head) => upgrade(req, socket, head, BASE + '/ws', { handle, fail, onDisconnect, log }));
 server.listen(PORT, HOST, () => log('tinju listening', HOST + ':' + PORT, 'base', BASE, 'hp', CFG.HP));
 process.on('SIGTERM', () => { log('SIGTERM'); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000).unref(); });
