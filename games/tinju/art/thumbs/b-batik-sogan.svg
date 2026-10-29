@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 640" width="360" height="640" font-family="Georgia,'Times New Roman',serif">
+<!-- Batik sogan: #f3e6cc #e2c9a0 #3b2414 #8a4b22 #c9a227 -->
+<defs>
+<pattern id="p" width="36" height="36" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="36" height="36" fill="#f3e6cc"/><path d="M0 18Q9 0 18 18T36 18" fill="none" stroke="#e2c9a0" stroke-width="7"/><path d="M0 36Q9 18 18 36T36 36" fill="none" stroke="#e2c9a0" stroke-width="3"/></pattern>
+<pattern id="k" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#8a4b22"/><circle cx="7" cy="7" r="3" fill="#c9a227"/><path d="M0 0l14 14M14 0L0 14" stroke="#3b2414" stroke-width="1"/></pattern>
+</defs>
+<rect width="360" height="640" fill="url(#p)"/>
+<!-- border -->
+<rect x="8" y="8" width="344" height="624" fill="none" stroke="#3b2414" stroke-width="4"/><rect x="15" y="15" width="330" height="610" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+<!-- title -->
+<path d="M50 40H310V104Q180 128 50 104Z" fill="#3b2414"/><path d="M58 48H302V98Q180 120 58 98Z" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+<text x="180" y="94" text-anchor="middle" font-size="46" font-weight="700" fill="#f3e6cc" font-style="italic">Tinju Kata</text>
+<!-- HP plaques -->
+<g><rect x="30" y="150" width="130" height="22" rx="11" fill="#3b2414"/><rect x="34" y="154" width="96" height="14" rx="7" fill="#c9a227"/>
+<rect x="200" y="150" width="130" height="22" rx="11" fill="#3b2414"/><rect x="204" y="154" width="40" height="14" rx="7" fill="#c9a227"/></g>
+<g font-size="12" fill="#3b2414" font-weight="700"><text x="32" y="190">Dewi</text><text x="328" y="190" text-anchor="end">Bima</text></g>
+<!-- parang ropes -->
+<g stroke="#8a4b22" stroke-width="9" stroke-linecap="round"><path d="M20 250H340"/><path d="M20 330H340"/></g>
+<g stroke="#c9a227" stroke-width="2"><path d="M20 250H340M20 330H340" stroke-dasharray="3 10"/></g>
+<g stroke="#3b2414" stroke-width="3" fill="none"><path d="M60 235l-10 30M110 235l-10 30M160 235l-10 30M210 235l-10 30M260 235l-10 30M310 235l-10 30"/><path d="M60 315l-10 30M110 315l-10 30M160 315l-10 30M210 315l-10 30M260 315l-10 30M310 315l-10 30"/></g>
+<!-- floor -->
+<rect x="20" y="440" width="320" height="26" fill="#3b2414"/><path d="M20 440H340" stroke="#c9a227" stroke-width="3"/>
+<!-- boxer left flat -->
+<g fill="#8a4b22" stroke="#3b2414" stroke-width="3" stroke-linejoin="round">
+<ellipse cx="112" cy="260" rx="26" ry="28"/><path d="M92 288H134L142 370H86Z"/>
+<path d="M130 300L204 300L204 320L132 322Z"/><path d="M92 300L74 340L90 352L104 322Z"/>
+<path d="M86 370H142L150 440H122L114 398L106 440H78Z"/>
+</g>
+<path d="M86 370H142L146 396H84Z" fill="url(#k)" stroke="#3b2414" stroke-width="3"/>
+<path d="M100 238Q112 226 126 238L124 246H100Z" fill="#3b2414"/>
+<circle cx="224" cy="310" r="22" fill="#c9a227" stroke="#3b2414" stroke-width="3"/><path d="M214 310Q224 296 234 310Q224 324 214 310Z" fill="#3b2414"/>
+<!-- boxer right flat, hit -->
+<g fill="#8a4b22" stroke="#3b2414" stroke-width="3" stroke-linejoin="round" transform="translate(14 0)">
+<ellipse cx="248" cy="268" rx="26" ry="28"/><path d="M234 296H276L280 372H228Z"/><path d="M276 310L304 340L292 354L268 330Z"/><path d="M234 308L214 336L228 346L246 326Z"/>
+<path d="M228 372H280L288 440H260L254 400L246 440H220Z"/></g>
+<path d="M242 372H294L296 398H240Z" fill="url(#k)" stroke="#3b2414" stroke-width="3"/>
+<path d="M236 248Q248 232 266 244L262 252H238Z" fill="#3b2414"/>
+<circle cx="214" cy="340" r="14" fill="#c9a227" stroke="#3b2414" stroke-width="3"/>
+<!-- impact: kawung ring -->
+<g fill="none" stroke="#c9a227" stroke-width="4"><circle cx="240" cy="300" r="34"/><circle cx="240" cy="300" r="46" stroke="#3b2414" stroke-width="2" stroke-dasharray="4 6"/></g>
+<g fill="#c9a227" stroke="#3b2414" stroke-width="2"><circle cx="240" cy="258" r="5"/><circle cx="240" cy="342" r="5"/><circle cx="198" cy="300" r="5"/><circle cx="282" cy="300" r="5"/></g>
+<!-- word tiles -->
+<g stroke="#3b2414" stroke-width="3"><rect x="36" y="500" width="42" height="56" fill="#3b2414"/><rect x="82" y="500" width="42" height="56" fill="#3b2414"/><rect x="128" y="500" width="42" height="56" fill="#3b2414"/><rect x="174" y="500" width="42" height="56" fill="#3b2414"/><rect x="220" y="500" width="42" height="56" fill="#e2c9a0"/><rect x="266" y="500" width="42" height="56" fill="#e2c9a0"/></g>
+<g font-size="36" font-weight="700" text-anchor="middle"><g fill="#c9a227"><text x="57" y="540">s</text><text x="103" y="540">e</text><text x="149" y="540">p</text><text x="195" y="540">e</text></g><g fill="#3b2414"><text x="241" y="540">d</text><text x="287" y="540">a</text></g></g>
+<text x="180" y="600" text-anchor="middle" font-size="14" font-style="italic" fill="#3b2414">ketik cepat, pukulan mendarat</text>
+</svg>
