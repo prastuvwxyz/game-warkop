@@ -40,6 +40,21 @@ whole ring recognises the song.
   and ≥ 5 chars/s), combo ×1.25 (one round after 3 wins in a row — "win" = you hit someone), ULTI ×2.5, `CAP 60`.
   `BASE_PER_CHAR` starts at **1** (lines are 15–40 chars → base 15–40); Wasawho tunes it so a 2-player match
   lasts 40–60 s and a 10-player match 2–4 min, and records the number in `CHANGELOG.md`.
+- **The slower you finish, the harder you are hit** (added 2026-10-30 00:40, default — asked Pras): each link's
+  damage is multiplied by the victim's rank weight `k / (n − 1)` — `k` = the victim's finishing rank counted from 1
+  (the second finisher is 1), `n` = entrants of the round. The last finisher takes the full hit, the second finisher
+  takes `1/(n−1)` of it; with 2 players the weight is 1, so 1.0 is untouched. Why: in pure domino every player but
+  the first takes a same-sized hit each round, so the whole pack reaches 0 HP together (Jiwoo's and A-na's bot
+  models: ≥ 5 KOs in one round in 65 % of 10-player matches at base 1; Stella's rerun of A-na's model with this
+  weight: 0.6 %, match median 142 s at base 1 / 186 s at base 0.7, 2-player unchanged at 42 s —
+  `~/.nalar/workspaces/stella/tinju2-sim/sim-rank.mjs`). Config `RANK_WEIGHT=1` (0 = pure domino, kept for
+  playtests). `BASE_PER_CHAR` starts at **0.7** with this weight on.
+- **Ties** (confirming Jiwoo's DESIGN.md): players with equal `elapsed` and `typos` share a rank; no hit inside the
+  group; the group is hit by the rank above and hits the rank below through its lowest seat. A player who hits
+  nobody in a round (tied, last, or unfinished) has their streak reset.
+- **ULTI lines are the long ones.** Every bank line is 15–45 chars; normal rounds draw from lines < 30 chars,
+  ULTI rounds from lines ≥ 30 chars, verbatim. So from round 4 a normal line and an ULTI line differ in length and
+  in ×2.5, not only in the shake.
 - **Received damage per round is capped at 60** — nobody is KO'd from 100 in a single round. (Only relevant if a
   future mode lets one player be hit twice in a round; in pure domino everyone takes at most one hit.)
 - **2 players is 1.0 again** — 1st hits 2nd with their own `d`. This is a claim to prove, not a fact: A-na re-runs the
@@ -76,7 +91,7 @@ go request, and a switch changes only `src/theme.css` tokens + the SVG set).
   lyric line at once, domino resolution per the Rules, KO → spectator with emoji, last standing wins, rematch.
 - Lyric bank `server/lyrics.txt` (plain text: one song per block, `title | artist` then its lines) loaded at boot
   and on `SIGHUP` — new songs without a code release. Validated at boot like `words.js` is today (line length
-  15–45 chars, ≥ 40 songs, ≥ 200 lines).
+  15–45 chars ASCII, ≥ 40 songs, ≥ 150 lines < 30 chars, ≥ 40 lines ≥ 30 chars).
 - The look from the card: SVG astronaut boxers (`assets/img/`, one set per skin × 7 poses: idle, jab, uppercut,
   block, ouch, ko, win), the small-avatar row (up to 9 others + HP bars) above the ring, the lyric box, lobby and
   result screens — all from `src/theme.css` tokens.
@@ -112,10 +127,12 @@ not sold; the bank ships.
   tried on a real iPhone and a real Android before go (1.0's M-01–M-05 were never run); the input must set
   `autocapitalize=off autocorrect=off spellcheck=false inputmode=text` and the strict-typo rule must survive
   a predictive keyboard inserting a trailing space.
-- **Everyone KOs together** — in pure domino every player but the first takes a hit each round; with base ≈ 1/char
-  the middle of the pack may hit 0 within 3–5 rounds at once instead of one by one. Wasawho simulates 10 bots at
-  realistic speeds (3–8 chars/s) before drawing anything; if KOs cluster, tune base down or flip `EXTRA_LAST_HIT`
-  on and report which.
+- **Everyone KOs together** — confirmed in two bot models for pure domino (see Rules); the rank weight is the
+  answer on paper only. Wasawho runs the 10-bot simulation (3–8 chars/s, N = 2/5/10) on the real `resolveRound()`
+  with `RANK_WEIGHT=1` before drawing anything and reports A-na's K-1…K-5 numbers; if K-1 still fails, stop and
+  report, do not tune blindly.
+- **One AFK player holds the ring for 20 s a round** (Jiwoo) — accepted for 2.0.0; the playtest logs per-round
+  duration and 2.0.1 decides on an early cap.
 - **10 animated SVG boxers on an iPhone 12** — the ring shows only two big ones; the avatar row is static images.
   Measured with the look-at-it run before all skins are drawn.
 - **Recognition over difficulty** — a line nobody knows is just a typing test. The bank is the game; a bad bank
