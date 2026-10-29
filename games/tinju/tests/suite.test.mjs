@@ -23,9 +23,12 @@ async function check(t, script) {
   assert.equal(Number(m[2]), 0, out.split('\n').filter((l) => l.startsWith('FAIL')).join('\n'));
 }
 
-test('protocol', { timeout: 300_000 }, (t) => check(t, 'test-proto.mjs'));
+test('rules (resolveRound, O-01…O-33, D-1…D-9, rank weight)', { timeout: 120_000 }, (t) => check(t, 'test-rules.mjs'));
+test('protocol', { timeout: 500_000 }, (t) => check(t, 'test-proto.mjs'));
 
 let hasPlaywright = true;
 try { await import('playwright'); } catch { hasPlaywright = false; }
-test('browser: ui', { skip: !hasPlaywright && 'playwright not installed', timeout: 600_000 }, (t) => check(t, 'test-ui.mjs'));
-test('browser: audio', { skip: !hasPlaywright && 'playwright not installed', timeout: 600_000 }, (t) => check(t, 'test-audio.mjs'));
+// 2.0 client is not built yet (stopped before art: K-1 not met, see tests/evidence/sim-2.0.txt) — the 1.0 browser tests speak protocol 1.x
+const CLIENT_PENDING = 'tinju 2.0 client pending (K-1 decision)';
+test('browser: ui', { skip: CLIENT_PENDING, timeout: 600_000 }, (t) => check(t, 'test-ui.mjs'));
+test('browser: audio', { skip: CLIENT_PENDING, timeout: 600_000 }, (t) => check(t, 'test-audio.mjs'));

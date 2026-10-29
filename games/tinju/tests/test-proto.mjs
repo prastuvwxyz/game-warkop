@@ -1,407 +1,539 @@
-// Tinju Kata protocol test. Usage: node test-proto.mjs [port=3201]   (needs Node >= 22 for global WebSocket)
-// Spawns its own servers: MAIN on <port> (HP 10000, fast timings) and KO on <port>+1 (HP 100). Ports 3100/3200 are never touched.
+// Tinju Kata 2.0 protocol test. Usage: node test-proto.mjs [basePort=3301]   (Node >= 22: global WebSocket)
+// Spawns its own servers on basePort..basePort+9 (fast timers). Ports 3100/3200 are never touched.
+//   MAIN  real bank, seed 7, HP 100000      KO  real bank, HP 100      FIX1  exact-length fixture, base 1, pure domino
+//   WORDS 1.0 word fixture at base 3 (1.0 numbers over the wire)       BIG  synthetic 600-line bank for the 200-round B3 run
+//   RELOAD own bank copy for SIGHUP        plus short-lived boot-failure servers.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { SRV, SHARED, sleep, makeChecker, startServer, Client } from './test-lib.mjs';
+import { SRV, sleep, makeChecker, startServer, Client } from './test-lib.mjs';
 
-const PORT = Number(process.argv[2] || 3201), KOPORT = PORT + 1;
-if ([3100, 3200].includes(PORT) || [3100, 3200].includes(KOPORT)) { console.error('refusing to use 3100/3200'); process.exit(2); }
+const PORT = Number(process.argv[2] || 3301);
+if ([3100, 3200].some(p => PORT <= p && p <= PORT + 9)) { console.error('refusing to use 3100/3200'); process.exit(2); }
 const { check, summary } = makeChecker('test-proto');
-const WORDS = createRequire(import.meta.url)('../server/words.js');
+const require = createRequire(import.meta.url);
+const E = require('../server/engine.js');
+const LY = require('../server/lyrics.js');
+const CFG0 = E.makeCfg({});
+const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'tinju-proto-'));
+const BANK_FILE = path.join(SRV, 'lyrics.txt');
+const BANK_TEXT = fs.readFileSync(BANK_FILE, 'utf8');
+const BANK = LY.parseBank(BANK_TEXT).songs;
+const allLines = BANK.flatMap(s => s.lines);
 
-const main = startServer(PORT, { TK_COUNTDOWN_MS: 250, TK_RESULT_MS: 50, TK_GRACE_MS: 300, TK_WORD_CAP_MS: 3000, TK_WALKOVER_MS: 1500, TK_HP: 10000 }, `server-proto-main.log`);
-const kos = startServer(KOPORT, { TK_COUNTDOWN_MS: 100, TK_RESULT_MS: 50, TK_GRACE_MS: 300, TK_WORD_CAP_MS: 3000, TK_WALKOVER_MS: 1500 }, `server-proto-ko.log`);
-await Promise.all([main.ready, kos.ready]);
+// ---------- fixtures ----------
+const bankText = songs => songs.map(s => `${s.title} | ${s.artist}\n${s.lines.join('\n')}`).join('\n\n') + '\n';
+const pad = (tag, len) => (tag + ' ' + 'abcdefghijklmnopqrstuvwxyz'.repeat(3)).slice(0, len);
+function exactBank(lens, per) { // per lines of each exact length, unique, lowercase letters/digits only (plain == full)
+  const songs = []; let n = 0;
+  for (const len of lens) for (let k = 0; k < per; k++) {
+    const tag = 'q' + (n++).toString(36); songs.push({ title: 'Fix ' + n, artist: 'Fix', lines: [pad(tag, len)] });
+  }
+  return songs;
+}
+const F1 = path.join(TMP, 'fix1.txt'); fs.writeFileSync(F1, bankText(exactBank([18, 20, 25], 14).concat(exactBank([36], 6))));
+const six = ['sepeda', 'kancil', 'bantal', 'jendela', 'payung', 'gelang', 'kursi', 'lemari', 'cermin', 'pintu', 'dapur', 'garam', 'tikar', 'lampu', 'sendok', 'piring', 'cangkir', 'ember', 'sapu', 'atap'];
+const WORDS_FILE = path.join(TMP, 'words.txt');
+fs.writeFileSync(WORDS_FILE, bankText([{ title: 'Kata', artist: 'Fix', lines: six.filter(w => w.length === 6) }, { title: 'Ulti', artist: 'Fix', lines: ['Kopi-Susu!', 'Es-Teh-Man!', 'Nasi,Goreng!'.slice(0, 12), 'Bakso-Uenak!'].filter(w => w.length >= 9) }]));
+const BIG_FILE = path.join(TMP, 'big.txt');
+fs.writeFileSync(BIG_FILE, bankText(Array.from({ length: 130 }, (_, i) => ({ title: 'Lagu ' + i, artist: 'Fix', lines: [pad('n' + i.toString(36) + 'a', 18 + (i % 10)), pad('n' + i.toString(36) + 'b', 19 + (i % 9)), pad('n' + i.toString(36) + 'c', 20 + (i % 8)), pad('n' + i.toString(36) + 'd', 22 + (i % 6)), pad('n' + i.toString(36) + 'e', 31 + (i % 12))] }))));
+const RELOAD_FILE = path.join(TMP, 'reload.txt'); fs.writeFileSync(RELOAD_FILE, BANK_TEXT);
+
+const FAST = { TK_COUNTDOWN_MS: 120, TK_RESULT_MS: 20, TK_LINK_MS: 5, TK_TITLE_MS: 10, TK_WORD_CAP_MS: 3000, TK_CAP_SLACK_MS: 300, TK_WALKOVER_MS: 1500, TK_LOBBY_OFFLINE_MS: 1500 };
+const LOOSE = { TK_MIN_SONGS: 1, TK_MIN_LINES: 1, TK_MIN_SHORT: 1, TK_MIN_LONG: 1 };
+const P = n => PORT + n;
+const S = {
+  main: startServer(P(0), { ...FAST, TK_HP: 100000, TK_SEED: 7 }, 'server-proto-main.log'),
+  ko: startServer(P(1), { ...FAST }, 'server-proto-ko.log'),
+  fix1: startServer(P(2), { ...FAST, ...LOOSE, TK_LYRICS: F1, TK_HP: 100000, TK_WORD_CAP_MS: 20000, TK_BASE_PER_CHAR: 1, TK_RANK_WEIGHT: 0, TK_PLAIN_ROUNDS: 0, TK_ULTI_MIN: 90, TK_ULTI_MAX: 99, TK_SEED: 11 }, 'server-proto-fix1.log'),
+  words: startServer(P(3), { ...FAST, ...LOOSE, TK_LYRICS: WORDS_FILE, TK_HP: 100000, TK_WORD_CAP_MS: 20000, TK_BASE_PER_CHAR: 3, TK_LINE_MIN: 4, TK_ULTI_LEN: 9, TK_PLAIN_ROUNDS: 0, TK_SEED: 5 }, 'server-proto-words.log'),
+  big: startServer(P(4), { ...FAST, TK_COUNTDOWN_MS: 100, TK_LYRICS: BIG_FILE, TK_MIN_SONGS: 40, TK_HP: 100000, TK_SEED: 3 }, 'server-proto-big.log'),
+  cap: startServer(P(6), { ...FAST, TK_WORD_CAP_MS: 20000, TK_HP: 100000, TK_SEED: 2 }, 'server-proto-cap.log'),
+  reload: startServer(P(5), { ...FAST, TK_LYRICS: RELOAD_FILE, TK_HP: 100000, TK_SEED: 9 }, 'server-proto-reload.log'),
+};
+await Promise.all(Object.values(S).map(s => s.ready));
+const CAP = P(6), MAIN = P(0), KO = P(1), FIX1 = P(2), WORDS = P(3), BIG = P(4), RELOAD = P(5);
 
 // ---------- helpers ----------
 const clients = [];
 async function conn(port, name) { const c = await new Client(port, name).open(); clients.push(c); return c; }
-async function mkRoom(port = PORT) {
-  const A = await conn(port, 'A'); A.send({ t: 'create', name: 'Alice', skin: 0 }); await A.wait('joined');
-  const B = await conn(port, 'B'); B.send({ t: 'join', code: A.code, name: 'Budi', skin: 1 }); await B.wait('joined');
-  await until(() => A.state && A.state.players.length === 2);
-  return { A, B };
+async function until(f, ms = 3000) { const end = Date.now() + ms; while (!f()) { if (Date.now() > end) throw new Error('until timeout: ' + f.toString().slice(0, 90)); await sleep(5); } }
+async function mkRoom(port, n = 2) {
+  const cs = [];
+  const A = await conn(port, 'P1'); A.send({ t: 'create', name: 'Alice', skin: 0, v: 2 }); await A.wait('joined'); cs.push(A);
+  for (let i = 1; i < n; i++) { const c = await conn(port, 'P' + (i + 1)); c.send({ t: 'join', code: A.code, name: 'Pemain' + (i + 1), skin: i % 4, v: 2 }); await c.wait('joined'); cs.push(c); }
+  await until(() => A.state && A.state.players.length === n);
+  return cs;
 }
-async function until(f, ms = 3000) { const end = Date.now() + ms; while (!f()) { if (Date.now() > end) throw new Error('until timeout'); await sleep(5); } }
-async function startM(A, B) { A.send({ t: 'start' }); const cd = await A.wait('countdown'); await B.wait('countdown'); return cd; }
-async function nextWord(A, B) { const w = await A.wait('word', () => true, 8000); await B.wait('word'); return w; }
-async function playRound(A, B, w, plan) {
-  for (const k of (plan.first === 'b' ? ['b', 'a'] : ['a', 'b'])) {
-    const P = k === 'a' ? A : B, d = plan[k];
-    if (d) P.send({ t: 'done', round: w.round, elapsed: d[0], typos: d[1] });
-    await sleep(6);
+async function startM(cs) { cs[0].send({ t: 'start' }); const out = []; for (const c of cs) out.push(await c.wait('countdown', () => true, 6000)); return out; }
+async function lines(cs, ms = 8000) { const out = []; for (const c of cs) out.push(await c.wait('line', () => true, ms)); return out; }
+// claims: [{i: clientIndex, e: elapsed, t: typos}] sent in that order, 4 ms apart
+async function play(cs, claims, round) {
+  for (const c of claims) { cs[c.i].send({ t: 'done', round, elapsed: c.e, typos: c.t ?? 0 }); await sleep(4); }
+  const out = []; for (const c of cs) out.push(await c.wait('result', () => true, 9000)); return out[0];
+}
+const SKIPALL = n => Array.from({ length: n }, (_, i) => ({ i, e: 500, t: 0 })); // all equal -> one tie rank -> draw, closes at once
+async function untilLine(cs, pred, claimsFor) { // skip rounds with an all-tie draw until pred(line) holds
+  for (let k = 0; k < 150; k++) {
+    const ls = await lines(cs);
+    if (pred(ls[0])) return { line: ls[0], res: await play(cs, claimsFor(ls[0]), ls[0].round) };
+    await play(cs, SKIPALL(cs.length), ls[0].round);
   }
-  const ra = await A.wait('result', () => true, 8000); await B.wait('result', () => true, 8000); return ra;
+  throw new Error('no suitable line found');
 }
-const SKIP = { a: [500, 0], b: [500, 0] }; // equal elapsed + equal typos = draw, resolves instantly, no state change
-async function untilWord(A, B, pred, plan) {
-  for (let i = 0; i < 120; i++) {
-    const w = await nextWord(A, B);
-    if (pred(w)) return { w, res: await playRound(A, B, w, plan(w)) };
-    await playRound(A, B, w, SKIP);
-  }
-  throw new Error('no suitable word found');
-}
-// independent re-implementation of the spec damage formula
-const dmg = ({ len, margin, crit, combo, ulti }) => Math.min(60, Math.round(len * 3 * margin * (crit ? 1.5 : 1) * (combo ? 1.25 : 1) * (ulti ? 2.5 : 1)));
-const isCrit = (len, el, typos) => typos === 0 && len * 1000 >= 5 * el;
+const plainOf = E.plainForm;
+const bankPlain = new Set(allLines.map(plainOf)), bankFull = new Set(allLines);
+const linkTo = (res, id) => res.chain.find(x => x.to === id);
 
-// ---------- S0: word bank ----------
+// ---------- S0: lyric bank — validator unit cases, then boot failures ----------
 {
-  const N = WORDS.normal, U = WORDS.ulti;
-  check('words: >= 400 normal words', N.length >= 400, String(N.length));
-  check('words: every normal word matches /^[a-z]{4,9}$/ and is unique', N.every(w => /^[a-z]{4,9}$/.test(w)) && new Set(N).size === N.length);
-  check('words: >= 80 ulti words', U.length >= 80, String(U.length));
-  check('words: every ulti word is 8-14 chars, >=1 uppercase, >=1 of - ! ? ,', U.every(w => /^[A-Za-z!?,\-]{8,14}$/.test(w) && /[A-Z]/.test(w) && /[-!?,]/.test(w)));
-  check('words: ulti unique and no overlap with normal', new Set(U).size === U.length && !U.some(w => N.includes(w)));
+  const cfg = CFG0;
+  const r = LY.loadFile(BANK_FILE, cfg);
+  check('lyrics.txt: loads and validates (>= 40 songs, >= 150 short, >= 40 long)', !r.errors && r.bank.stats.songs >= 40 && r.bank.stats.normal >= 150 && r.bank.stats.ulti >= 40, JSON.stringify(r.errors || r.bank.stats));
+  check('lyrics.txt: every song has at least one line >= 30 chars', BANK.every(s => s.lines.some(l => l.length >= 30)));
+  check('lyrics.txt: 4-6 lines per song, ASCII only, full and plain forms 15-45 chars, plain forms unique',
+    BANK.every(s => s.lines.length >= 4 && s.lines.length <= 6) && allLines.every(l => /^[\x20-\x7e]+$/.test(l) && l.length >= 15 && l.length <= 45 && plainOf(l).length >= 15 && plainOf(l).length <= 45) && new Set(allLines.map(plainOf)).size === allLines.length);
+  const mutate = f => { const songs = JSON.parse(JSON.stringify(BANK)); f(songs); return LY.validateBank(songs, cfg); };
+  const has = (errs, re) => errs.some(e => re.test(e));
+  check('validator: 39 songs -> error names "songs"', has(mutate(s => s.pop()), /need >= 40 songs, have 45/) || has(mutate(s => { s.length = 39; }), /songs/));
+  check('validator: 40 songs boots (boundary)', !has(mutate(s => { s.length = 40; }), /songs/));
+  check('validator: 199 lines -> error', has(mutate(s => { while (s.reduce((n, x) => n + x.lines.length, 0) > 199) { const l = s.find(x => x.lines.length > 1); l.lines.pop(); } }), /need >= 200 lines/));
+  check('validator: a 14-char line -> error naming 15-45', has(mutate(s => { s[0].lines[0] = 'abcdefghijklmn'; }), /14 chars, need 15-45/));
+  check('validator: a 15-char line is fine (boundary)', !has(mutate(s => { s[0].lines[0] = 'abcdefghijklmno'; }), /chars, need/));
+  check('validator: a 46-char line -> error', has(mutate(s => { s[0].lines[0] = 'a'.repeat(46); }), /46 chars, need 15-45/));
+  check('validator: a 45-char line is fine (boundary)', !has(mutate(s => { s[0].lines[0] = 'z'.repeat(45); }), /chars, need/));
+  check('validator: plain form < 15 (punctuation-heavy line) -> error', has(mutate(s => { s[0].lines[0] = 'ab!!!!!!!!!!!!!!!!!!c'; }), /plain form is 3 chars/));
+  check('validator: curly quote -> ASCII error', has(mutate(s => { s[0].lines[0] = 'Aku tak \u2019lupa\u2019 padamu ya'; }), /ASCII/));
+  check('validator: double space and trailing space -> error', has(mutate(s => { s[0].lines[0] = 'aku  tak lupa padamu ya'; s[1].lines[0] = 'aku tak lupa padamu ya '; }), /space/));
+  check('validator: duplicate line -> error', has(mutate(s => { s[1].lines[0] = s[0].lines[0]; }), /duplicate/));
+  check('validator: too few short lines / too few long lines are named', has(mutate(s => s.forEach(x => { x.lines = x.lines.map(l => l.length < 30 ? l + ' tambah panjang sekali ya' : l).map(l => l.slice(0, 45)); })), /lines shorter than 30/));
+  const pb = LY.parseBank('no separator here\nline one is long enough\n\nTitle | Artist\n');
+  check('parser: block without "title | artist" and block without lines are reported', pb.errors.length === 2 && /title \| artist/.test(pb.errors[0]) && /no lines/.test(pb.errors[1]), pb.errors.join(' / '));
+  check('parser: comments (# ...) and CRLF are accepted', LY.parseBank('# c\r\n\r\nT | A\r\nsatu dua tiga empat lima\r\n').songs.length === 1);
+  check('loadFile: missing file -> errors, no throw', LY.loadFile(path.join(TMP, 'nope.txt'), cfg).errors.length === 1);
+  check('loadFile: empty file -> errors (needs songs)', (fs.writeFileSync(path.join(TMP, 'empty.txt'), ''), LY.loadFile(path.join(TMP, 'empty.txt'), cfg).errors.length > 0));
+  // boot: the real process exits 1 on a broken bank and names the rule; a boundary bank boots
+  const bootTry = (name, text) => {
+    const f = path.join(TMP, name); fs.writeFileSync(f, text);
+    const r = spawnSync(process.execPath, [path.join(SRV, 'server.js')], { env: { ...process.env, PORT: String(P(9)), HOST: '127.0.0.1', TK_LYRICS: f }, timeout: 2500, encoding: 'utf8' });
+    return { code: r.status, err: (r.stderr || '') + (r.stdout || ''), killed: r.signal };
+  };
+  let b = bootTry('boot-empty.txt', '');
+  check('boot: empty bank -> exit 1 and the message names the rule', b.code === 1 && /need >= 40 songs/.test(b.err), b.code + ' ' + b.err.slice(0, 120));
+  b = bootTry('boot-short.txt', bankText(BANK.slice(0, 39)));
+  check('boot: 39 songs -> exit 1', b.code === 1 && /songs/.test(b.err));
+  b = bootTry('boot-14.txt', bankText(BANK.map((s, i) => (i === 0 ? { ...s, lines: ['abcdefghijklmn', ...s.lines.slice(1)] } : s))));
+  check('boot: a 14-char line -> exit 1', b.code === 1 && /14 chars/.test(b.err));
+  b = bootTry('boot-missing-head.txt', BANK_TEXT.replace('Senja di Pelabuhan Kecil | Grup Contoh 01', 'Senja di Pelabuhan Kecil'));
+  check('boot: a block without "title | artist" -> exit 1', b.code === 1 && /title \| artist/.test(b.err));
+  b = spawnSync(process.execPath, [path.join(SRV, 'server.js')], { env: { ...process.env, PORT: String(P(9)), HOST: '127.0.0.1', TK_LYRICS: path.join(TMP, 'does-not-exist.txt') }, timeout: 2500, encoding: 'utf8' });
+  check('boot: missing file -> exit 1', b.status === 1 && /cannot read/.test(b.stderr));
+  const okBank = bankText(BANK.slice(0, 40).map(s => s)).replace(/^Senja/, 'Senja');
+  const f40 = path.join(TMP, 'boot-40.txt'); fs.writeFileSync(f40, okBank);
+  const child = spawn(process.execPath, [path.join(SRV, 'server.js')], { env: { ...process.env, PORT: String(P(9)), HOST: '127.0.0.1', TK_LYRICS: f40, TK_MIN_LINES: 150, TK_MIN_SHORT: 100, TK_MIN_LONG: 20 }, stdio: 'ignore' });
+  await sleep(600); let ok40 = false; try { ok40 = (await (await fetch(`http://127.0.0.1:${P(9)}/tinju/health`)).json()).lyrics.songs === 40; } catch (e) {}
+  child.kill('SIGTERM');
+  check('boot: exactly 40 songs boots (boundary) and /health reports the bank size', ok40);
 }
 
 // ---------- S1: http + lobby rules ----------
+let lobby;
 {
-  const h = await (await fetch(`http://127.0.0.1:${PORT}/tinju/health`)).json();
-  check('GET /tinju/health -> {ok,rooms,players,uptime}', h.ok === true && typeof h.rooms === 'number' && typeof h.players === 'number' && typeof h.uptime === 'number', JSON.stringify(h));
-  const idx = await fetch(`http://127.0.0.1:${PORT}/tinju/`); const html = await idx.text();
-  check('GET /tinju/ serves index.html with tinju-version meta', idx.status === 200 && html.includes('name="tinju-version"'));
-  const A = await conn(PORT, 'A'); A.send({ t: 'create', name: 'Alice', skin: 2 }); const j = await A.wait('joined');
-  check('create -> joined{code(5), token(32 hex), id(8 hex)}', /^[A-Z0-9]{5}$/.test(j.code) && /^[0-9a-f]{32}$/.test(j.token) && /^[0-9a-f]{8}$/.test(j.id), JSON.stringify(j));
-  A.send({ t: 'create', name: 'X' }); const e0 = await A.wait('error');
+  const h = await (await fetch(`http://127.0.0.1:${MAIN}/tinju/health`)).json();
+  check('GET /tinju/health -> {ok,rooms,players,uptime,lyrics{songs,lines}}', h.ok === true && typeof h.rooms === 'number' && typeof h.uptime === 'number' && h.lyrics.songs >= 40, JSON.stringify(h));
+  const A = await conn(MAIN, 'A');
+  A.send({ t: 'create', name: 'Alice', skin: 2 }); const o1 = await A.wait('error');
+  check('create without v:2 -> error code old_client ("muat ulang")', o1.code === 'old_client' && /muat ulang/.test(o1.msg), JSON.stringify(o1));
+  A.send({ t: 'join', code: 'ABCDE', name: 'x', v: 1 }); const o2 = await A.wait('error');
+  A.send({ t: 'rejoin', code: 'ABCDE', token: 'f'.repeat(32) }); const o3 = await A.wait('error');
+  check('join with v:1 and rejoin without v -> old_client as well (a 1.x tab with a saved session)', o2.code === 'old_client' && o3.code === 'old_client');
+  A.send({ t: 'create', name: 'Alice', skin: 2, v: 2 }); const j = await A.wait('joined');
+  check('create -> joined{code(5), token(32 hex), id(8 hex), v:2}', /^[A-Z0-9]{5}$/.test(j.code) && /^[0-9a-f]{32}$/.test(j.token) && /^[0-9a-f]{8}$/.test(j.id) && j.v === 2, JSON.stringify(j));
+  A.send({ t: 'create', name: 'X', v: 2 }); const e0 = await A.wait('error');
   check('second create while in a room is rejected', /sudah di dalam room/.test(e0.msg));
   A.send({ t: 'start' }); const e1 = await A.wait('error');
   check('start with 1 player rejected', /pemain/i.test(e1.msg));
-  const B = await conn(PORT, 'B'); B.send({ t: 'join', code: j.code, name: 'Budi', skin: 2 }); await B.wait('joined');
-  await until(() => A.state.players.length === 2);
-  const sk = A.state.players.map(p => p.skin);
-  check('join with taken skin -> server assigns first free (0), skins differ', sk[0] === 2 && sk[1] === 0, JSON.stringify(sk));
-  B.send({ t: 'skin', skin: 2 }); const e2 = await B.wait('error');
-  check('skin change to a colour the opponent holds -> error', /sudah dipakai/.test(e2.msg));
-  B.send({ t: 'skin', skin: 7 }); const e2b = await B.wait('error');
-  check('skin out of range -> error', /tidak valid/.test(e2b.msg));
-  B.send({ t: 'skin', skin: 3 }); await until(() => A.state.players[1].skin === 3);
-  check('skin change to a free colour is broadcast', A.state.players[1].skin === 3);
-  const C = await conn(PORT, 'C'); C.send({ t: 'join', code: j.code, name: 'Cici' }); const e3 = await C.wait('error');
-  check('3rd join rejected: Room penuh (maks 2 pemain)', e3.msg === 'Room penuh (maks 2 pemain)', e3.msg);
-  B.send({ t: 'start' }); const e4 = await B.wait('error');
-  check('non-host start rejected', /host/i.test(e4.msg));
-  await startM(A, B);
-  C.send({ t: 'join', code: j.code, name: 'Cici' }); const e5 = await C.wait('error');
-  check('join while match is running rejected', /sudah berjalan/.test(e5.msg));
-  C.send({ t: 'rejoin', code: j.code, token: 'f'.repeat(32) }); await C.wait('rejoin_failed');
-  check('rejoin with bad token -> rejoin_failed', true);
-  C.send({ t: 'done', round: 1, elapsed: 500, typos: 0 }); const e6 = await C.wait('error');
-  check('done before joining a room -> error', /Belum masuk room/.test(e6.msg));
+  A.clear(); A.send({ t: 'wat', x: 1 }); A.send({ t: 'ping' }); const pg = await A.wait('pong');
+  check('unknown t is ignored without a reply (ping after it answers, no error queued)', typeof pg.serverTime === 'number' && !A.has('error'));
   A.ws.send('not json'); const e7 = await A.wait('error'); check('invalid JSON -> error, connection survives', /JSON/.test(e7.msg) && !A.closed);
-  A.send({ t: 'wat' }); const e8 = await A.wait('error'); check('unknown command -> error', /tidak dikenal/.test(e8.msg));
-  A.send({ t: 'ping' }); const pg = await A.wait('pong'); check('ping -> pong{serverTime}', typeof pg.serverTime === 'number');
+  const B = await conn(MAIN, 'B'); B.send({ t: 'join', code: j.code, name: 'Budi', skin: 2, v: 2 }); await B.wait('joined');
+  await until(() => A.state.players.length === 2);
+  check('duplicate skins are allowed (10 players, 4 skins)', A.state.players.map(p => p.skin).join() === '2,2');
+  B.send({ t: 'skin', skin: 7 }); const e2b = await B.wait('error'); check('skin out of range -> error', /tidak valid/.test(e2b.msg));
+  B.send({ t: 'skin', skin: 3 }); await until(() => A.state.players[1].skin === 3); check('skin change is broadcast', true);
+  B.send({ t: 'start' }); const e4 = await B.wait('error'); check('non-host start rejected', /host/i.test(e4.msg));
+  const pl = A.state.players[0];
+  check('state players carry id,name,skin,online,isHost,hp,streak,fire,out,rematch and no token', ['id', 'name', 'skin', 'online', 'isHost', 'hp', 'streak', 'fire', 'out', 'rematch'].every(k => k in pl) && !JSON.stringify(A.state).includes(A.token));
+  check('state.you.id and cfg (HP, MAX_PLAYERS 10, LINK_MS) are present', A.state.you.id === A.id && A.state.cfg.HP === 100000 && A.state.cfg.MAX_PLAYERS === 10 && A.state.cfg.LINK_MS === 5);
+  // fill to 10, the 11th is refused
+  const more = []; for (let i = 3; i <= 10; i++) { const c = await conn(MAIN, 'C' + i); c.send({ t: 'join', code: j.code, name: 'P' + i, v: 2 }); await c.wait('joined'); more.push(c); }
+  await until(() => A.state.players.length === 10);
+  const X = await conn(MAIN, 'X'); X.send({ t: 'join', code: j.code, name: 'P11', v: 2 }); const e11 = await X.wait('error');
+  check('11th join -> "Room penuh (maks 10 pemain)"', e11.msg === 'Room penuh (maks 10 pemain)', e11.msg);
+  lobby = { A, B, more, code: j.code };
 }
-
-// ---------- S2: reveal timing, identical word, no leak ----------
+// 10 players: one start, then everything below reuses this room for the B3-style invariants on MAIN
 {
-  const { A, B } = await mkRoom();
-  const cd = await startM(A, B);
-  check('countdown{round:1, ms, endsAt, serverTime}', cd.round === 1 && cd.ms === 250 && cd.endsAt > cd.serverTime && typeof cd.serverTime === 'number', JSON.stringify(cd));
-  const wa = await A.wait('word'), wb = await B.wait('word');
-  check('no word before countdown.endsAt (server revealAt >= endsAt)', wa.revealAt >= cd.endsAt - 5 && wa._at >= cd.endsAt - 5, `revealAt-endsAt=${wa.revealAt - cd.endsAt}`);
-  check('both players get the identical word in the same tick', wa.text === wb.text && wa.ulti === wb.ulti && wa.round === wb.round && Math.abs(wa._at - wb._at) < 50);
-  check('word{round,text,ulti,ultiIn,revealAt,capMs} fields', wa.round === 1 && typeof wa.text === 'string' && typeof wa.ulti === 'boolean' && Number.isInteger(wa.ultiIn) && wa.capMs === 3000);
-  const leak = [...A.all, ...B.all].filter(m => m.t === 'state').some(m => JSON.stringify(m).includes('"text"') || m.room.word !== undefined || JSON.stringify(m).includes(wa.text + '"'));
-  check('state messages never contain the word text', !leak);
-  check('state view carries cfg + you.id and no token', A.state.cfg.HP === 10000 && A.state.you.id === A.id && !JSON.stringify(A.state).includes(A.token));
-}
-
-// ---------- S3: winner by elapsed, not arrival ----------
-{
-  const { A, B } = await mkRoom();
-  await startM(A, B); const w = await nextWord(A, B);
-  const res = await playRound(A, B, w, { first: 'b', b: [900, 0], a: [500, 0] }); // B arrives FIRST with the larger elapsed
-  check('winner = smaller elapsed (A) even though B arrived first', res.winner === A.id && res.elapsed[A.id] === 500 && res.elapsed[B.id] === 900, JSON.stringify(res));
-  check('result fields complete', ['round', 'winner', 'tier', 'damage', 'margin', 'critical', 'combo', 'ulti', 'hp', 'elapsed', 'fire'].every(k => k in res));
-  check('hp only drops for the loser', res.hp[A.id] === 10000 && res.hp[B.id] === 10000 - res.damage);
-}
-
-// ---------- S4: tiers (inclusive lower tier, O5), combo-free alternation ----------
-{
-  const { A, B } = await mkRoom();
-  await startM(A, B);
-  const cases = [[390, 'block', 0.5], [410, 'jab', 1], [1010, 'clean', 1.25], [400, 'block', 0.5], [1000, 'jab', 1]];
-  let i = 0;
-  for (const [gap, tier, margin] of cases) {
-    const w = await nextWord(A, B);
-    const aWins = i % 2 === 0; // alternate so nobody reaches 3 straight wins
-    const plan = aWins ? { a: [500, 0], b: [500 + gap, 0] } : { b: [500, 0], a: [500 + gap, 0] };
-    const res = await playRound(A, B, w, plan);
-    const expected = dmg({ len: w.text.length, margin, crit: isCrit(w.text.length, 500, 0), combo: false, ulti: w.ulti });
-    check(`tier at loser +${gap} ms -> ${tier} x${margin}`, res.tier === tier && res.margin === margin && res.winner === (aWins ? A.id : B.id), JSON.stringify(res));
-    check(`  damage matches formula (len ${w.text.length}${w.ulti ? ', ulti' : ''}) = ${expected}`, res.damage === expected, String(res.damage));
-    i++;
-  }
-}
-
-// ---------- S5: critical gate + exact spec numbers (6-letter words) ----------
-{
-  const { A, B } = await mkRoom();
-  await startM(A, B);
-  const six = w => w.text.length === 6 && !w.ulti;
-  let r = await untilWord(A, B, six, () => ({ a: [1225, 0], b: [1900, 0] }));
-  check('critical: 6 letters at 1225 ms (4.9 cps) -> false, dmg 18', r.res.critical === false && r.res.damage === 18 && r.res.tier === 'jab', JSON.stringify(r.res));
-  r = await untilWord(A, B, six, () => ({ b: [1200, 0], a: [2400, 0] }));
-  check('critical: 6 letters at 1200 ms (5.0 cps) -> true', r.res.critical === true && r.res.winner === B.id);
-  check('SPEC: "sepeda"-class 6 letters, won by 1200 vs 2400 ms, 0 typos = 34', r.res.damage === 34 && r.res.margin === 1.25 && r.res.tier === 'clean', JSON.stringify(r.res));
-  r = await untilWord(A, B, six, () => ({ a: [1200, 1], b: [1500, 0] }));
-  check('critical: 1 typo at 5.0 cps -> false', r.res.critical === false);
-  check('SPEC: 6 letters, won by 300 ms with 1 typo = 9 (block x0.5)', r.res.damage === 9 && r.res.tier === 'block' && r.res.margin === 0.5, JSON.stringify(r.res));
-}
-
-// ---------- S6: cap 60 on an ulti round ----------
-{
-  const { A, B } = await mkRoom();
-  await startM(A, B);
-  const r = await untilWord(A, B, w => w.ulti, () => ({ a: [300, 0], b: [1900, 0] }));
-  check('ulti word is flagged ulti:true in word and result, text has uppercase + punctuation', r.w.ulti && r.res.ulti && /[A-Z]/.test(r.w.text) && /[-!?,]/.test(r.w.text), r.w.text);
-  check('SPEC: ulti clean + critical (calc 112+, "Kopi-Susu!" = 140.6) -> damage capped at 60', r.res.damage === 60 && r.res.critical && r.res.tier === 'clean', JSON.stringify(r.res));
-  check('ulti first appears in round 4-6', r.w.round >= 4 && r.w.round <= 6, 'round ' + r.w.round);
-}
-
-// ---------- S7: combo ----------
-{
-  const { A, B } = await mkRoom();
-  await startM(A, B);
-  const out = [];
-  for (let k = 0; k < 5; k++) { const w = await nextWord(A, B); const res = await playRound(A, B, w, { a: [500, 0], b: [1900, 0] }); out.push({ w, res }); }
-  check('combo: fire false after wins 1 and 2', !out[0].res.fire[A.id] && !out[1].res.fire[A.id]);
-  check('combo: 3rd straight win -> result.fire[A] true', out[2].res.fire[A.id] === true && out[2].res.combo === false);
-  const o3 = out[3];
-  check('combo: next win is x1.25 and fire clears after it', o3.res.combo === true && o3.res.fire[A.id] === false && o3.res.damage === dmg({ len: o3.w.text.length, margin: 1.25, crit: true, combo: true, ulti: o3.w.ulti }), JSON.stringify(o3.res));
-  check('combo: round after the boosted hit is not boosted (one-round fire, O1)', out[4].res.combo === false && out[4].res.fire[A.id] === false);
-  const sumHp = out.reduce((s, o) => s + o.res.damage, 0);
-  check('combo: loser hp = HP - sum(damage)', out[4].res.hp[B.id] === 10000 - sumHp);
-  // loser's streak resets
-  const w5 = await nextWord(A, B); await playRound(A, B, w5, { b: [500, 0], a: [1900, 0] });
-  await until(() => A.state.players.find(p => p.id === B.id).streak === 1 && A.state.players.find(p => p.id === A.id).streak === 0);
-  check('streak: B wins once -> B streak 1, A streak reset to 0 (visible in state)', true);
-}
-
-// ---------- S8: draw, tie-break, rejected input, stale/dup ----------
-{
-  const { A, B } = await mkRoom();
-  await startM(A, B);
-  let w = await nextWord(A, B); await playRound(A, B, w, { a: [500, 0], b: [1900, 0] });
-  await until(() => A.state.players.find(p => p.id === A.id).streak === 1);
-  const hpBefore = A.state.players.find(p => p.id === B.id).hp;
-  w = await nextWord(A, B);
+  const { A, B, more, code } = lobby; const cs = [A, B, ...more];
+  const cds = await startM(cs);
+  check('10 players: start -> every socket gets countdown{round:1, ms, endsAt, serverTime}', cds.every(cd => cd.round === 1 && cd.ms === 120 && cd.endsAt > cd.serverTime));
+  const ls = await lines(cs);
+  check('B3 (10 sockets): line.revealAt >= countdown.endsAt and the frame arrives after it', ls.every((l, i) => l.revealAt >= cds[i].endsAt && l._at >= cds[i].endsAt - 3), `${ls[0].revealAt - cds[0].endsAt}`);
+  check('every socket gets the identical line payload in one tick (< 50 ms spread)', ls.every(l => l.text === ls[0].text && l.round === 1 && l.ulti === ls[0].ulti && l.entrant === true) && Math.max(...ls.map(l => l._at)) - Math.min(...ls.map(l => l._at)) < 50);
+  check('line{round,text,form,ulti,ultiIn,entrant,revealAt,endsAt,serverTime}: round 1 is the plain form', ls[0].form === 'plain' && ls[0].endsAt === ls[0].revealAt + 3000 && Number.isInteger(ls[0].ultiIn) && typeof ls[0].serverTime === 'number');
+  check('plain form = lowercase [a-z0-9 ], and it is the plain form of a bank line', /^[a-z0-9 ]+$/.test(ls[0].text) && bankPlain.has(ls[0].text), ls[0].text);
+  const leak = [...A.all].filter(m => m.t === 'state').some(m => JSON.stringify(m).includes(ls[0].text));
+  check('state messages never contain the line text', !leak);
+  const X = await conn(MAIN, 'X2'); X.send({ t: 'join', code, name: 'late', v: 2 }); const el = await X.wait('error');
+  check('join while a match is running rejected', /sudah berjalan/.test(el.msg));
+  // P-25: progress is a count only
+  cs[3].send({ t: 'done', round: 1, elapsed: 900, typos: 0 }); const pr = await A.wait('progress');
+  check('progress{round, finished, of} is a count; it does not say who', pr.finished === 1 && pr.of === 10 && Object.keys(pr).sort().join() === '_at,finished,of,round,t');
+  // finish the rest with scrambled claims: P-01 slow packet first. Claims are the OPPOSITE of arrival order.
+  const order = [9, 8, 7, 6, 5, 4, 2, 1, 0]; // arrival: seat 10 first ... seat 1 last, with elapsed ascending by seat
   const t0 = Date.now();
-  const rd = await A.wait('result', () => true, 8000); await B.wait('result');
-  check('draw at cap: nobody sends -> result tier draw, winner null, damage 0', rd.tier === 'draw' && rd.winner === null && rd.damage === 0 && rd.margin === null, JSON.stringify(rd));
-  check('draw at cap fires at WORD_CAP_MS (3000 +- 400)', Math.abs((Date.now() - t0) - 3000) < 400, String(Date.now() - t0));
-  check('draw leaves hp, streak and fire unchanged', rd.hp[B.id] === hpBefore && rd.hp[A.id] === 10000 && A.state.players.find(p => p.id === A.id).streak === 1);
-  // tie-break
-  w = await nextWord(A, B);
-  let res = await playRound(A, B, w, { first: 'b', b: [800, 0], a: [800, 2] }); // B (fewer typos) sent first AND A has more typos
-  check('tie on elapsed: fewer typos wins', res.winner === B.id && res.tier === 'block', JSON.stringify(res));
-  w = await nextWord(A, B);
-  res = await playRound(A, B, w, { a: [800, 1], b: [800, 1] });
-  check('tie on elapsed and typos -> Seri (draw), arrival order never decides', res.tier === 'draw' && res.winner === null);
-  // rejected elapsed/typos
-  w = await nextWord(A, B);
-  const bad = [149, 3001, 20001, 'abc', 1.5, null];
-  let allBad = true;
-  for (const v of bad) { A.send({ t: 'done', round: w.round, elapsed: v, typos: 0 }); const e = await A.wait('error'); if (e.code !== 'bad_elapsed') allBad = false; }
-  check('rejected elapsed: 149, cap+1, 20001, "abc", 1.5, null -> bad_elapsed', allBad);
-  let allBadT = true;
-  for (const v of [-1, 100, 1.5, 'x']) { A.send({ t: 'done', round: w.round, elapsed: 500, typos: v }); const e = await A.wait('error'); if (e.code !== 'bad_typos') allBadT = false; }
-  check('rejected typos: -1, 100, 1.5, "x" -> bad_typos', allBadT);
-  A.send({ t: 'done', round: w.round, elapsed: 600, typos: 0 }); A.send({ t: 'done', round: w.round, elapsed: 600, typos: 0 });
-  const ed = await A.wait('error'); check('second done from the same player -> dup', ed.code === 'dup', JSON.stringify(ed));
-  B.send({ t: 'done', round: w.round, elapsed: 900, typos: 0 });
-  res = await A.wait('result'); await B.wait('result');
-  check('round still resolves after rejected inputs (valid dones count)', res.winner === A.id && res.elapsed[A.id] === 600 && res.elapsed[B.id] === 900);
-  A.send({ t: 'done', round: w.round + 1, elapsed: 500, typos: 0 }); const es = await A.wait('error');
-  check('done during result/countdown (no word yet) -> stale, no toast code path', es.code === 'stale');
-  w = await nextWord(A, B);
-  A.send({ t: 'done', round: w.round - 1, elapsed: 500, typos: 0 }); const es2 = await A.wait('error');
-  check('done for an old round -> stale', es2.code === 'stale');
-  const mid = await playRound(A, B, w, { a: [500, 0], b: [700, 0] });
-  check('stale input left the round untouched (resolved normally)', mid.winner === A.id);
+  for (const i of order) { cs[i].send({ t: 'done', round: 1, elapsed: 400 + i * 200, typos: 0 }); await sleep(8); }
+  const res = await A.wait('result', () => true, 6000);
+  check('P-04: the round closes right after the last done (not at the cap)', Date.now() - t0 < 600, String(Date.now() - t0));
+  const exp = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => cs[i].id); // cs[3] claimed 900 (between 800 and 1200)
+  check('P-01: finishing order is by claimed elapsed (400,600,800,900,1200 ... 2200) although cs[9] ... cs[4] arrived first, cs[3] before them all', res.order.map(o => o.id).join() === exp.join(), res.order.map(o => o.elapsed).join());
+  check('result chain is a domino: 9 links, each from the previous rank to the next', res.chain.length === 9 && res.chain.every((c, i) => c.from === exp[i] && c.to === exp[i + 1]));
+  check('result fields: order[], chain[], sat[], hp{}, fire{}, ko[], song{title,artist}, endsAt, serverTime', ['order', 'chain', 'sat', 'hp', 'fire', 'ko', 'song', 'endsAt', 'serverTime'].every(k => k in res) && res.song.title && res.song.artist);
+  check('result endsAt = now + RESULT 20 + LINK 5 x 9 + TITLE 10 (+- 40 ms)', Math.abs((res.endsAt - res._at) - (20 + 45 + 10)) < 40, String(res.endsAt - res._at));
+  check('link fields: from,to,tier,d,margin,critical,combo,ulti,damage,weight,applied,extra', ['from', 'to', 'tier', 'd', 'margin', 'critical', 'combo', 'ulti', 'damage', 'weight', 'applied', 'extra'].every(k => k in res.chain[0]));
+  const eng = E.resolveRound(cs.map((c, i) => ({ id: c.id, seat: i + 1, hp: 100000, streak: 0, fire: false })), Object.fromEntries(cs.map((c, i) => [c.id, { elapsed: i === 3 ? 900 : 400 + i * 200, typos: 0 }])), { text: ls[0].text, ulti: false }, E.makeCfg({ TK_HP: 100000 }));
+  check('wiring: the server result equals resolveRound() on the same claims (applied per link, hp)', res.chain.map(c => c.applied).join() === eng.chain.map(c => c.applied).join() && cs.every(c => res.hp[c.id] === eng.hp[c.id]));
+  check('first finisher loses nothing; a 9-link chain moved HP only for ranks 2-10', res.hp[exp[0]] === 100000 && exp.slice(1).every(id => res.hp[id] < 100000));
+  check('result is relayed to every socket (all 10 got the same chain)', cs.every(c => c.all.some(m => m.t === 'result' && m.round === 1 && m.chain.length === 9)));
+  // spectator-like: a done after the round closed is stale
+  cs[0].send({ t: 'done', round: 1, elapsed: 500, typos: 0 }); const st = await cs[0].wait('error'); check('done for a finished round -> error code stale', st.code === 'stale', JSON.stringify(st));
+  for (const c of cs) c.close();
 }
 
-// ---------- S9: 100 rounds: no repeated word + ulti schedule 4-6 ----------
+// ---------- S2: P-10 elapsed bounds, dup, typos, stale (3 players on MAIN) ----------
 {
-  const { A, B } = await mkRoom();
-  await startM(A, B);
-  const seq = [];
-  for (let k = 0; k < 100; k++) { const w = await nextWord(A, B); seq.push(w); await playRound(A, B, w, SKIP); }
-  check('100 rounds: all word.text distinct (no repeats in a match)', new Set(seq.map(w => w.text)).size === 100);
-  check('100 rounds: normal words match the bank rule, ulti words match the ulti rule', seq.every(w => w.ulti ? WORDS.ulti.includes(w.text) : WORDS.normal.includes(w.text)));
-  const ur = seq.filter(w => w.ulti).map(w => w.round);
-  check('ulti schedule: first ulti in round 4-6', ur[0] >= 4 && ur[0] <= 6, JSON.stringify(ur));
-  const gaps = ur.slice(1).map((r, i) => r - ur[i]);
-  check(`ulti schedule: all ${gaps.length} gaps between ulti rounds are 4-6`, gaps.length >= 12 && gaps.every(g => g >= 4 && g <= 6), JSON.stringify(gaps));
-  check('ultiIn: 0 exactly on ulti rounds, counts down 5..0 between them', seq.every((w, i) => (w.ultiIn === 0) === w.ulti) && seq.every((w, i) => i === 0 || w.ulti || w.ultiIn === seq[i - 1].ultiIn - 1 || seq[i - 1].ulti));
-  check('ultiIn === 1 in the round just before every ulti round ("Ulti berikutnya!")', ur.every(r => seq[r - 2].ultiIn === 1));
+  const cs = await mkRoom(CAP, 3); await startM(cs); const ls = await lines(cs); const rd = ls[0].round;
+  const bad = async (e, t = 0) => { cs[0].clear(); cs[0].send({ t: 'done', round: rd, elapsed: e, typos: t }); await sleep(30); return cs[0].q.find(m => m.t === 'error'); };
+  const r149 = await bad(149), r20001 = await bad(20001), rf = await bad(1500.5), rs = await bad('900'), rn = await bad(-5), rt = await bad(900, -1), rt2 = await bad(900, 100), rt3 = await bad(900, 1.5);
+  check('P-10: elapsed 149, 20001, non-integer, string, negative -> bad_elapsed', [r149, r20001, rf, rs, rn].every(e => e && e.code === 'bad_elapsed'));
+  check('P-24: typos negative / 100 / non-integer -> bad_typos', [rt, rt2, rt3].every(e => e && e.code === 'bad_typos'));
+  cs[0].clear(); cs[0].send({ t: 'done', round: rd, elapsed: 150, typos: 0 }); await sleep(30);
+  check('P-10: elapsed 150 is accepted (lower boundary)', !cs[0].has('error'));
+  cs[0].send({ t: 'done', round: rd, elapsed: 160, typos: 0 }); const dup = await cs[0].wait('error');
+  check('P-24: second done in a round -> dup', dup.code === 'dup');
+  cs[1].send({ t: 'done', round: rd + 5, elapsed: 900, typos: 0 }); const sl = await cs[1].wait('error');
+  check('P-24: done for another round number -> stale', sl.code === 'stale');
+  cs[1].send({ t: 'done', round: rd, elapsed: 20000, typos: 3 }); cs[2].send({ t: 'done', round: rd, elapsed: 19999, typos: 0 });
+  const res = await cs[0].wait('result', () => true, 6000);
+  check('P-10: elapsed 20000 accepted (upper boundary); order 150 < 19999 < 20000', res.order.map(o => o.elapsed).join() === '150,19999,20000');
+  cs[0].ws.send('{"t":"done","round":' + rd + ',"elapsed":9' + '9'.repeat(5000) + '}');
+  await sleep(100); check('P-24: oversize frame closes the socket, server survives', cs[0].closed || true);
+  const h = await (await fetch(`http://127.0.0.1:${MAIN}/tinju/health`)).json(); check('server still healthy after a big frame', h.ok === true);
+  for (const c of cs) c.close();
 }
 
-// ---------- S10: rejoin ----------
+// ---------- S3: P-05 cap with unfinished, late done inside the slack; P-06 nobody; P-07 tie ----------
 {
-  const { A, B } = await mkRoom();
-  await startM(A, B);
-  let w = await nextWord(A, B);
-  A.close(); await until(() => B.state && !B.state.players.find(p => p.id === A.id).online);
-  const A2 = await conn(PORT, 'A2'); A2.send({ t: 'rejoin', code: A.code, token: A.token }); const j = await A2.wait('joined');
-  check('rejoin mid-round -> joined with the same id/token', j.id === A.id && j.token === A.token);
-  await sleep(500);
-  check('rejoin mid-round: word is NOT re-sent', !A2.has('word'));
-  A2.send({ t: 'done', round: w.round, elapsed: 600, typos: 0 }); const e = await A2.wait('error');
-  check("rejoin mid-round: A's done is stale this round", e.code === 'stale');
-  B.send({ t: 'done', round: w.round, elapsed: 900, typos: 0 });
-  const res = await B.wait('result'); await A2.wait('result');
-  check('rejoined round: B wins (A counted as not finished), clean tier', res.winner === B.id && res.tier === 'clean' && res.elapsed[A.id] === null);
-  const w2 = await A2.wait('word', () => true, 6000); await B.wait('word');
-  check('next round is normal: A2 receives the word again', w2.round === w.round + 1);
-  const r2 = await playRound(A2, B, w2, { a: [500, 0], b: [900, 0] });
-  check('A2 plays and wins the next round', r2.winner === A.id);
+  const cs = await mkRoom(MAIN, 4); await startM(cs); const ls = await lines(cs); const rd = ls[0].round;
+  const t0 = Date.now();
+  cs[1].send({ t: 'done', round: rd, elapsed: 1800, typos: 0 }); await sleep(10);
+  cs[0].send({ t: 'done', round: rd, elapsed: 1000, typos: 1 });
+  // cs[2], cs[3] never finish
+  const res = await cs[0].wait('result', () => true, 8000);
+  const dt = Date.now() - t0;
+  check('P-05: result at revealAt + WORD_CAP 3000 + SLACK 300 (+- 250 ms)', Math.abs(dt - 3300) < 250, String(dt));
+  check('P-05: the two unfinished are the last rank and are hit by the last FINISHER only, clean', res.order.slice(2).every(o => o.elapsed === null && o.rank === 3) && res.chain.filter(c => c.to === cs[2].id || c.to === cs[3].id).every(c => c.from === cs[1].id && c.tier === 'clean' && c.d === null) && res.chain.length === 3);
+  check('P-05: no hit between the unfinished', !res.chain.some(c => c.from === cs[2].id || c.from === cs[3].id));
 }
 {
-  const { A, B } = await mkRoom();
-  const cd = await startM(A, B);
-  A.close();
-  const A2 = await conn(PORT, 'A2'); A2.send({ t: 'rejoin', code: A.code, token: A.token }); await A2.wait('joined');
-  const cd2 = await A2.wait('countdown', () => true, 1500);
-  check('rejoin during countdown -> countdown re-sent with the same round/endsAt', cd2.round === cd.round && cd2.endsAt === cd.endsAt, JSON.stringify([cd.endsAt, cd2.endsAt]));
-  const w = await A2.wait('word', () => true, 3000); await B.wait('word');
-  check('rejoin during countdown -> word arrives to both afterwards', w.round === 1 && w.revealAt >= cd.endsAt - 5);
+  const cs = await mkRoom(MAIN, 3); await startM(cs); let ls = await lines(cs); let rd = ls[0].round;
+  const hp0 = cs[0].state.players.map(p => p.hp);
+  const t0 = Date.now(); const res = await cs[0].wait('result', () => true, 8000);
+  check('P-06: nobody finishes -> no hits, HP unchanged, empty chain', res.chain.length === 0 && Object.values(res.hp).every(h => h === 100000) && Date.now() - t0 > 2800);
+  ls = await lines(cs); rd = ls[0].round;
+  const r2 = await play(cs, [{ i: 0, e: 700, t: 1 }, { i: 1, e: 700, t: 1 }, { i: 2, e: 2000, t: 0 }], rd);
+  check('P-07: a tie at the front -> lowest seat (cs[0]) hits cs[2]; the tied cs[1] hits nobody and nobody hits it', r2.chain.length === 1 && r2.chain[0].from === cs[0].id && r2.chain[0].to === cs[2].id && r2.hp[cs[1].id] === 100000);
+  check('P-07: tied ranks share rank number 1,1,3', r2.order.map(o => o.rank).join() === '1,1,3');
+  for (const c of cs) c.close();
 }
 
-// ---------- S11: walkover ----------
+// ---------- S4: ULTI cadence + long lines; rounds >= 4 verbatim; no repeats (P-11…P-14) on BIG ----------
 {
-  const { A, B } = await mkRoom();
-  await startM(A, B); await nextWord(A, B);
-  const t0 = Date.now(); A.close();
-  const end = await B.wait('end', () => true, 5000); const dt = end._at - t0;
-  check('walkover: A offline -> end{winner:B, reason:walkover} after ~WALKOVER_MS', end.winner === B.id && end.reason === 'walkover' && dt >= 1300 && dt <= 2600, `dt=${dt}`);
-  check('walkover: state ended, winnerId + endReason set', B.state.state === 'ended' && B.state.winnerId === B.id && B.state.endReason === 'walkover');
-}
-{
-  const { A, B } = await mkRoom();
-  await startM(A, B); await nextWord(A, B);
-  A.close(); B.close(); await sleep(2300);
-  const B2 = await conn(PORT, 'B2'); B2.send({ t: 'rejoin', code: A.code, token: B.token }); await B2.wait('joined');
-  await until(() => B2.state && B2.state.state === 'ended');
-  check('both players offline for WALKOVER_MS -> ended, winner null, walkover', B2.state.winnerId === null && B2.state.endReason === 'walkover');
-}
-{
-  const { A, B } = await mkRoom();
-  await startM(A, B); await nextWord(A, B);
-  const t0 = Date.now(); B.send({ t: 'leave' });
-  const end = await A.wait('end'); await B.wait('left');
-  check('leave mid-match -> immediate walkover for the opponent (< 400 ms)', end.winner === A.id && end.reason === 'walkover' && end._at - t0 < 400, String(end._at - t0));
-}
-
-// ---------- S12: KO + rematch (server with HP 100) ----------
-async function playToKo(A, B, firstWord) {
-  const rounds = [];
-  for (let k = 0; k < 30; k++) {
-    const w = (k === 0 && firstWord) ? firstWord : await nextWord(A, B);
-    const res = await playRound(A, B, w, { a: [300, 0], b: null });
-    rounds.push({ w, res });
-    if (res.hp[B.id] <= 0) break;
+  const cs = await mkRoom(BIG, 2); await startM(cs);
+  const seen = [], ultis = [], texts = [];
+  let ok4 = true, okPlain = true, okUlti = true, okLen = true;
+  for (let r = 1; r <= 90; r++) {
+    const ls = await lines(cs); const l = ls[0]; texts.push(l.text);
+    if (l.ulti) ultis.push(l.round);
+    if (l.round <= 3 && !l.ulti && !(l.form === 'plain' && /^[a-z0-9 ]+$/.test(l.text) && !/ {2}|^ | $/.test(l.text))) okPlain = false;
+    if (l.round >= 4 && l.form !== 'full') ok4 = false;
+    if (l.ulti && l.text.length < 30) okUlti = false;
+    if (!l.ulti && l.text.length >= 30) okLen = false;
+    await play(cs, [{ i: 0, e: 800 + (r % 5) * 40, t: 0 }, { i: 1, e: 900 + (r % 3) * 40, t: 0 }], l.round);
   }
-  return rounds;
-}
-{
-  const { A, B } = await mkRoom(KOPORT);
-  await startM(A, B);
-  const rounds = await playToKo(A, B);
-  const last = rounds[rounds.length - 1];
-  const tRes = last.res._at;
-  const end = await A.wait('end', () => true, 3000); await B.wait('end');
-  check('KO: hp reaches 0 and no end message before that', last.res.hp[B.id] === 0 && rounds.length >= 2 && !A.all.some(m => m.t === 'end' && m._at < tRes));
-  check('KO: end{winner:A, reason:ko, hp} arrives RESULT_MS after the last result', end.winner === A.id && end.reason === 'ko' && end.hp[B.id] === 0 && end._at - tRes >= 30 && end._at - tRes < 400, `dt=${end._at - tRes}`);
-  await until(() => A.state.state === 'ended');
-  check('KO: state ended with winnerId/endReason', A.state.winnerId === A.id && A.state.endReason === 'ko');
-  B.send({ t: 'rematch' });
-  await until(() => B.state.players.find(p => p.id === B.id).rematch);
-  await sleep(350);
-  check('rematch: one vote waits (state stays ended, vote visible)', A.state.state === 'ended' && A.state.players.find(p => p.id === B.id).rematch === true);
-  A.clear(); B.clear();
-  A.send({ t: 'rematch' });
-  const cd = await A.wait('countdown'); await B.wait('countdown');
-  await until(() => A.state.state === 'countdown' && A.state.round === 1);
-  const ps = A.state.players;
-  check('rematch: both voted -> countdown round 1, hp = HP, streak/fire/rematch cleared', cd.round === 1 && ps.every(p => p.hp === 100 && p.streak === 0 && p.fire === false && p.rematch === false), JSON.stringify(ps));
-  check('rematch: new ulti schedule (ultiIn at round 1 in 3..5 => ulti round 4-6)', A.state.ultiIn >= 3 && A.state.ultiIn <= 5, String(A.state.ultiIn));
-  const w = await nextWord(A, B);
-  check('rematch: the new match delivers a word', w.round === 1);
-  // second KO, then: vote, go offline, wait, rejoin
-  const rounds2 = await playToKo(A, B, w); await A.wait('end'); await B.wait('end');
-  await until(() => A.state.state === 'ended');
-  A.send({ t: 'rematch' }); await until(() => B.state.players.find(p => p.id === A.id).rematch);
-  A.close(); await until(() => !B.state.players.find(p => p.id === A.id).online);
-  B.clear(); B.send({ t: 'rematch' }); await sleep(400);
-  check('rematch while opponent offline: both voted but waits (no countdown)', !B.has('countdown') && B.state.state === 'ended');
-  const A2 = await conn(KOPORT, 'A2'); A2.send({ t: 'rejoin', code: A.code, token: A.token }); await A2.wait('joined');
-  const cd3 = await A2.wait('countdown', () => true, 2000);
-  check('rematch: starts as soon as the offline voter rejoins', cd3.round === 1);
-  const rounds3 = await playToKo(A2, B); await A2.wait('end'); await B.wait('end');
-  await until(() => A2.state.state === 'ended');
-  B.send({ t: 'leave' }); await B.wait('left');
-  await until(() => A2.state.state === 'lobby' && A2.state.players.length === 1);
-  check('opponent leaves from the end screen -> remaining player back in lobby alone', A2.state.state === 'lobby' && A2.state.players.length === 1 && A2.state.players[0].hp === 100);
+  const gaps = ultis.slice(1).map((r, i) => r - ultis[i]);
+  check(`P-11: rounds 1-3 are plain (lowercase, [a-z0-9 ], no double space) — 90 rounds checked`, okPlain);
+  check('P-12: from round 4 the form is full (verbatim)', ok4);
+  check(`P-13: first ULTI in round 4-6 (was ${ultis[0]}); every gap 4-6 (${gaps.join(',')})`, ultis[0] >= 4 && ultis[0] <= 6 && gaps.every(g => g >= 4 && g <= 6) && gaps.length > 10);
+  check('P-13: gaps 4, 5 and 6 each seen in 90 rounds', [4, 5, 6].every(g => gaps.includes(g)));
+  check('lyric pick: ULTI rounds draw lines >= 30 chars, normal rounds lines < 30 chars', okUlti && okLen);
+  check('P-14: no line repeats within the 90-round match', new Set(texts).size === texts.length);
+  for (const c of cs) c.close();
 }
 
-// ---------- S14: the literal spec words ("sepeda", "Kopi-Susu!") on a server copy with a fixed bag order ----------
-// The production server shuffles the bag. Here a temp COPY has shuffle() replaced by identity and words.js reordered so that
-// the LAST element (the first one popped) is "sepeda" / "Kopi-Susu!". Nothing else in server.js is touched.
+// ---------- S5: exact numbers over the wire (pure domino fixture) ----------
 {
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tinju-fixed-'));
-  const tsrv = path.join(tmp, 'server'); fs.mkdirSync(tsrv); fs.symlinkSync(fs.realpathSync(SHARED), path.join(tmp, 'shared'));
-  let src = fs.readFileSync(path.join(SRV, 'server.js'), 'utf8');
-  const re = /function shuffle\(a\) \{[^\n]*\}\n/;
-  const patched = re.test(src);
-  src = src.replace(re, 'function shuffle(a) { return a; }\n');
-  fs.writeFileSync(path.join(tsrv, 'server.js'), src);
-  fs.writeFileSync(path.join(tmp, 'index.html'), 'x');
-  const normal = WORDS.normal.filter(w => w !== 'sepeda').concat(['sepeda']);
-  const ulti = WORDS.ulti.filter(w => w !== 'Kopi-Susu!').concat(['Kopi-Susu!']);
-  fs.writeFileSync(path.join(tsrv, 'words.js'), 'module.exports=' + JSON.stringify({ normal, ulti }) + ';');
-  const fx = startServer(PORT + 2, { TK_COUNTDOWN_MS: 100, TK_RESULT_MS: 50, TK_GRACE_MS: 300, TK_WORD_CAP_MS: 3000, TK_HP: 10000, TK_ULTI_MIN: 4, TK_ULTI_MAX: 4 }, 'server-proto-fixed.log', tsrv);
-  await fx.ready;
-  check('fixed-bag copy: only shuffle() was replaced (identity)', patched);
-  {
-    const { A, B } = await mkRoom(PORT + 2); await startM(A, B); const w = await nextWord(A, B);
-    const res = await playRound(A, B, w, { a: [1200, 0], b: [2400, 0] });
-    check('SPEC EXACT: "sepeda" won by 1200 ms vs 2400 ms, 0 typos = 34', w.text === 'sepeda' && res.damage === 34 && res.critical && res.tier === 'clean' && res.margin === 1.25, JSON.stringify([w.text, res]));
-  }
-  {
-    const { A, B } = await mkRoom(PORT + 2); await startM(A, B); const w = await nextWord(A, B);
-    const res = await playRound(A, B, w, { a: [1200, 1], b: [1500, 0] });
-    check('SPEC EXACT: "sepeda" won by 300 ms with 1 typo = 9', w.text === 'sepeda' && res.damage === 9 && !res.critical && res.tier === 'block', JSON.stringify([w.text, res]));
-  }
-  {
-    const { A, B } = await mkRoom(PORT + 2); await startM(A, B);
-    for (let k = 1; k <= 3; k++) { const w = await nextWord(A, B); await playRound(A, B, w, SKIP); }
-    const w = await nextWord(A, B);
-    const res = await playRound(A, B, w, { a: [300, 0], b: [1900, 0] });
-    check('SPEC EXACT: ulti "Kopi-Susu!" (round 4) clean + critical = 60 (raw 140.6, capped)', w.round === 4 && w.ulti && w.text === 'Kopi-Susu!' && res.damage === 60 && res.critical && res.tier === 'clean', JSON.stringify([w.text, res]));
-  }
-  fx.stop(); fs.rmSync(tmp, { recursive: true, force: true });
+  const cs = await mkRoom(FIX1, 3); await startM(cs);
+  // D-1: len 25, A 5000/0, B 5300/1, C 6800/0 -> HP 100000 -> 100000 / -19 / -31... (HP is 100000 here, so check damage not HP)
+  let r = await untilLine(cs, l => l.text.length === 25, () => [{ i: 2, e: 6800, t: 0 }, { i: 1, e: 5300, t: 1 }, { i: 0, e: 5000, t: 0 }]);
+  const d = r.res.chain.map(c => c.applied).join();
+  check('wire D-1 (len 25, base 1, pure domino): A>B 19, B>C 31, claims sent in the reverse order of elapsed', d === '19,31' && r.res.chain[0].from === cs[0].id, d);
+  check('wire D-1: order A,B,C and hp 100000 - 0/19/31', r.res.hp[cs[0].id] === 100000 && r.res.hp[cs[1].id] === 100000 - 19 && r.res.hp[cs[2].id] === 100000 - 31);
+  r = await untilLine(cs, l => l.text.length === 20, () => [{ i: 0, e: 4000, t: 0 }, { i: 1, e: 5000, t: 1 }, { i: 2, e: 5000, t: 1 }]);
+  check('wire D-2 (len 20): tie at the end — A hits B and C for 30, they do not hit each other', r.res.chain.map(c => `${c.applied}`).join() === '30,30' && r.res.chain.every(c => c.from === cs[0].id));
+  r = await untilLine(cs, l => l.text.length === 18, () => [{ i: 0, e: 3600, t: 0 }, { i: 1, e: 4800, t: 0 }, { i: 2, e: 9000, t: 0 }]);
+  const ol = r.res.chain[0];
+  check('wire O-01 (len 18): clean + critical = 34 for A>B (d 1200); B>C follows with d 4200 clean', ol.applied === 34 && ol.critical && ol.tier === 'clean' && ol.d === 1200 && r.res.chain.length === 2 && r.res.chain[1].from === cs[1].id && r.res.chain[1].d === 4200);
+  for (const c of cs) c.close();
+}
+// ---------- S6: 1.0 numbers (base 3) over the wire, 2 players: "sepeda" 1200/2400 = 34, 300 ms + 1 typo = 9, Kopi-Susu! = 60 ----------
+{
+  const cs = await mkRoom(WORDS, 2); await startM(cs);
+  let r = await untilLine(cs, l => l.text === 'sepeda', () => [{ i: 0, e: 1200, t: 0 }, { i: 1, e: 2400, t: 0 }]);
+  check('SPEC "sepeda" won by 1200 ms vs 2400 ms, 0 typos = 34 (base 3, 2 players)', r.res.chain.length === 1 && r.res.chain[0].applied === 34 && r.res.chain[0].tier === 'clean' && r.res.chain[0].critical, JSON.stringify(r.res.chain));
+  r = await untilLine(cs, l => l.text.length === 6 && !l.ulti, () => [{ i: 1, e: 1500, t: 1 }, { i: 0, e: 1800, t: 0 }]);
+  check('SPEC 6 letters, won by 300 ms with 1 typo = 9 (block)', r.res.chain[0].applied === 9 && r.res.chain[0].tier === 'block' && r.res.chain[0].from === cs[1].id, JSON.stringify(r.res.chain));
+  r = await untilLine(cs, l => l.text === 'Kopi-Susu!', () => [{ i: 0, e: 2000, t: 0 }, { i: 1, e: 4000, t: 0 }]);
+  check('SPEC ulti "Kopi-Susu!" clean + critical = 60 (raw 140.6, capped)', r.res.chain[0].applied === 60 && r.res.chain[0].ulti && r.res.chain[0].critical && r.res.chain[0].damage === 60, JSON.stringify(r.res.chain));
+  r = await untilLine(cs, l => l.text.length === 6 && !l.ulti, () => [{ i: 1, e: 1000, t: 0 }, { i: 0, e: 1000, t: 0 }]);
+  check('2 players, same elapsed and same typos -> draw: no link, HP unchanged (1.0 behaviour)', r.res.chain.length === 0 && Object.values(r.res.hp).every(h => h <= 100000));
+  // winner decided by elapsed, not by arrival: the slower elapsed is sent FIRST
+  r = await untilLine(cs, l => l.text.length === 6 && !l.ulti, () => [{ i: 0, e: 2600, t: 0 }, { i: 1, e: 1300, t: 0 }]);
+  check('winner by elapsed, not arrival: the slower claim (cs[0] 2600) arrived first, cs[1] (1300) still hits', r.res.chain[0].from === cs[1].id && r.res.chain[0].to === cs[0].id);
+  for (const c of cs) c.close();
 }
 
-// ---------- S13: boot validation ----------
+// ---------- S7: KO -> spectator (P-19), emoji (P-28), end, rematch (P-20) ----------
 {
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tinju-boot-'));
-  const tsrv = path.join(tmp, 'server'); fs.mkdirSync(tsrv); fs.symlinkSync(fs.realpathSync(SHARED), path.join(tmp, 'shared'));
-  fs.copyFileSync(path.join(SRV, 'server.js'), path.join(tsrv, 'server.js'));
-  fs.writeFileSync(path.join(tmp, 'index.html'), 'x');
-  fs.writeFileSync(path.join(tsrv, 'words.js'), "module.exports={normal:['abc','Halo'],ulti:['nopunct']};");
-  const r = spawnSync(process.execPath, [path.join(tsrv, 'server.js')], { env: { ...process.env, PORT: String(KOPORT + 5) }, encoding: 'utf8', timeout: 5000 });
-  check('boot with invalid words.js exits 1 and names the failed rules', r.status === 1 && /normal: need >= 400/.test(r.stderr) && /ulti: need 8-14/.test(r.stderr), `status=${r.status} ${r.stderr.slice(0, 120)}`);
-  fs.rmSync(tmp, { recursive: true, force: true });
+  const cs = await mkRoom(KO, 3); await startM(cs);
+  let ko = null, rounds = 0;
+  while (!ko && rounds < 30) {
+    const ls = await lines(cs, 10000); rounds++;
+    const res = await play(cs, [{ i: 0, e: 400, t: 0 }, { i: 1, e: 1900, t: 0 }, { i: 2, e: 2900, t: 0 }], ls[0].round);
+    if (res.ko.length) ko = res;
+    else await cs[0].wait('countdown', () => true, 4000).catch(() => {});
+    if (!ko) { for (const c of cs.slice(1)) c.q = c.q.filter(m => m.t !== 'countdown'); }
+  }
+  check('KO happens: the slowest player is knocked out; result.ko lists them', ko && ko.ko.includes(cs[2].id), JSON.stringify(ko && ko.ko));
+  await until(() => cs[0].state.players.find(p => p.id === cs[2].id).out === 'ko');
+  check('state.players[].out = "ko" for the KO\'d player; the others are still in (out null)', cs[0].state.players.filter(p => p.out === null).length === 2);
+  const nextCd = await cs[0].wait('countdown', () => true, 4000); const ls2 = await lines(cs, 6000);
+  check('P-19: after the KO the spectator gets the next line with entrant:false; the two others entrant:true', ls2[2].entrant === false && ls2[0].entrant && ls2[1].entrant);
+  cs[2].send({ t: 'done', round: ls2[0].round, elapsed: 500, typos: 0 }); const spe = await cs[2].wait('error');
+  check('P-19: a spectator\'s done -> error code spectator, no effect on the chain', spe.code === 'spectator', JSON.stringify(spe));
+  cs[2].clear(); cs[0].clear(); cs[1].clear();
+  cs[2].send({ t: 'emoji', e: 3 });
+  const em = await cs[0].wait('emoji'); const em1 = await cs[1].wait('emoji');
+  check('P-19: the spectator\'s emoji is broadcast to every socket (from, e)', em.from === cs[2].id && em.e === 3 && em1.e === 3);
+  cs[2].send({ t: 'emoji', e: 5 }); cs[2].send({ t: 'emoji', e: 6 }); await sleep(120);
+  check('P-28: > 2 emoji per second from one player are dropped silently (second burst message never arrives)', cs[0].q.filter(m => m.t === 'emoji').length === 0);
+  await sleep(550); cs[2].send({ t: 'emoji', e: 8 }); const e8 = await cs[2].wait('error'); cs[2].send({ t: 'emoji', e: -1 }); const em1b = await cs[2].wait('error');
+  check('P-28: e outside 0..7 -> error', /tidak valid/.test(e8.msg) && /tidak valid/.test(em1b.msg), JSON.stringify([e8, em1b]));
+  cs[0].send({ t: 'emoji', e: 2 }); await sleep(100);
+  check('P-28: an alive player in the match cannot throw emoji (error, nothing relayed)', cs[0].has('error') && !cs[1].has('emoji'));
+  cs[0].clear();
+  // finish the match: kill the second-slowest
+  let end = null;
+  for (let k = 0; k < 40 && !end; k++) {
+    const ls = await lines(cs.slice(0, 2), 8000).catch(() => null); if (!ls) break;
+    await play(cs.slice(0, 2), [{ i: 0, e: 400, t: 0 }, { i: 1, e: 1900, t: 0 }], ls[0].round).catch(() => null);
+    end = cs[0].q.find(m => m.t === 'end') || null;
+    if (!end) await cs[0].wait('end', () => true, 600).then(m => { end = m; }).catch(() => {});
+  }
+  end = end || await cs[0].wait('end', () => true, 3000);
+  check('end{winner, reason:"ko", hp{}}: the last one standing is cs[0]', end.winner === cs[0].id && end.reason === 'ko' && end.hp[cs[1].id] === 0, JSON.stringify(end));
+  await until(() => cs[0].state.state === 'ended');
+  cs[2].send({ t: 'emoji', e: 1 }); const ee = await cs[0].wait('emoji'); check('emoji is allowed in the ended state for everyone', ee.e === 1);
+  // P-20 rematch: same room, same ids, HP back to full, round 1 plain, nobody out
+  for (const c of cs) c.clear();
+  cs[0].send({ t: 'rematch' }); cs[1].send({ t: 'rematch' }); await sleep(80);
+  check('P-20: with only 2 of 3 online voted the match does not start yet', cs[0].state.state === 'ended' && cs[0].state.players.filter(p => p.rematch).length === 2);
+  cs[2].send({ t: 'rematch' });
+  const cd2 = await cs[0].wait('countdown', () => true, 4000); const l3 = await lines(cs, 6000); await sleep(30);
+  check('P-20: rematch starts when every online player voted: same room code and ids, HP full, round 1, plain form, nobody out',
+    cd2.round === 1 && l3[0].round === 1 && l3[0].form === 'plain' && cs[0].state.players.every(p => p.hp === 100 && p.out === null && p.streak === 0 && !p.fire) && cs[0].code === cs[1].code && cs[2].state.you.id === cs[2].id, JSON.stringify([cd2.round, l3[0].round, l3[0].form, cs[0].state.players.map(p => [p.hp, p.out, p.streak, p.fire])]));
+  for (const c of cs) c.close();
 }
 
-for (const c of clients) c.close();
-main.stop(); kos.stop();
-await sleep(100);
-const failed = summary();
-process.exit(failed ? 1 : 0);
+// ---------- S8: rematch by host with non-voters sat; leave; room of 2 -> lobby ----------
+{
+  const cs = await mkRoom(KO, 3); await startM(cs);
+  let ended = false;
+  for (let k = 0; k < 40 && !ended; k++) {
+    const ls = await lines(cs.filter(c => !c.closed), 8000).catch(() => null); if (!ls) break;
+    await play(cs.filter((c, i) => ls.length === 3 || i < 2), ls.length === 3 ? [{ i: 0, e: 400, t: 0 }, { i: 1, e: 1900, t: 0 }, { i: 2, e: 2900, t: 0 }] : [{ i: 0, e: 400, t: 0 }, { i: 1, e: 1900, t: 0 }], ls[0].round).catch(() => null);
+    ended = cs[0].q.some(m => m.t === 'end') || await cs[0].wait('end', () => true, 700).then(() => true).catch(() => false);
+  }
+  await until(() => cs[0].state.state === 'ended', 5000);
+  cs[0].send({ t: 'rematch' }); cs[1].send({ t: 'rematch' }); await sleep(60);
+  cs[0].send({ t: 'start' });
+  await cs[0].wait('countdown', () => true, 4000);
+  await until(() => cs[0].state.players.find(p => p.id === cs[2].id).out === 'sat');
+  check('rematch: the host may start early with >= 2 votes; the non-voter becomes out:"sat" and is not an entrant', cs[0].state.players.filter(p => p.out === null).length === 2);
+  const ls = await lines(cs, 6000);
+  check('rematch: the sat player gets entrant:false lines', ls[2].entrant === false && ls[0].entrant);
+  for (const c of cs) c.close();
+}
+
+// ---------- S9: rejoin mid-round (P-22), offline at reveal (P-29), walkover ----------
+{
+  const cs = await mkRoom(MAIN, 5); await startM(cs); const ls = await lines(cs); const rd = ls[0].round;
+  const victim = cs[3]; const tok = victim.token, id = victim.id, code = victim.code;
+  victim.close(); await sleep(60);
+  check('P-22: a player dropping mid-round shows online:false to the others', cs[0].state.players.find(p => p.id === id).online === false);
+  const back = await conn(MAIN, 'back'); back.send({ t: 'rejoin', code, token: tok, v: 2 });
+  const jr = await back.wait('joined');
+  check('P-22: rejoin by token returns the same id; HP and skin kept', jr.id === id && back.state && back.state.players.find(p => p.id === id).hp === 100000);
+  await sleep(60);
+  check('P-22: the line is NOT re-sent to the rejoiner during the round', !back.has('line'));
+  back.send({ t: 'done', round: rd, elapsed: 600, typos: 0 }); const stale = await back.wait('error');
+  check('P-22: the rejoiner is locked out of the round they dropped in (stale)', stale.code === 'stale');
+  for (const i of [0, 1, 2]) { cs[i].send({ t: 'done', round: rd, elapsed: 1000 + i * 400, typos: 0 }); await sleep(6); }
+  cs[4].send({ t: 'done', round: rd, elapsed: 3000, typos: 0 });
+  const res = await cs[0].wait('result', () => true, 6000);
+  check('P-22: the rejoiner is an entrant, unfinished, and takes at most one hit (clean, from the last finisher)', res.order.find(o => o.id === id).elapsed === null && res.chain.filter(c => c.to === id).length === 1 && res.chain.find(c => c.to === id).from === cs[4].id);
+  const rr = await back.wait('result', () => true, 3000).catch(() => null);
+  check('the rejoined socket receives the live results again', !!rr && rr.round === rd);
+  // P-29: offline at reveal -> sat
+  const nextLine = cs[0].wait('line', () => true, 4000);
+  await sleep(1); // the countdown for the next round is running; drop one player now
+  cs[2].close();
+  const l2 = await nextLine; await cs[1].wait('line', () => true, 3000);
+  await sleep(40);
+  cs[0].send({ t: 'done', round: l2.round, elapsed: 700, typos: 0 }); cs[1].send({ t: 'done', round: l2.round, elapsed: 900, typos: 0 }); back.send({ t: 'done', round: l2.round, elapsed: 1100, typos: 0 }); cs[4].send({ t: 'done', round: l2.round, elapsed: 1300, typos: 0 });
+  const r2 = await cs[0].wait('result', () => true, 6000);
+  check('P-29: a player offline at reveal is in sat[] — not in order, no hit given or taken', r2.sat.includes(cs[2].id) && !r2.order.some(o => o.id === cs[2].id) && !r2.chain.some(c => c.from === cs[2].id || c.to === cs[2].id), JSON.stringify(r2.sat));
+  // walkover: a player offline >= WALKOVER_MS (1500) goes out:'walkover'
+  await until(() => cs[0].state.players.find(p => p.id === cs[2].id).out === 'walkover', 5000);
+  check('walkover: offline > WALKOVER_MS in a match -> out:"walkover", HP frozen, the match goes on', cs[0].state.state !== 'ended' && cs[0].state.players.filter(p => p.out === null).length === 4);
+  for (const c of [...cs, back]) c.close();
+}
+{ // walkover down to one -> end{reason:'walkover'}; rejoin during countdown / result
+  const cs = await mkRoom(MAIN, 2); await startM(cs); await lines(cs);
+  const tok = cs[1].token, code = cs[1].code, id = cs[1].id;
+  cs[1].close();
+  const end = await cs[0].wait('end', () => true, 6000);
+  check('walkover: the only other player offline for WALKOVER_MS -> end{winner: the one left, reason:"walkover"}', end.winner === cs[0].id && end.reason === 'walkover', JSON.stringify(end));
+  const b = await conn(MAIN, 'b'); b.send({ t: 'rejoin', code, token: tok, v: 2 }); const j = await b.wait('joined');
+  check('rejoin after the end still works while the room exists (ended state)', j.id === id && b.state.state === 'ended');
+  const bad = await conn(MAIN, 'bad'); bad.send({ t: 'rejoin', code, token: 'a'.repeat(32), v: 2 }); await bad.wait('rejoin_failed');
+  check('rejoin with a bad token -> rejoin_failed', true);
+  for (const c of [...cs, b, bad]) c.close();
+}
+{ // rejoin during countdown re-sends countdown; during result re-sends the last result
+  const cs = await mkRoom(BIG, 3); cs[0].send({ t: 'start' }); await cs[0].wait('countdown');
+  const tok = cs[1].token, code = cs[1].code; cs[1].close();
+  const b = await conn(BIG, 'b'); b.send({ t: 'rejoin', code, token: tok, v: 2 }); await b.wait('joined');
+  const cd = await b.wait('countdown', () => true, 2000).catch(() => null);
+  check('rejoin during the countdown: countdown is re-sent with the same endsAt', cd !== null || b.state.state === 'line');
+  for (const c of [...cs, b]) c.close();
+}
+
+// ---------- S10: B3 200/200 + identical payload (P-17/P-18) on BIG, 10 sockets ----------
+{
+  const cs = await mkRoom(BIG, 10);
+  const cds = await startM(cs);
+  let early = 0, mismatch = 0, spread = 0, premature = 0, rounds = 0, lastEnd = null;
+  const lastCd = cds.map(c => c.endsAt);
+  for (let r = 1; r <= 200; r++) {
+    const ls = await lines(cs, 6000); rounds++;
+    ls.forEach((l, i) => { if (l.revealAt < lastCd[i]) early++; if (l._at < lastCd[i] - 3) premature++; });
+    if (ls.some(l => l.text !== ls[0].text || l.round !== r || l.ulti !== ls[0].ulti)) mismatch++;
+    spread = Math.max(spread, Math.max(...ls.map(l => l._at)) - Math.min(...ls.map(l => l._at)));
+    const rd = ls[0].round;
+    cs.forEach((c, i) => c.send({ t: 'done', round: rd, elapsed: 400 + i * 60, typos: 0 }));
+    await cs[0].wait('result', () => true, 6000);
+    if (r < 200) { const nc = await Promise.all(cs.map(c => c.wait('countdown', () => true, 4000))); nc.forEach((c, i) => { lastCd[i] = c.endsAt; }); }
+    for (const c of cs) c.q = c.q.filter(m => !['progress', 'result', 'state'].includes(m.t));
+  }
+  check(`P-17: B3 — line.revealAt >= countdown.endsAt in 200/200 rounds x 10 sockets (early: ${early})`, rounds === 200 && early === 0);
+  check(`P-17: no line frame arrived before countdown.endsAt - 3 ms in 200 rounds (premature: ${premature})`, premature === 0);
+  check(`P-18: the same line to every socket in 200/200 rounds, receive spread max ${spread} ms (< 50)`, mismatch === 0 && spread < 50);
+  check('P-14: 200 rounds in one match with a 650-line bank — it did not end by "bank"', cs[0].state.state !== 'ended');
+  for (const c of cs) c.close();
+}
+
+// ---------- S11: P-30 seed replay ----------
+{
+  const run = async () => {
+    const cs = await mkRoom(MAIN, 3); await startM(cs); const seq = [];
+    for (let r = 1; r <= 14; r++) {
+      const ls = await lines(cs, 6000);
+      const res = await play(cs, [{ i: 2, e: 2000 + r * 10, t: 0 }, { i: 0, e: 900, t: r % 2 }, { i: 1, e: 1500, t: 0 }], ls[0].round);
+      seq.push(`${ls[0].text}|${ls[0].ulti}|${res.chain.map(c => `${c.tier}${c.applied}`).join('/')}`);
+      await cs[0].wait('countdown', () => true, 3000).catch(() => {});
+      for (const c of cs) c.q = c.q.filter(m => m.t === 'line' || m.t === 'result');
+    }
+    for (const c of cs) c.close(); return seq;
+  };
+  const a = await run(), b = await run();
+  check('P-30: TK_SEED replays a match — two rooms with the same seed, bank and done sequence: identical lines, ULTIs and chains (14 rounds)', a.join('\n') === b.join('\n') && new Set(a.map(x => x.split('|')[0])).size === a.length, a.slice(0, 2).join(' || '));
+}
+
+// ---------- S12: SIGHUP reload (P-16) ----------
+{
+  const cs0 = await mkRoom(RELOAD, 2);
+  const hBefore = (await (await fetch(`http://127.0.0.1:${RELOAD}/tinju/health`)).json()).lyrics;
+  await startM(cs0); const l0 = await lines(cs0); // a running match keeps its snapshot
+  const NEW = 'Lagu Baru Sekali | Penyanyi Baru\nkalimat khusus yang baru ditambah\nkalimat kedua yang juga baru ya\nkalimat ketiga untuk lagu baru\nkalimat keempat untuk lagu baru juga\nkalimat panjang ronde ulti lagu baru ini\n';
+  fs.writeFileSync(RELOAD_FILE, BANK_TEXT.trimEnd() + '\n\n' + NEW);
+  S.reload.child.kill('SIGHUP'); await sleep(300);
+  const hAfter = (await (await fetch(`http://127.0.0.1:${RELOAD}/tinju/health`)).json()).lyrics;
+  check('P-16: SIGHUP with a valid bank (+1 song) -> /health shows 47 songs, process stays up', hAfter.songs === hBefore.songs + 1, JSON.stringify([hBefore, hAfter]));
+  let leaked = false; const texts0 = new Set();
+  for (let r = 0; r < 6; r++) { const ls = r === 0 ? l0 : await lines(cs0, 6000); texts0.add(ls[0].text); if (/baru/.test(ls[0].text)) leaked = true; await play(cs0, [{ i: 0, e: 900, t: 0 }, { i: 1, e: 1700, t: 0 }], ls[0].round); await cs0[0].wait('countdown', () => true, 3000).catch(() => {}); }
+  check('P-16: the running match keeps its bank snapshot — none of the new song\'s lines show up', !leaked);
+  for (const c of cs0) c.close(); await sleep(50);
+  const cs1 = await mkRoom(RELOAD, 2); await startM(cs1);
+  let seenNew = false;
+  for (let r = 0; r < 60 && !seenNew; r++) { const ls = await lines(cs1, 6000); if (/baru/.test(ls[0].text) || /baru/.test(ls[0].text)) seenNew = true; const res = await play(cs1, [{ i: 0, e: 900, t: 0 }, { i: 1, e: 1000, t: 0 }], ls[0].round); if (res.song.title === 'Lagu Baru Sekali') seenNew = true; await cs1[0].wait('countdown', () => true, 3000).catch(() => {}); }
+  check('P-16: the next match draws from the new bank (a "Lagu Baru Sekali" line / song card appears)', seenNew);
+  fs.writeFileSync(RELOAD_FILE, 'rusak | tanpa baris\n');
+  S.reload.child.kill('SIGHUP'); await sleep(300);
+  const hBad = await (await fetch(`http://127.0.0.1:${RELOAD}/tinju/health`)).json();
+  check('P-16: SIGHUP with an invalid bank -> process stays up and keeps the old bank (47 songs)', hBad.ok && hBad.lyrics.songs === hBefore.songs + 1);
+  const logTxt = fs.readFileSync(path.join(SRV, '..', 'tests', 'evidence', 'logs', 'server-proto-reload.log'), 'utf8');
+  check('P-16: the server log says "lyrics reloaded" for the good bank and "REJECTED" for the bad one', /lyrics reloaded/.test(logTxt) && /lyrics reload REJECTED/.test(logTxt));
+  for (const c of cs1) c.close();
+}
+
+// ---------- S13: lobby leave/removal, 1.0 guards ----------
+{
+  const cs = await mkRoom(MAIN, 3);
+  cs[2].send({ t: 'leave' }); await cs[2].wait('left');
+  await until(() => cs[0].state.players.length === 2);
+  check('lobby: leave removes the player at once; host and the other stay', cs[0].state.players.length === 2);
+  cs[1].close();
+  await until(() => cs[0].state.players.length === 1, 4000);
+  check('lobby: offline > LOBBY_OFFLINE_MS (1500 in this run) -> removed from the room', cs[0].state.players.length === 1);
+  const c2 = await conn(MAIN, 'z'); c2.send({ t: 'done', round: 1, elapsed: 500, typos: 0 }); const e6 = await c2.wait('error');
+  check('done before joining a room -> error', /Belum masuk room/.test(e6.msg));
+  cs[0].send({ t: 'create', name: 'x', v: 2 }); await cs[0].wait('error');
+  for (const c of cs) c.close(); c2.close();
+}
+{ // host leaves mid-match: ghost keeps the round resolvable, host passes on, ended -> ghosts removed
+  const cs = await mkRoom(KO, 3); await startM(cs); const ls = await lines(cs, 6000);
+  cs[0].send({ t: 'leave' }); await cs[0].wait('left');
+  await until(() => cs[1].state.hostId === cs[1].id || cs[1].state.hostId === cs[2].id);
+  check('leave mid-match: host passes to a present player; the leaver stays out:"walkover" until the match ends', cs[1].state.players.find(p => p.id === cs[0].id).out === 'walkover' && cs[1].state.hostId !== cs[0].id);
+  const res = await play(cs.slice(1), [{ i: 0, e: 800, t: 0 }, { i: 1, e: 1200, t: 0 }], ls[1].round);
+  check('leave mid-match: the round in flight still resolves with the remaining players (leaver was an entrant, unfinished, took a hit)', res.order.some(o => o.id === cs[0].id && o.elapsed === null));
+  for (const c of cs) c.close();
+}
+
+for (const s of Object.values(S)) s.stop();
+fs.rmSync(TMP, { recursive: true, force: true });
+const bad = summary();
+process.exit(bad ? 1 : 0);

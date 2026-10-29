@@ -1,0 +1,348 @@
+# Tinju Kata 2.0 lyric bank -- PLACEHOLDER CONTENT.
+# Every title, artist and line below is invented for the build (no real song is quoted).
+# Replace this file with the real bank (same format) and send SIGHUP to the server; running matches keep their snapshot.
+# Format: blocks separated by a blank line; first line `title | artist`; then 4-6 lines. ASCII only, 15-45 chars (plain form too).
+
+Senja di Pelabuhan Kecil | Grup Contoh 01
+Bulan bernyanyi sendirian
+Kakak melipat perahu kertas
+Kita melipat perahu kertas
+Adik menyapa pagi, tapi kakak menutup jendela
+Sahabat menyebut namamu
+
+Kereta Terakhir | Penyanyi Contoh 02
+Bapak menunggu di stasiun
+Dia menunggu kereta malam?
+Kota bernyanyi sendirian
+Laut pergi tanpa pamit, aku menyalakan lampu
+Jalan datang membawa kabar?
+Laut menyapa pagi, malam menyimpan cerita
+
+Payung Biru | Grup Contoh 03
+Ibu berhenti sebentar, laut duduk di tangga!
+Kota menghitung bintang
+Kakak menyanyi di teras
+Kakak menyebut namamu
+Bulan pergi tanpa pamit
+
+Warung Kopi Jam Dua | Grup Contoh 04
+Adik berlari ke pantai, laut duduk di tangga?
+Bulan membawa payung biru
+Kamu menjaga api kecil!
+Sahabat menyalakan lampu
+Kopi mencari arah pulang.
+
+Surat untuk Besok | Grup Contoh 05
+Ibu menyebut namamu, angin menutup jendela
+Sahabat menunggu kereta malam
+Kota menjaga api kecil
+Ibu duduk di tangga - adik duduk di tangga!
+Kita menjaga api kecil
+Dia mengayuh pelan
+
+Perahu Kertas Kita | Trio Contoh 06
+Sahabat menulis surat lama
+Adik menunggu kereta malam
+Aku menulis surat lama
+Sahabat menyapa pagi
+Senja duduk di tangga - bapak berjalan pelan?
+
+Lampu Teras | Trio Contoh 07
+Malam mencari arah pulang
+Hujan membawa payung biru?
+Senja melukis langit sore.
+Kopi menyebut namamu, bapak berlari ke pantai
+Bulan memeluk angin dingin!
+
+Hujan Bulan Ini | Duo Contoh 08
+Sahabat memeluk angin dingin?
+Kota bermain di halaman.
+Bulan tertawa tanpa suara - adik menyapa pagi
+Bapak bernyanyi sendirian
+Malam duduk di tangga
+
+Jalan Pulang | Grup Contoh 09
+Aku berjalan pelan
+Malam melihat kapal lewat
+Kita berlari ke pantai, dia berjalan pelan?
+Dia menunggu di stasiun
+Aku mengayuh pelan
+
+Kota Tanpa Nama | Band Contoh 10
+Sahabat melukis langit sore
+Malam berlari ke pantai
+Sahabat mengayuh pelan, kakak berjalan pelan!
+Teman mencari arah pulang
+Malam menghitung bintang
+
+Bintang di Atap | Duo Contoh 11
+Kita menunggu kereta malam, kita menyapa pagi
+Aku menyeduh kopi hitam
+Sahabat menyeduh kopi hitam
+Bulan mencari arah pulang.
+Pagi tertawa tanpa suara
+
+Sepeda Tua | Duo Contoh 12
+Pagi menyapa pagi - aku berhenti sebentar
+Kakak menyimpan cerita
+Pagi menghitung bintang
+Ibu memeluk angin dingin
+Kopi berjalan pelan!
+
+Pagi yang Pelan | Trio Contoh 13
+Hujan menutup jendela
+Teman berhenti sebentar
+Dia melipat perahu kertas
+Dia mencari arah pulang, bulan mengayuh pelan
+Kita duduk di tangga.
+
+Tangga Belakang | Grup Contoh 14
+Jalan menyebut namamu
+Kakak menunggu di stasiun
+Bulan menutup jendela, jalan menyimpan cerita
+Aku duduk di tangga!
+Kamu menutup jendela - teman menyebut namamu
+Bapak menulis surat lama
+
+Kabar dari Pantai | Penyanyi Contoh 15
+Ibu pulang naik sepeda.
+Kita menyimpan cerita - kakak berjalan pelan?
+Kakak mencari arah pulang
+Sahabat datang membawa kabar
+Senja menyapa pagi, laut melihat kapal lewat!
+Angin menutup jendela.
+
+Jendela Terbuka | Duo Contoh 16
+Dia menjaga api kecil, hujan menyalakan lampu
+Malam menulis surat lama!
+Bapak menyalakan lampu
+Bapak melihat kapal lewat
+Dia berjalan pelan - senja pulang naik sepeda
+Pagi menunggu kereta malam
+
+Api Kecil | Grup Contoh 17
+Sahabat menari di bawah hujan
+Ibu bermain di halaman
+Kopi bermain di halaman
+Aku memeluk angin dingin
+Kopi berjalan pelan - laut duduk di tangga
+Dia menulis surat lama - aku berjalan pelan!
+
+Nada di Halaman | Band Contoh 18
+Kakak menyimpan cerita, lalu ibu menyapa pagi
+Malam menjaga api kecil
+Laut duduk di tangga
+Adik berlari ke pantai
+Kita menyanyi di teras, kamu menyalakan lampu
+Laut pulang naik sepeda?
+
+Peron Sembilan | Grup Contoh 19
+Kopi menyalakan lampu, ibu berjalan pelan?
+Jalan menunggu kereta malam
+Jalan berhenti sebentar?
+Teman pulang naik sepeda, kita berjalan pelan
+Kamu pergi tanpa pamit!
+Adik menunggu di stasiun
+
+Langit Sore | Trio Contoh 20
+Angin bermain di halaman
+Ibu melipat perahu kertas
+Jalan menyeduh kopi hitam!
+Kamu berhenti sebentar, adik menyebut namamu
+Angin pulang naik sepeda
+
+Cerita Kemarin | Penyanyi Contoh 21
+Adik duduk di tangga
+Ibu berlari ke pantai - kamu menyimpan cerita
+Jalan menari di bawah hujan
+Jalan menjaga api kecil
+Kopi menyanyi di teras, aku mengayuh pelan?
+Dia pulang naik sepeda
+
+Arah Angin | Duo Contoh 22
+Angin berlari ke pantai?
+Adik pulang naik sepeda
+Pagi mencari arah pulang
+Pagi menari di bawah hujan.
+Pagi berhenti sebentar, senja duduk di tangga
+
+Nama di Pasir | Duo Contoh 23
+Sahabat melihat kapal lewat
+Laut mengayuh pelan, adik tertawa tanpa suara
+Bulan duduk di tangga
+Sahabat melipat perahu kertas
+Jalan menunggu di stasiun.
+Aku menyanyi di teras, angin duduk di tangga
+
+Malam Sebelum Pergi | Band Contoh 24
+Hujan tertawa tanpa suara
+Teman menjaga api kecil, kota menyapa pagi
+Teman pulang naik sepeda
+Senja menyeduh kopi hitam.
+Kakak berlari ke pantai.
+Pagi mengayuh pelan, lalu dia mengayuh pelan!
+
+Teh Manis | Penyanyi Contoh 25
+Ibu menyalakan lampu, adik menjaga api kecil
+Dia menyimpan cerita
+Ibu mengayuh pelan, hujan membawa payung biru
+Adik menyimpan cerita
+Kota menunggu di stasiun
+Hujan menjaga api kecil
+
+Radio Tetangga | Grup Contoh 26
+Kamu menunggu di stasiun
+Kopi menyapa pagi
+Aku berlari ke pantai
+Ibu berlari ke pantai, laut menyebut namamu
+Adik membawa payung biru
+
+Kapal Lewat | Penyanyi Contoh 27
+Dia menulis surat lama
+Malam menyimpan cerita, kita menyebut namamu
+Bapak menyebut namamu
+Kakak mengayuh pelan
+Dia menutup jendela
+
+Layang-Layang | Penyanyi Contoh 28
+Ibu berhenti sebentar, aku berlari ke pantai?
+Malam menyapa pagi - malam menyalakan lampu
+Kamu duduk di tangga
+Adik memeluk angin dingin?
+Laut bernyanyi sendirian
+Ibu bernyanyi sendirian
+
+Lorong Sunyi | Grup Contoh 29
+Hujan menyebut namamu
+Kamu berjalan pelan, senja menyapa pagi
+Teman berlari ke pantai
+Laut pergi tanpa pamit.
+Teman duduk di tangga, kita berjalan pelan
+Malam menyeduh kopi hitam
+
+Matahari Kecil | Band Contoh 30
+Kopi menyalakan lampu, kamu berjalan pelan?
+Adik mencari arah pulang?
+Kamu berlari ke pantai, kamu mengayuh pelan
+Kakak menari di bawah hujan?
+Bapak pergi tanpa pamit
+Adik menyeduh kopi hitam
+
+Rumah di Ujung Gang | Duo Contoh 31
+Jalan menyanyi di teras
+Pagi berlari ke pantai
+Kakak menyalakan lampu, adik menyimpan cerita
+Bulan menari di bawah hujan
+Kamu berlari ke pantai
+
+Bangku Taman | Duo Contoh 32
+Dia menunggu di stasiun, senja berjalan pelan
+Bapak menyimpan cerita.
+Kopi menyimpan cerita
+Jalan menyanyi di teras, ibu menutup jendela
+Angin menari di bawah hujan?
+Teman pergi tanpa pamit
+
+Kota Hujan | Grup Contoh 33
+Kakak menghitung bintang
+Pagi menyebut namamu
+Kota berhenti sebentar
+Dia menyapa pagi, lalu angin mengayuh pelan
+Senja menyebut namamu.
+
+Jam Dinding | Trio Contoh 34
+Kopi duduk di tangga.
+Kota menyebut namamu, laut berlari ke pantai
+Jalan bermain di halaman!
+Kamu menari di bawah hujan
+Kopi membawa payung biru
+
+Musim Mangga | Band Contoh 35
+Adik menyapa pagi
+Pagi melipat perahu kertas.
+Jalan menutup jendela, kopi menyimpan cerita
+Laut berlari ke pantai?
+Teman berjalan pelan, kopi menyimpan cerita
+Bapak berlari ke pantai
+
+Gerbang Sekolah | Trio Contoh 36
+Hujan menunggu di stasiun
+Dia menyanyi di teras, kakak menutup jendela
+Senja menari di bawah hujan!
+Senja menutup jendela
+Kota menyanyi di teras
+
+Sebuah Lagu Pendek | Duo Contoh 37
+Teman menyimpan cerita - pagi berjalan pelan!
+Malam menyalakan lampu
+Kita melihat kapal lewat
+Kopi menunggu di stasiun?
+Ibu menyapa pagi
+
+Pelabuhan Lama | Band Contoh 38
+Sahabat bermain di halaman.
+Ibu menyalakan lampu
+Dia mencari arah pulang
+Laut menjaga api kecil, jalan menutup jendela
+Pagi memeluk angin dingin, aku mengayuh pelan
+Aku menutup jendela
+
+Tali Sepatu | Band Contoh 39
+Kakak memeluk angin dingin
+Laut menyanyi di teras
+Kakak menutup jendela
+Aku menjaga api kecil
+Kota menyapa pagi, lalu kopi menutup jendela!
+
+Dermaga Tujuh | Duo Contoh 40
+Aku menyimpan cerita
+Teman melukis langit sore?
+Adik mengayuh pelan, kita menghitung bintang
+Aku pergi tanpa pamit - kopi menyebut namamu
+Aku menghitung bintang
+Ibu duduk di tangga
+
+Sinyal Lemah | Duo Contoh 41
+Adik menyalakan lampu, hujan menutup jendela
+Teman datang membawa kabar
+Kita menyapa pagi, angin menyapa pagi?
+Kita mencari arah pulang
+Teman memeluk angin dingin
+Malam menari di bawah hujan
+
+Bulan di Genting | Band Contoh 42
+Ibu menyebut namamu!
+Hujan menunggu di stasiun - pagi menyapa pagi
+Dia menyebut namamu
+Malam berhenti sebentar!
+Jalan duduk di tangga - kota mengayuh pelan?
+Pagi bernyanyi sendirian!
+
+Pasar Pagi | Duo Contoh 43
+Jalan berlari ke pantai!
+Hujan menutup jendela, hujan menyalakan lampu
+Aku menunggu kereta malam!
+Kamu tertawa tanpa suara
+Kita membawa payung biru
+
+Peta Kertas | Duo Contoh 44
+Kota datang membawa kabar
+Senja berlari ke pantai
+Laut menghitung bintang
+Sahabat menyebut namamu, angin menyapa pagi
+Jalan berjalan pelan.
+Angin berjalan pelan, aku berhenti sebentar!
+
+Titik Temu | Penyanyi Contoh 45
+Kakak datang membawa kabar
+Kota mencari arah pulang
+Pagi menjaga api kecil
+Malam melipat perahu kertas.
+Adik menyapa pagi, kota menyeduh kopi hitam
+
+Lagu Pengantar Tidur | Trio Contoh 46
+Angin duduk di tangga - malam mengayuh pelan?
+Kopi menyalakan lampu
+Malam memeluk angin dingin
+Aku melukis langit sore?
+Kakak bermain di halaman?
