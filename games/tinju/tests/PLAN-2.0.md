@@ -1,6 +1,6 @@
 # Tinju Kata 2.0.0 — Test Plan (DRAFT)
 
-Date: 2026-10-30 · Author: A-na (QA) · Status: DRAFT. It's written from the brief alone; `DESIGN.md` doesn't exist yet (checked `git pull` on 2026-10-30, branch at `c16b253`).
+Date: 2026-10-30 · Author: A-na (QA) · Status: DRAFT. Written from the brief alone; then reconciled with Jiwoo's `DESIGN.md` (`d68b91d`, landed in this clone while I wrote — see §3a, which overrides §0 and §3 where they differ).
 Sources: `games/tinju/README.md` @ `c16b253` (the brief, "Rules" section is the oracle source) · 1.0 code `server/server.js` (`CFG_DEFAULTS` line 19, `resolve()` lines 179–207) · 1.0 suites in `tests/` · my 1.0 gate result (`stella/tinju-gate-result.md`, 2026-10-29: B1 and B3 found there).
 Scope: server round engine (N players, domino), lyric bank, client for N players, audio, real phones, KO-clustering simulation. Out of scope: the art itself (looked at, not graded), deploy, nginx/systemd.
 Tools I wrote for this plan (test-only, in `tests/plan-2.0/`): `oracle-2.0.mjs` (my implementation of the brief's Rules, not read from any agent's code), `rows-2.0.mjs` (prints every row below), `sim-ko.mjs` (the KO-clustering model in §5). `node tests/plan-2.0/rows-2.0.mjs` reproduces §1.
@@ -173,10 +173,10 @@ Area: **proto** = raw WebSocket bots (the `conn()` pattern in `test-proto.mjs`) 
 | ID | Area | What | How | Pass | Ref |
 |---|---|---|---|---|---|
 | P-01 | proto | Finishing order = own `elapsed`, **slow packet sent first** | 5 bots. Each round, bots send `done` in **reverse** order of their `elapsed` claim, 300 ms apart (the fastest claim arrives last, 1.2 s after the first). 20 rounds | Chain follows `elapsed` order 20/20; damage per oracle | Rules-1 |
-| P-02 | proto | 2 players reproduce 1.0 | Rows O-01…O-33 as 2-player rounds, `TK_BASE_PER_CHAR=1`, line length picked by skipping rounds (or the test hook, N3) | 33/33 exact: tier, crit, combo, ULTI, damage, HP | Rules-4 |
+| P-02 | rule + proto | 2 players reproduce 1.0 | (a) the **literal** 1.0 rows O-01…O-29 (4–14 chars, base 3) through `resolveRound()` with 2 entrants and `BASE_PER_CHAR=3`, and over WS with `TK_BASE_PER_CHAR=3 TK_LINE_MIN=4 TK_LYRICS=<fixture>` (DESIGN Open risks); (b) rows O-01…O-33 above at base 1 | (a) every damage equals the 1.0 plan's table; (b) 33/33 exact: tier, crit, combo, ULTI, damage, HP | Rules-4 |
 | P-03 | proto | Domino oracle | Rows D-1…D-8 driven by bots with the exact claims above; HP set by playing the earlier rows first | Every link (from, to, tier, crit, combo, damage) and every HP after matches | Rules-1/2/3 |
 | P-04 | proto | Round ends when the last **alive** player finishes | 5 bots, 2 KO'd (spectators); 3 alive finish at 6 s | Result within 200 ms of the 3rd `done`, not at 20 s | Core loop 3, G1 |
-| P-05 | proto | 20 s cap with unfinished players | D-4/D-6/D-8 shapes; unfinished bots send nothing | Result at 20000 ± 200 ms; unfinished hit by the last finisher only, clean | Rules-1 |
+| P-05 | proto | 20 s cap with unfinished players | D-4/D-6/D-8 shapes; unfinished bots send nothing | Result at `revealAt + WORD_CAP_MS + CAP_SLACK_MS` = 21000 ± 200 ms (DESIGN); a `done{elapsed:19900}` arriving at 20.6 s counts; unfinished hit by the last finisher only, clean | Rules-1 |
 | P-06 | proto | Nobody finishes | D-9 | No hits, HP unchanged | Rules-1 |
 | P-07 | proto | Tie | 2 bots same ms + typos → no hit (draw); 3 bots tie at the end → D-2 | As oracle | Rules-1 |
 | P-08 | proto | Invariants, random | 300 rounds, N random 3–10, random claims (no ties outside the end, see T2), compared to `oracle-2.0.mjs` | 300/300 match; nobody receives > 60 in a round; the first finisher never loses HP (flag off); HP never < 0 | Rules-2/3 |
@@ -187,7 +187,7 @@ Area: **proto** = raw WebSocket bots (the `conn()` pattern in `test-proto.mjs`) 
 | P-13 | proto | ULTI cadence | 60 rounds × 3 matches, nobody KO'd (`TK_HP` high) | First ULTI in round 4–6; every gap 4–6; gaps 4, 5 and 6 each seen; ULTI text verbatim; ULTI damage ×2.5 (via P-03/P-08) | Rules-5 |
 | P-14 | proto | No line repeats in a match | 150 rounds, one match | All distinct (bank ≥ 200 lines) | 1.0-F3 (not restated in 2.0, N6) |
 | P-15 | boot | `lyrics.txt` validation | `/tmp` copies of the bank with: 39 songs · 199 lines · a 14-char line · a 46-char line · a block without `title \| artist` · empty file · missing file. Also exactly 15 and 45 chars, 40 songs, 200 lines | Each broken copy: exit 1, message names the rule. Boundaries boot | Must (lyrics) |
-| P-16 | boot | `SIGHUP` reload | Own server on ≥ 3300: replace the bank with a valid copy + 1 new song, `kill -HUP <my pid>`; then with an invalid copy | Valid: the new song shows up (log line / health count), the round in progress keeps its line. Invalid: process stays up and keeps the old bank (N7) | Must (lyrics) |
+| P-16 | boot | `SIGHUP` reload | Own server on ≥ 3300: replace the bank with a valid copy + 1 new song, `kill -HUP <my pid>`; then with an invalid copy | Valid: the new song shows up in the **next** match (log line); a running match keeps its snapshot to the end. Invalid: process stays up, logs, keeps the old bank (DESIGN) | Must (lyrics) |
 | P-17 | proto | B3: never revealed early | 200 rounds, 10 sockets | `revealAt ≥ endsAt` **200/200**; on every socket, line received ≥ `COUNTDOWN_MS − 20` after the countdown | Must (B3) |
 | P-18 | proto | Same line to everyone | Same 200 rounds | Identical payload on all 10 sockets; receive spread < 50 ms | 1.0-F2 |
 | P-19 | proto | Spectator after KO | Bot KO'd; sends `done`, then an emoji | `done` → error, no effect on the chain; emoji is broadcast to every socket; spectator never appears in the finishing order | Must (spectator) |
@@ -215,9 +215,9 @@ Area: **proto** = raw WebSocket bots (the `conn()` pattern in `test-proto.mjs`) 
 | A-02 | audio | Hit sounds with body | Force jab, block, uppercut, KO | Each one starts ≥ 3 sound sources (click + thump + tail); the four node graphs differ | Art: Sound |
 | A-03 | audio | Lobby pad | Lobby open, music on | Pad playing; stops at countdown or keeps per DESIGN.md | Art: Sound |
 
-## 3. Pending DESIGN.md — message-level tests I can't write yet
+## 3. Pending DESIGN.md — message-level tests I couldn't write from the brief
 
-Each line becomes concrete when Jiwoo's protocol lands. I won't guess the message names.
+Written before DESIGN.md landed; kept as the record. §3a marks what is now settled.
 
 - **Result message shape**: the chain (`hits[]` of from/to/tier/margin/crit/combo/ulti/damage?), finishing order, per-player HP, `elapsed` per player, `fire` per player. P-03/P-08 assert against it.
 - **`state` for N players**: players list, spectator flag, online flag, HP, skin; no line text in any `state` (1.0 P-54).
@@ -233,6 +233,24 @@ Each line becomes concrete when Jiwoo's protocol lands. I won't guess the messag
 - **Combo semantics** (C1) and **extra-hit `d`** (X1) — confirm.
 - **Test hook**: `window.__tinju` fields for chain/order and a way to force a line length (N3).
 - **`SIGHUP` with an invalid bank** (N7) and how a reload is observable (log line or `/health` field).
+
+## 3a. DESIGN.md (`d68b91d`) — what it settles, and what it changes in this plan
+
+| Item | DESIGN.md says | Effect on this plan |
+|---|---|---|
+| A1, A2, A3 | Same: `d = to − from`, crit on the hitter, `len` = form shown | Oracle unchanged |
+| T1 / T2 | Rank k's hitter = its **lowest seat**; it hits every member of rank k+1 | D-2 unchanged. T2 answered: one hit per player, so the received cap only matters with the flag on. Add a 3-way tie in front to P-07: lowest seat hits rank 2, the other two hit nobody |
+| C1 | Hitters as 1.0's winner; dealt none + took one as 1.0's loser; tied non-hitters unchanged | Matches C1, but **unclear** for a tied member who neither hits nor is hit vs one who is hit (D-2's B and C): I read "took one" first → reset. Q to Jiwoo |
+| X1, R1 | Extra hit only with ≥ 3 ranks; `applied = min(damage, RECV_CAP − received)` | D-7 HP unchanged (C: 50 applied, then 10 of the 60). P-09 also asserts `applied` per link and no extra hit with 2 ranks |
+| G1 | No grace; close at every **online** entrant done or 21 s | P-04 holds; P-05 updated to 21 s |
+| N5 | `plain` = `[a-z0-9 ]`, collapsed spaces; bank printable ASCII only | P-11 regex holds; P-15 adds: curly quote, double space, `plain` form < 15 chars |
+| N7, N8 | Invalid `SIGHUP` keeps the old bank; client drops a trailing space, maps `’‘` → `'` | P-16 updated; U-05 asserts exactly that |
+| Messages | `line`, `progress`, `result{order, chain, sat, hp, fire, ko, song}`, `emoji{e:0..7}`, `error{code:'spectator'\|'old_client'}`, unknown `t` ignored | P-03/P-08/P-19 assert on these; new: P-25 `progress` never names who finished · P-26 `v:2` missing → `old_client` · P-27 unknown `t` → no reply · P-28 emoji > 2/s dropped, `e` outside 0..7 rejected |
+| Disconnect | Offline at reveal → `sat`, no hit either way; offline during the line → unfinished, takes the clean hit; walkover = spectator, match goes on | P-22 expected result fixed: rejoiner gets no `line`, takes the last finisher's clean hit. New P-29: offline at reveal → in `sat`, chain skips them |
+| Seed | `TK_SEED`, `TK_LYRICS` | N3 answered: P-02/P-13/P-14 run seeded; same seed + same `done`s → identical chain (new P-30) |
+| Clustering | Jiwoo's own sim agrees with §5: clustered at any base; fixing it touches a Rule → Pras | K-1/K-2 stay as written; expected to fail at base 1 |
+
+Still open after DESIGN.md: the C1 tie corner above; whether K-1's "≤ 3 KOs per round" is the right bar once Pras picks a fix.
 
 ## 4. Phone matrix — needs deploy + Pras
 
