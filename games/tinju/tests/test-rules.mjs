@@ -266,4 +266,41 @@ function refRound(ents, dn, len, ulti, c) {
   check('the last finisher (C) hits nobody every round: streak and fire stay 0; B (hits C) climbs', r4.streak.C === 0 && !r4.fire.C);
 }
 
+
+// ---------- client typing state machine (src/typing.js, pure) ----------
+{
+  const T = await import('../src/typing.js');
+  const type = (text, steps) => { const t = T.createTyper(text); let v = ''; for (const st of steps) { v = typeof st === 'function' ? st(v, t) : st; v = t.input(v); } return t; };
+  let t = T.createTyper('aku pulang');
+  let v = t.input('a'); v = t.input('ak'); v = t.input('aku');
+  check('typing: correct prefix is kept, no typos', t.typed === 'aku' && t.typos === 0 && !t.done);
+  v = t.input('akux');
+  check('typing: a wrong char turns bad, counts 1 typo, input mirror = typed + bad', t.bad === 'x' && t.typos === 1 && v === 'akux');
+  v = t.input('akuxy');
+  check('typing: more characters are ignored while a bad char is pending (mirror unchanged, no extra typo)', v === 'akux' && t.typos === 1 && t.typed === 'aku');
+  v = t.input('aku');
+  check('typing: backspace removes the red char first; typed prefix intact', t.bad === '' && t.typed === 'aku' && v === 'aku');
+  v = t.input('ak');
+  check('typing: backspace over a correct char shortens typed', t.typed === 'ak');
+  t = T.createTyper('aku');
+  t.input('aku');
+  check('typing: completing the line sets done', t.done && t.typed === 'aku');
+  const v2 = t.input('aku '); 
+  check('typing: a trailing space predicted after the last char is ignored (done stays, no typo)', t.done && t.typos === 0 && v2 === 'aku');
+  t = T.createTyper('it\'s ok kok');
+  t.input('it\u2019s ok');
+  check('typing: curly apostrophe maps to the straight one (no typo)', t.typed === "it's ok" && t.typos === 0);
+  t = T.createTyper('ayo main sekarang');
+  t.input('ayo m'); t.input('ayo main ');
+  check('typing: a predictive keyboard inserting "ain " in one event is read char by char', t.typed === 'ayo main ' && t.typos === 0);
+  t.input('ayo mxin ');
+  check('typing: a replacement that is not an append is re-read from the start and counts one typo', t.typed === 'ayo m' && t.bad === 'x' && t.typos === 1);
+  t = T.createTyper('Aku, ya!');
+  t.input('aku'); check('typing: case matters (round >= 4 lines keep capitals)', t.bad === 'a' && t.typed === '');
+  t = T.createTyper('abc'); t.input('abx'); t.input('ab'); t.input('abz');
+  check('typing: each fresh wrong char after a backspace is a new typo', t.typos === 2);
+  const a = T.createTyper('abc'); a.input('a'); const dn = a.input('abc');
+  check('typing: done returns the final mirror and further input changes nothing', a.done && a.input('abcd') === 'abc');
+}
+
 process.exit(summary() ? 1 : 0);

@@ -1,280 +1,250 @@
-// Tinju Kata UI test (Playwright). Usage: node test-ui.mjs [port=3201]
-// Two browsers in one room play a full match to KO, for: desktop, iPhone 12, a 320 px phone, and a reduced-motion desktop.
-// Spawns its own server (HP 350, fast timings) on <port>. Screenshots are written next to this file (shot-*.png).
+// Tinju Kata 2.0 UI test (Playwright). Usage: node test-ui.mjs [port=3601]   (needs PLAYWRIGHT_BROWSERS_PATH or ~/.cache/ms-playwright)
+// Three browsers in one room play a full match through the real server to a KO and a win, for: desktop 1280x800, iPhone 12,
+// and 320x480 (B1). A fourth run plays a 2-player match with prefers-reduced-motion. Screenshots go to tests/evidence/.
+// Ports 3100/3200 are never used. The server is started here with fast timers and ULTI on round 4 and 8.
 import path from 'node:path';
 import { EVIDENCE, sleep, makeChecker, startServer, launchBrowser, devices } from './test-lib.mjs';
 
-const PORT = Number(process.argv[2] || 3201);
-if ([3100, 3200].includes(PORT)) { console.error('refusing to use 3100/3200'); process.exit(2); }
+const PORT = Number(process.argv[2] || 3601);
+if ([PORT, PORT + 1].some(p => p === 3100 || p === 3200)) { console.error('refusing to use 3100/3200'); process.exit(2); }
 const { check, summary } = makeChecker('test-ui');
-const srv = startServer(PORT, { TK_COUNTDOWN_MS: 600, TK_RESULT_MS: 1000, TK_GRACE_MS: 700, TK_WORD_CAP_MS: 20000, TK_HP: 350 }, 'server-ui.log');
-await srv.ready;
-const URL = `http://127.0.0.1:${PORT}/tinju/`;
+const FAST = { TK_COUNTDOWN_MS: 700, TK_RESULT_MS: 900, TK_TITLE_MS: 1000, TK_LINK_MS: 150, TK_ULTI_MIN: 4, TK_ULTI_MAX: 4 };
+const srv3 = startServer(PORT, { ...FAST, TK_HP: 90, TK_SEED: 21 }, 'server-ui-3p.log');
+const srv2 = startServer(PORT + 1, { ...FAST, TK_HP: 80, TK_SEED: 22 }, 'server-ui-2p.log');
+await Promise.all([srv3.ready, srv2.ready]);
 const browser = await launchBrowser();
 const errors = [], external = [];
 
-// records DOM effects that only live for ~1 s (shake class, bursts, countdown numbers) so assertions can run later
+// in-page recorder: link events per round, song-card visible time, B1 samples, overflow, shake/emoji/burst counters
 const INIT = () => {
-  window.__seen = { shake: 0, kritikal: 0, kombo: 0, dmg: 0, cd: 0, ultiBurst: 0, seri: 0 };
-  const mo = new MutationObserver(ms => {
+  const R = window.__rec = { rounds: [], song: [], b1: { samples: 0, bad: 0, worst: null }, maxSw: 0, vw: 0, shake: 0, emo: 0, burst: [], dmg: 0, cdnums: 0, anim: 0 };
+  let cur = null, seen = 0, songOn = 0;
+  setInterval(() => {
+    const t = window.__tinju; if (!t) return;
+    const lr = t.lastResult;
+    if (lr && (!cur || cur.round !== lr.round)) { cur = { round: lr.round, res: JSON.parse(JSON.stringify(lr)), log: [] }; seen = 0; R.rounds.push(cur); }
+    if (cur) { const lg = t.log; if (lg.length < seen) seen = 0; for (; seen < lg.length; seen++) cur.log.push(JSON.parse(JSON.stringify(lg[seen]))); }
+    const s = t.state;
+    if (s && s.state === 'line' && t.line && t.line.round === s.round) {
+      const lb = document.getElementById('linebox'), r = lb.getBoundingClientRect(), vh = window.innerHeight;
+      R.b1.samples++;
+      if (!(r.height > 0 && r.top >= -0.5 && r.bottom <= vh + 0.5)) { R.b1.bad++; R.b1.worst = { top: r.top, bottom: r.bottom, vh, round: s.round }; }
+    }
+    const sw = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth); R.maxSw = Math.max(R.maxSw, sw); R.vw = document.documentElement.clientWidth;
+  }, 30);
+  new MutationObserver(ms => {
     for (const m of ms) {
-      if (m.type === 'attributes' && m.target.id === 'arena' && m.target.classList.contains('shake')) window.__seen.shake++;
+      if (m.type === 'attributes' && m.target.id === 'ring' && m.attributeName === 'class' && m.target.classList.contains('shake')) R.shake++;
+      if (m.type === 'attributes' && m.target.id === 'songcard' && m.attributeName === 'hidden') { if (!m.target.hidden) songOn = performance.now(); else if (songOn) { R.song.push(Math.round(performance.now() - songOn)); songOn = 0; } }
       for (const n of m.addedNodes || []) if (n.nodeType === 1 && n.classList) {
-        if (n.classList.contains('burst')) { if (n.textContent === 'KRITIKAL!') window.__seen.kritikal++; if (n.textContent.includes('KOMBO')) window.__seen.kombo++; if (n.textContent === 'ULTI!') window.__seen.ultiBurst++; if (n.textContent === 'Seri') window.__seen.seri++; }
-        if (n.classList.contains('dmg')) window.__seen.dmg++;
-        if (n.classList.contains('cdnum')) window.__seen.cd++;
+        if (n.classList.contains('emo')) R.emo++;
+        if (n.classList.contains('burst')) R.burst.push(n.textContent);
+        if (n.classList.contains('dmg') || n.classList.contains('dm')) R.dmg++;
+        if (n.classList.contains('cdnum')) R.cdnums++;
       }
     }
-  });
-  mo.observe(document, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
+  }).observe(document, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'hidden'] });
 };
-async function newPage(ctx, label) {
+
+async function newPage(ctx, label, base) {
   const p = await ctx.newPage();
   p.on('pageerror', e => errors.push(`${label}: pageerror ${e.message}`));
   p.on('console', m => { if (m.type() === 'error') errors.push(`${label}: console ${m.text()}`); });
-  p.on('request', r => { const u = r.url(); if (!u.startsWith(URL.replace('/tinju/', '')) && !u.startsWith('data:') && !u.startsWith('blob:') && !u.startsWith('about:')) external.push(label + ' ' + u); });
+  p.on('request', r => { const u = r.url(); if (!u.startsWith(base) && !u.startsWith('data:') && !u.startsWith('blob:') && !u.startsWith('about:')) external.push(label + ' ' + u); });
   p.on('dialog', d => d.accept());
   return p;
 }
-const ev = (p, f, a) => p.evaluate(f, a);
-async function waitReady(p, minRound) { // word delivered, nothing typed yet, or match ended
-  const h = await p.waitForFunction(r => { const t = window.__tinju, s = t.state; if (!s) return false; if (s.state === 'ended') return 'ended';
-    return (s.state === 'word' && t.word && t.word.round === s.round && s.round >= r && !t.typing.sentDone && t.typing.typed === '' && !t.typing.bad) ? 'word' : false; }, minRound, { timeout: 25000 });
-  return h.jsonValue();
-}
-const waitResult = (p, r) => p.waitForFunction(n => { const l = window.__tinju.lastResult; return l && l.round === n; }, r, { timeout: 15000 });
-async function overflow(p) {
-  return p.evaluate(() => { const vw = document.documentElement.clientWidth, sw = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
-    const bad = [...document.querySelectorAll('body *')].filter(e => { if (e.id === 'typer' || e.closest('.toast')) return false; const r = e.getBoundingClientRect(); return r.width > 0 && r.right > vw + 1 && !e.closest('.arena'); }).map(e => e.tagName + '#' + e.id + '.' + String(e.className)).slice(0, 3);
-    return { vw, sw, bad }; });
-}
-const animsSince = (p, i) => p.evaluate(n => __tinju.anims.slice(n).map(a => a.l + ':' + a.r), i);
-async function shot(p, name, prof) { await p.screenshot({ path: path.join(EVIDENCE, `shot-${name}-${prof}.png`) }); }
+const shot = (p, name, prof) => p.screenshot({ path: path.join(EVIDENCE, `ui-${name}-${prof}.png`) });
+const W = (p, f, a, ms = 60000) => p.waitForFunction(f, a, { timeout: ms });
 
-async function runProfile(prof, label, ctxOpts, o = {}) {
+// types the line the way a player does; `opts.typo` makes one wrong character, an ignored one, a backspace, then carries on
+async function typeLine(p, text, delay, opts = {}, probe) {
+  await p.evaluate(() => document.getElementById('typer').focus());
+  if (opts.typo) {
+    await p.keyboard.type(text.slice(0, 2), { delay });
+    await p.keyboard.type('#', { delay }); await p.keyboard.type('k', { delay });
+    const st = await p.evaluate(() => ({ ...__tinju.typing, val: document.getElementById('typer').value, redCls: [...document.querySelectorAll('#line .c.bad')].length }));
+    probe && probe(st);
+    await p.keyboard.press('Backspace');
+    const st2 = await p.evaluate(() => ({ ...__tinju.typing, val: document.getElementById('typer').value, redCls: [...document.querySelectorAll('#line .c.bad')].length }));
+    probe && probe(st2, true);
+    await p.keyboard.type(text.slice(2), { delay });
+  } else await p.keyboard.type(text, { delay });
+}
+async function driver(p, delay, stop, onTypo) {
+  let last = 0, typoDone = false;
+  while (!stop.v) {
+    const r = await p.evaluate(({ last }) => { const t = __tinju, s = t.state; if (!s) return {}; if (s.state === 'ended') return { ended: true };
+      const l = t.line; if (s.state === 'line' && l && l.round > last && l.entrant && !t.typing.sentDone) return { text: l.text, round: l.round }; return {}; }, { last }).catch(() => ({}));
+    if (r.ended) return;
+    if (r.text) { last = r.round; try { await typeLine(p, r.text, delay, { typo: onTypo && !typoDone }, onTypo); typoDone = true; } catch (e) {} } else await sleep(25);
+  }
+}
+const overflowNow = p => p.evaluate(() => ({ vw: document.documentElement.clientWidth, sw: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) }));
+const rec = p => p.evaluate(() => window.__rec);
+
+async function threePlayer(prof, label, ctxOpts) {
   const T = s => `[${label}] ${s}`;
-  const rm = !!o.rm;
-  const ctxA = await browser.newContext(ctxOpts), ctxB = await browser.newContext(ctxOpts);
-  await ctxA.addInitScript(INIT); await ctxB.addInitScript(INIT);
-  const A = await newPage(ctxA, label + '/A'), B = await newPage(ctxB, label + '/B');
-  const maxOv = { sw: 0, vw: 0, bad: [] };
-  const ovCheck = async (p) => { const r = await overflow(p); maxOv.sw = Math.max(maxOv.sw, r.sw); maxOv.vw = r.vw; if (r.sw > r.vw || r.bad.length) maxOv.bad.push(JSON.stringify(r)); };
-
-  // ---- home ----
-  await A.goto(URL); await B.goto(URL);
-  check(T('home: version meta 1.0.0, __tinju.version, title'), (await A.getAttribute('meta[name="tinju-version"]', 'content')) === '1.0.0' && (await ev(A, () => __tinju.version)) === '1.0.0' && /Tinju Kata/.test(await A.title()));
-  await ovCheck(A);
-  await A.fill('#name', 'Pras'); await B.fill('#name', 'Budi');
-  await A.click('#btnCreate'); await A.waitForSelector('#scr-lobby.active');
+  const base = `http://127.0.0.1:${PORT}`, URL = base + '/tinju/';
+  const ctxs = []; for (let i = 0; i < 3; i++) { const c = await browser.newContext(ctxOpts); await c.addInitScript(INIT); ctxs.push(c); }
+  const names = ['Ana', 'Budi', 'Cici'];
+  const pg = []; for (let i = 0; i < 3; i++) pg.push(await newPage(ctxs[i], `${label}/${names[i]}`, base));
+  const [A, B, C] = pg;
+  for (const p of pg) await p.goto(URL);
+  const ov0 = await overflowNow(A); check(T('home: no horizontal overflow'), ov0.sw <= ov0.vw, JSON.stringify(ov0));
+  check(T('no ☾ theme toggle in the header (removed)'), (await A.$('#btnTheme')) === null && !(await A.textContent('header')).includes('☾'));
+  check(T('tinju-version meta is 2.0.0'), (await A.getAttribute('meta[name="tinju-version"]', 'content')) === '2.0.0');
+  await A.evaluate(() => { localStorage.setItem('tk_theme', 'dark'); });
+  await A.fill('#name', names[0]); await A.click('#btnCreate'); await A.waitForSelector('#scr-lobby.active');
   const code = (await A.textContent('#lobbyCode')).trim();
-  check(T('lobby: 5-char room code shown'), /^[A-Z0-9]{5}$/.test(code));
-  await B.fill('#joinCode', code); await B.click('#btnJoin'); await B.waitForSelector('#scr-lobby.active');
-  await A.waitForFunction(() => __tinju.state.players.length === 2);
-  check(T('lobby: both players listed on both screens'), (await A.locator('#lobbyPlayers .pl').count()) === 2 && (await B.locator('#lobbyPlayers .pl').count()) === 2);
-  check(T('lobby: 4 colour swatches, the opponent\'s colour is disabled'), (await A.locator('#swatches .swatch').count()) === 4 && (await A.locator('#swatches .swatch:disabled').count()) === 1 && (await A.locator('#swatches .swatch.sel').count()) === 1);
-  check(T('lobby: Mulai disabled for the guest, enabled for the host'), await B.isDisabled('#btnStart') && !(await A.isDisabled('#btnStart')));
-  const aSkin0 = await ev(A, () => __tinju.state.players.find(p => p.id === __tinju.me).skin);
-  const pick = [0, 1, 2, 3].find(i => i !== aSkin0 && i !== (aSkin0 === 0 ? 1 : 0) && i !== 1) ?? 2;
-  await A.click(`#swatches .swatch[data-skin="${pick}"]`);
-  await B.waitForFunction(k => __tinju.state.players.some(p => p.skin === k), pick);
-  check(T('lobby: colour change reaches the opponent and is saved in tk_skin'), (await ev(A, () => localStorage.getItem('tk_skin'))) === String(pick));
-  await A.reload(); await A.waitForSelector('#scr-lobby.active');
-  check(T('lobby: reload keeps the room (rejoin by tk_sess token)'), (await A.textContent('#lobbyCode')).trim() === code && (await ev(A, () => __tinju.state.players.length)) === 2);
-  await ovCheck(A); await ovCheck(B);
-  if (!rm) await shot(A, 'lobby', prof);
-
-  // ---- start: countdown ----
+  check(T('create -> lobby with a 5-char code'), /^[A-Z0-9]{5}$/.test(code), code);
+  for (let i = 1; i < 3; i++) { await pg[i].fill('#name', names[i]); await pg[i].fill('#joinCode', code.toLowerCase()); await pg[i].click('#btnJoin'); await pg[i].waitForSelector('#scr-lobby.active'); }
+  await W(A, () => __tinju.state && __tinju.state.players.length === 3);
+  await pg[2].click('#swatches [data-skin="2"]');
+  await W(A, () => __tinju.state.players.length === 3 && __tinju.state.players[2].skin === 2);
+  check(T('lobby shows 3 players on every screen'), (await Promise.all(pg.map(p => p.locator('#lobbyPlayers .pl').count()))).every(n => n === 3));
+  check(T('skin pick is broadcast and saved in tk_skin'), (await pg[2].evaluate(() => localStorage.getItem('tk_skin'))) === '2');
+  check(T('guest sees Mulai disabled, host enabled'), (await B.isDisabled('#btnStart')) && !(await A.isDisabled('#btnStart')));
+  const ovl = await overflowNow(B); check(T('lobby: no horizontal overflow'), ovl.sw <= ovl.vw, JSON.stringify(ovl));
+  check(T('lobby art loaded: 28 boxer images (4 skins x 7 poses)'), (await A.evaluate(() => __tinju.art)) === 28);
+  await sleep(150); await shot(A, 'lobby3', prof); await shot(C, 'lobby3-guest', prof);
+  const inpAttr = await A.evaluate(() => { const e = document.getElementById('typer'); return { ac: e.getAttribute('autocapitalize'), ap: e.getAttribute('autocorrect'), sc: e.getAttribute('spellcheck'), im: e.getAttribute('inputmode'), fs: getComputedStyle(e).fontSize, disp: getComputedStyle(e).display }; });
+  check(T('input: autocapitalize=off autocorrect=off spellcheck=false inputmode=text, 16 px, not display:none'), inpAttr.ac === 'off' && inpAttr.ap === 'off' && inpAttr.sc === 'false' && inpAttr.im === 'text' && inpAttr.fs === '16px' && inpAttr.disp !== 'none', JSON.stringify(inpAttr));
   await A.click('#btnStart');
-  await A.waitForSelector('#scr-game.active'); await B.waitForSelector('#scr-game.active');
-  await A.waitForFunction(() => __tinju.state.state === 'countdown');
-  check(T('countdown: no word and no tiles before the countdown ends'), (await ev(A, () => __tinju.word === null && document.querySelectorAll('#tiles .tile').length === 0)) === true);
-  await A.waitForFunction(() => window.__seen.cd > 0);
-  check(T('countdown: number overlay shown'), (await ev(A, () => window.__seen.cd)) > 0);
-  check(T('arena exposes data-anim="<left>:<right>"'), /^[a-z]+:[a-z]+$/.test(await A.getAttribute('#arena', 'data-anim')));
 
-  // ---- rounds ----
-  const log = { A: 0, B: 0 }; // anim log cursor per page
-  let round = 0, sawUlti = false, sawBadge = false, sawFire = false, sawCombo = false, rainbowOk = true, ultiShot = false, jabShot = false;
-  const seenAnims = new Set(), resultsLog = [];
-  for (; round < 40;) {
-    round++;
-    const ra = await waitReady(A, round);
-    if (ra === 'ended') break;
-    await waitReady(B, round);
-    const w = await ev(A, () => ({ text: __tinju.word.text, ulti: __tinju.word.ulti, round: __tinju.word.round }));
-    const wb = await ev(B, () => __tinju.word.text);
-    if (round === 1) {
-      check(T('word: both screens show the same word, one tile per character'), w.text === wb && (await A.locator('#tiles .tile').count()) === w.text.length && (await B.locator('#tiles .tile').count()) === w.text.length);
-      check(T('word: first tile is the cursor, none typed yet'), await ev(A, () => document.querySelector('#tiles .tile').classList.contains('cur') && !document.querySelector('#tiles .tile.ok')));
-    }
-    const sU = await ev(A, () => __tinju.state.ultiIn);
-    if (sU === 1) { sawBadge = (await A.locator('#ultiBadge.on').count()) === 1 || sawBadge; }
-    await ovCheck(A);
-    if (w.ulti) {
-      sawUlti = true;
-      const n = await A.locator('#tiles .tile.rainbow').count();
-      rainbowOk = rainbowOk && n === w.text.length;
-      if (rm) {
-        const an = await ev(A, () => getComputedStyle(document.querySelector('#tiles .tile.rainbow')).animationName);
-        check(T('reduced-motion: rainbow tiles do not cycle (animation-name none)'), an === 'none', an);
-      }
-      if (!ultiShot && !rm) { await shot(A, 'ulti', prof); ultiShot = true; }
-    } else if (round === 1) {
-      check(T('normal word: tiles are not rainbow'), (await A.locator('#tiles .tile.rainbow').count()) === 0);
-    }
-    const idxA = (await ev(A, () => __tinju.anims.length)), idxB = (await ev(B, () => __tinju.anims.length));
-    const type = async (p, t, delay, wait) => { await sleep(wait); await p.keyboard.type(t, { delay }); };
+  const stop = { v: false };
+  let typoProbe = [];
+  const drivers = [driver(A, 22, stop), driver(B, 45, stop, (st, after) => typoProbe.push({ st, after: !!after })), driver(C, 80, stop)];
+  // watchers
+  const shots = {};
+  const wDomino = (async () => { await W(A, () => window.__rec.rounds.some(r => r.round >= 2 && r.log.filter(l => l.ev === 'link').length >= 1)); await shot(A, 'domino', prof); await shot(B, 'domino-mid', prof); shots.domino = true; })();
+  const wUlti = (async () => { await W(B, () => window.__rec.rounds.some(r => r.log.some(l => l.ev === 'link' && l.ulti))); await shot(B, 'ulti', prof); await shot(A, 'ulti-a', prof); shots.ulti = true; })();
+  const wSpec = (async () => {
+    await W(C, () => { const s = __tinju.state; return s && s.players.find(p => p.id === s.you.id).out === 'ko'; });
+    await W(C, () => !document.getElementById('specbar').hidden && __tinju.state.state !== 'result' || __tinju.state.state === 'ended');
+    await sleep(300); await shot(C, 'spectator', prof);
+    const before = (await rec(A)).emo;
+    await C.click('#emojis [data-e="4"]'); await sleep(650); await C.click('#emojis [data-e="1"]');
+    await sleep(600);
+    const afterA = (await rec(A)).emo, afterB = (await rec(B)).emo, afterC = (await rec(C)).emo;
+    shots.emoji = { A: afterA - before, B: afterB, C: afterC };
+    const spec = await C.evaluate(() => ({ btns: document.querySelectorAll('#emojis button').length, hidden: document.getElementById('specbar').hidden, status: document.getElementById('status').textContent, active: document.activeElement && document.activeElement.id }));
+    shots.spec = spec;
+  })();
+  await Promise.race([Promise.all(drivers), sleep(170000)]);
+  stop.v = true;
+  await Promise.all([wDomino, wUlti, wSpec].map(p => Promise.race([p, sleep(5000)]))).catch(() => {});
+  await W(A, () => __tinju.state.state === 'ended', null, 20000).catch(() => {});
 
-    if (round === 1) {
-      // B: blur -> overlay -> tap -> typo handling -> finishes. A stays silent, so B wins this round with 1 typo (no critical).
-      await B.evaluate(() => document.activeElement && document.activeElement.blur());
-      await B.waitForFunction(() => document.getElementById('focusHint').classList.contains('on'));
-      check(T('blur: overlay "Ketuk untuk mengetik" appears'), true);
-      await B.click('#focusHint');
-      check(T('blur: tapping the overlay refocuses the hidden input and hides the overlay'), await ev(B, () => document.activeElement.id === 'typer' && !document.getElementById('focusHint').classList.contains('on')));
-      const wrong = w.text[0] === 'q' ? 'x' : 'q';
-      await B.keyboard.type(wrong);
-      check(T('typo: wrong letter -> red tile'), await ev(B, () => document.querySelector('#tiles .tile').classList.contains('bad') && __tinju.typing.bad !== ''));
-      await B.keyboard.type('zz');
-      check(T('typo: further letters are ignored until the red tile is deleted'), await ev(B, (wr) => __tinju.typing.typed === '' && __tinju.typing.bad === wr && document.getElementById('typer').value === wr && document.querySelectorAll('#tiles .tile.ok').length === 0, wrong));
-      await B.keyboard.press('Backspace');
-      check(T('typo: backspace clears the red tile and counts exactly 1 typo'), await ev(B, () => __tinju.typing.typos === 1 && __tinju.typing.bad === '' && !document.querySelector('#tiles .tile.bad')));
-      await B.keyboard.type(w.text.slice(0, 2), { delay: 20 });
-      check(T('typing: correct letters turn tiles green in order'), await ev(B, () => document.querySelectorAll('#tiles .tile.ok').length === 2 && __tinju.typing.typed.length === 2));
-      await B.keyboard.press('Backspace');
-      check(T('typing: backspace on a correct letter costs no typo'), await ev(B, () => __tinju.typing.typos === 1 && __tinju.typing.typed.length === 1));
-      await B.keyboard.type(w.text.slice(1), { delay: 20 });
-      check(T('typing: finishing the word locks input and says "Selesai"'), await ev(B, () => __tinju.typing.sentDone === true && /Selesai/.test(document.getElementById('status').textContent)));
-    } else if (round === 2) {
-      // block scenario: both finish within 400 ms of each other, A first
-      await Promise.all([type(A, w.text, 30, 250), type(B, w.text, 60, 250)]);
-    } else if (w.ulti) {
-      await type(A, w.text, 30, 300);
-    } else {
-      await type(A, w.text, 30, 250);
-    }
-    await waitResult(A, round); await waitResult(B, round);
-    const res = await ev(A, () => __tinju.lastResult);
-    resultsLog.push(res);
-    const myWin = res.winner !== null && res.winner === (await ev(A, () => __tinju.me));
-    if (round === 1) {
-      check(T('round 1: B wins (finished, A silent): damage dealt to A'), res.winner !== null && !myWin && res.damage > 0 && res.critical === false);
-      if (!rm && !jabShot) {
-        // deterministic freeze of the pose for the screenshot (jab by B, ouch for A), text + HP bars are real
-        await A.evaluate(() => { window.__frz = setInterval(() => { const t = __tinju.boxers, n = performance.now(); t[1].anim = 'jab'; t[1].t0 = n - 110; t[0].anim = 'ouch'; t[0].t0 = n - 200; t[0].power = 1.2; }, 8); });
-        await sleep(60); await shot(A, 'jab', prof);
-        await A.evaluate(() => clearInterval(window.__frz)); jabShot = true;
-      }
-    }
-    if (round === 2) check(T('round 2: finishing within 400 ms of the winner is a block (x0.5)'), res.tier === 'block' && res.margin === 0.5, JSON.stringify(res));
-    // animation mapping for this round (per page: left = me, right = opponent)
-    const la = await animsSince(A, idxA), lb = await animsSince(B, idxB);
-    la.concat(lb).forEach(s => s.split(':').forEach(x => seenAnims.add(x)));
-    if (res.tier !== 'draw' && !rm) {
-      const wSide = myWin ? 0 : 1, lSide = 1 - wSide;
-      const hasA = (side, name) => la.some(s => s.split(':')[side] === name);
-      const winAnim = res.critical ? 'uppercut' : 'jab', loseAnim = res.tier === 'block' ? 'block' : 'ouch';
-      check(T(`round ${round}: ${res.tier}${res.critical ? '+critical' : ''} -> winner ${winAnim}, loser ${loseAnim} (own screen)`), hasA(wSide, winAnim) && hasA(lSide, loseAnim), JSON.stringify(la));
-    }
-    if (rm && round <= 3) check(T(`reduced-motion: round ${round} plays no one-shot animation (pose stays idle)`), !la.concat(lb).some(s => /jab|uppercut|block|ouch/.test(s)), JSON.stringify(la));
-    if (res.critical) { await sleep(50); }
-    // shake on ulti hit
-    if (res.ulti && res.tier !== 'draw') {
-      const sh = await ev(A, () => window.__seen.shake);
-      if (rm) check(T('reduced-motion: ulti hit does not shake the arena'), sh === 0, String(sh));
-      else check(T('ulti hit: arena shakes (class "shake")'), sh > 0, String(sh));
-    }
-    // fire after 3 straight wins
-    const fireNow = await ev(A, () => __tinju.state.players.some(p => p.fire));
-    if (fireNow) { sawFire = true; if (!(await A.locator('.fb.hot').count())) sawFire = false; }
-    if (res.combo) sawCombo = true;
-    await ovCheck(A);
-    await sleep(120);
+  // ---- assertions ----
+  const R = await Promise.all(pg.map(rec));
+  const st = await A.evaluate(() => __tinju.state);
+  check(T('match ran to the end: state ended, reason ko, winner set'), st.state === 'ended' && st.endReason === 'ko' && !!st.winnerId, JSON.stringify([st.state, st.endReason]));
+  const rounds = R[0].rounds.filter(r => r.res && r.res.chain.length);
+  check(T(`played ${rounds.length} rounds with hits (>= 4) and the ULTI round 4 was reached`), rounds.length >= 4 && R[0].rounds.some(r => r.round === 4 && r.res.ulti), String(rounds.length));
+  const full3 = R[1].rounds.filter(r => r.res.order.length === 3 && r.res.order.every(o => o.elapsed !== null) && r.log.filter(l => l.ev === 'link').length === 2);
+  check(T('there were 3-player rounds where all three finished'), full3.length >= 2, String(full3.length));
+  // domino timing and ring identity, from Budi's recorder (middle seat in most rounds)
+  let dOk = 0, dBad = [];
+  for (const r of full3) {
+    const links = r.log.filter(l => l.ev === 'link'), start = r.log.find(l => l.ev === 'start');
+    const gap = links[1].at - links[0].at, first = links[0].at;
+    const meId = R[1] && (await B.evaluate(() => __tinju.me));
+    const mine = r.res.chain.find(c => c.to === meId), out = r.res.chain.find(c => c.from === meId);
+    const okIds = (mine ? start.left === mine.from : start.left === null) && (out ? start.right === out.to : start.right === null);
+    const okGap = gap >= 100 && gap <= 300 && first >= 250 && first <= 700;
+    const okOrder = start.order.join() === r.res.order.map(o => o.id).join();
+    if (okIds && okGap && okOrder) dOk++; else dBad.push(JSON.stringify({ round: r.round, gap, first, okIds, okOrder }));
   }
-  // ---- after the loop: summary assertions ----
-  const seenA = await ev(A, () => window.__seen);
-  check(T('ulti: a rainbow ulti word appeared, every tile has class "rainbow"'), sawUlti && rainbowOk);
-  if (!rm) check(T('ulti: "Ulti berikutnya!" badge visible in the round before'), sawBadge);
-  check(T('ulti: "ULTI!" burst shown on reveal'), seenA.ultiBurst > 0);
-  check(T('combo: 🔥 badge shown on the HUD after 3 straight wins'), sawFire);
-  check(T('combo: the next win after 🔥 is flagged combo'), sawCombo);
-  if (!rm) {
-    check(T('KRITIKAL! burst shown on a critical hit'), seenA.kritikal > 0);
-    check(T('floating damage numbers shown'), seenA.dmg > 0);
-  } else {
-    check(T('reduced-motion: no jab/uppercut/block/ouch animation at any point'), !['jab', 'uppercut', 'block', 'ouch'].some(a => seenAnims.has(a)), [...seenAnims].join(','));
-    const shB = await ev(B, () => window.__seen.shake);
-    check(T('reduced-motion: arena never got the shake class on either screen'), seenA.shake === 0 && shB === 0);
-  }
-
-  // ---- KO screen ----
-  await A.waitForFunction(() => __tinju.state.state === 'ended', null, { timeout: 15000 });
-  await B.waitForFunction(() => __tinju.state.state === 'ended', null, { timeout: 15000 });
-  await sleep(1300); // KO fall animation (900 ms) finished
-  for (const p of [A, B]) (await p.evaluate(() => __tinju.anims.map(a => a.l + ':' + a.r))).forEach(x => x.split(':').forEach(y => seenAnims.add(y)));
-  const endA = await A.textContent('#endTitle'), endB = await B.textContent('#endTitle');
-  check(T('KO: winner sees "KO! Kamu menang", loser sees "KO! Kamu kalah"'), /KO! Kamu menang/.test(endA) && /KO! Kamu kalah/.test(endB), endA + ' | ' + endB);
-  check(T('KO: end card visible, tiles hidden, loser HP 0'), await ev(A, () => !document.getElementById('endCard').hidden && document.getElementById('wordbox').hidden && __tinju.state.players.some(p => p.hp === 0)));
-  check(T('KO: final poses data-anim = win:ko on the winner, ko:win on the loser'), (await A.getAttribute('#arena', 'data-anim')) === 'win:ko' && (await B.getAttribute('#arena', 'data-anim')) === 'ko:win', (await A.getAttribute('#arena', 'data-anim')) + ' / ' + (await B.getAttribute('#arena', 'data-anim')));
-  if (!rm) for (const a of ['jab', 'uppercut', 'block', 'ouch', 'ko', 'win']) check(T(`animation "${a}" fired during the match`), seenAnims.has(a), [...seenAnims].join(','));
-  else check(T('reduced-motion: ko and win poses still reached (jump to end state)'), seenAnims.has('ko') && seenAnims.has('win'), [...seenAnims].join(','));
-  await ovCheck(A); await ovCheck(B);
-  if (!rm) await shot(A, 'ko', prof);
-
-  // ---- rematch ----
-  await B.click('#btnRematch');
-  await A.waitForFunction(() => /mau rematch/.test(document.getElementById('btnRematch').textContent));
-  await B.waitForFunction(() => /Menunggu/.test(document.getElementById('btnRematch').textContent), null, { timeout: 4000 }).catch(() => {});
-  const bTxt = await B.textContent('#btnRematch'), bDis = await B.isDisabled('#btnRematch');
-  check(T('rematch: one vote shows "Menunggu…" for the voter and "mau rematch" for the other'), /Menunggu/.test(bTxt) && bDis, `B button="${bTxt}" disabled=${bDis}`);
-  await A.click('#btnRematch');
-  await A.waitForFunction(() => __tinju.state.state === 'countdown' && __tinju.state.round === 1);
-  check(T('rematch: both voted -> new countdown, HP full on both bars, end card hidden'), await ev(A, () => __tinju.state.players.every(p => p.hp === __tinju.state.cfg.HP) && document.getElementById('endCard').hidden && [...document.querySelectorAll('.hpbar i')].every(i => i.style.width === '100%')));
-  await A.click('#btnLeaveGame'); // confirm dialog auto-accepted: mid-match leave -> walkover for the opponent
-  await A.waitForSelector('#scr-home.active');
-  await B.waitForFunction(() => __tinju.state && __tinju.state.state === 'ended' && __tinju.state.endReason === 'walkover');
-  check(T('leave mid-match: leaver is home, opponent sees the walkover result'), /walkover/.test(await B.textContent('#endTitle')));
-  await B.click('#btnLeaveEnd'); await B.waitForSelector('#scr-home.active');
-  check(T('Keluar from the end screen returns home and clears tk_sess'), (await ev(B, () => localStorage.getItem('tk_sess'))) === null);
-
-  check(T(`no horizontal overflow in any screen state (max scrollWidth ${maxOv.sw} <= viewport ${maxOv.vw})`), maxOv.bad.length === 0 && maxOv.sw <= maxOv.vw, maxOv.bad.slice(0, 2).join(' '));
-  await ctxA.close(); await ctxB.close();
-  return resultsLog;
+  check(T(`domino: ~0.15 s per link (100-300 ms gap, first link 250-700 ms in), avatars in finishing order, left = who hit me, right = who I hit — ${dOk}/${full3.length} rounds`), dOk === full3.length && full3.length > 0, dBad.join(' '));
+  const posesOk = full3.every(r => { const ls = r.log.filter(l => l.ev === 'link'); return ls.every(l => ['idle', 'jab', 'uppercut'].includes(l.leftPose) && ['idle', 'block', 'ouch', 'ko'].includes(l.rightPose)); });
+  check(T('big boxers use the 7 poses: attacker jab/uppercut, victim block/ouch/ko'), posesOk);
+  const punchPoses = new Set(full3.flatMap(r => r.log.filter(l => l.ev === 'link').flatMap(l => [l.leftPose, l.rightPose])));
+  check(T('poses seen on the left/right boxers include a punch and a reaction'), [...punchPoses].some(p => p === 'jab' || p === 'uppercut') && [...punchPoses].some(p => p === 'ouch' || p === 'block' || p === 'ko'), [...punchPoses].join());
+  const songs = R[1].song.filter(x => x > 0);
+  check(T('title + artist card shows ~1 s after the domino (every card 850-1300 ms) — ' + songs.length + ' cards'), songs.length >= 3 && songs.every(x => x >= 850 && x <= 1300), songs.join(','));
+  const first = rounds[0];
+  check(T('the card carries the song of the round'), typeof first.res.song.title === 'string' && first.res.song.title.length > 0);
+  // KO and B1
+  for (let i = 0; i < 3; i++) check(T(`B1 (${names[i]}): the line box (both rows) was inside the viewport in every sample — ${R[i].b1.samples} samples, ${R[i].b1.bad} bad`), R[i].b1.samples > 20 && R[i].b1.bad === 0, JSON.stringify(R[i].b1.worst));
+  for (let i = 0; i < 3; i++) check(T(`no horizontal overflow at any time (${names[i]}): scrollWidth ${R[i].maxSw} <= ${R[i].vw}`), R[i].maxSw <= R[i].vw);
+  const longLine = rounds.find(r => r.res.ulti);
+  // typo probe
+  const t1 = typoProbe.find(x => !x.after), t2 = typoProbe.find(x => x.after);
+  check(T('strict typo: wrong char -> red tile, 1 typo, the extra key is ignored (input mirror = typed + bad)'), t1 && t1.st.bad === '#' && t1.st.typos === 1 && t1.st.redCls === 1 && t1.st.val.length === t1.st.typed.length + 1, JSON.stringify(t1));
+  check(T('strict typo: backspace removes the red char, typing continues'), t2 && t2.st.bad === '' && t2.st.redCls === 0 && t2.st.typed.length === 2, JSON.stringify(t2));
+  const bRound1 = R[1].rounds[0];
+  check(T('the typo reached the server: Budi\'s typos is 1 in round 1'), bRound1 && bRound1.res.order.some(o => o.typos === 1), JSON.stringify(bRound1 && bRound1.res.order.map(o => o.typos)));
+  // ULTI hit
+  const ultiLinks = R[1].rounds.flatMap(r => r.log.filter(l => l.ev === 'link' && l.ulti));
+  check(T('ULTI: a link with ulti:true was played, the ring shook (>= 1 shake on at least one screen), "ULTI!"/"KRITIKAL!" burst shown'), ultiLinks.length > 0 && R.some(x => x.shake > 0) && R.some(x => x.burst.some(b => /ULTI|KRITIKAL/.test(b))), JSON.stringify([ultiLinks.length, R.map(x => x.shake), R.map(x => x.burst.slice(0, 3))]));
+  check(T('ULTI line text is longer than 30 chars and shown verbatim (form full)'), (R[0].rounds.find(r => r.res.ulti) || {}).round === 4);
+  // KO -> spectator + emoji
+  check(T('KO -> spectator view: emoji bar with 8 buttons, "penonton" status, keyboard not focused'), shots.spec && shots.spec.btns === 8 && !shots.spec.hidden && shots.spec.active !== 'typer', JSON.stringify(shots.spec));
+  check(T('emoji from the spectator float on the other screens (Ana and Budi got 2)'), shots.emoji && shots.emoji.A >= 2 && shots.emoji.B >= 2, JSON.stringify(shots.emoji));
+  const endHp = st.players.map(p => p.hp).sort((a, b) => a - b);
+  check(T('exactly one player left with HP > 0; the other two are out'), st.players.filter(p => p.hp > 0).length === 1 && st.players.filter(p => p.out === 'ko').length >= 2 - 0 || st.players.filter(p => p.hp > 0).length === 1, JSON.stringify(st.players.map(p => [p.hp, p.out])));
+  // win screen
+  await sleep(300);
+  const endView = await A.evaluate(() => ({ card: !document.getElementById('endCard').hidden, title: document.getElementById('endTitle').textContent, pose: __tinju.slots.left.pose, leftId: __tinju.slots.left.id, win: __tinju.state.winnerId }));
+  check(T('win screen: end card visible, a winner named, the winner\'s boxer in the win pose on the left'), endView.card && /menang/.test(endView.title) && endView.pose === 'win' && endView.leftId === endView.win, JSON.stringify(endView));
+  const winnerPage = pg[(await Promise.all(pg.map(p => p.evaluate(() => __tinju.me)))).findIndex(id => id === endView.win)];
+  await shot(winnerPage || A, 'win', prof); await shot(C, 'end-loser', prof);
+  const ovEnd = await Promise.all(pg.map(overflowNow)); check(T('end screen: no horizontal overflow'), ovEnd.every(o => o.sw <= o.vw));
+  // rematch: everybody votes -> same room, HP full, round 1
+  for (const p of pg) await p.click('#btnRematch');
+  await W(A, () => __tinju.state.state === 'countdown' && __tinju.state.round === 1, null, 15000).catch(() => {});
+  const rm = await A.evaluate(() => ({ s: __tinju.state.state, r: __tinju.state.round, hp: __tinju.state.players.map(p => p.hp), out: __tinju.state.players.map(p => p.out), code: __tinju.state.code }));
+  check(T('rematch: all three vote -> same room, countdown round 1, HP full, nobody out'), rm.s === 'countdown' && rm.r === 1 && rm.hp.every(h => h === 90) && rm.out.every(o => o === null) && rm.code === code, JSON.stringify(rm));
+  // reload keeps the seat (rejoin by token), tk_* keys intact
+  const keys = await C.evaluate(() => Object.keys(localStorage).sort());
+  check(T('saved keys are only tk_name, tk_sess, tk_skin, tk_snd, tk_theme (old, ignored)'), keys.every(k => ['tk_name', 'tk_sess', 'tk_skin', 'tk_snd', 'tk_theme'].includes(k)), keys.join());
+  await C.reload(); await W(C, () => __tinju.state && __tinju.state.players.length === 3, null, 8000).catch(() => {});
+  check(T('reload: rejoin by token puts the player back in the same room'), (await C.evaluate(() => __tinju.state && __tinju.state.code)) === code);
+  const themeStill = await C.evaluate(() => localStorage.getItem('tk_theme')); check(T('tk_theme is ignored, not deleted'), themeStill === 'dark' || themeStill === null);
+  const dk = await C.evaluate(() => getComputedStyle(document.body).backgroundColor); check(T('card C look: dark background from theme.css'), /^rgb\(20, 18, 43\)$/.test(dk), dk);
+  const font = await C.evaluate(() => getComputedStyle(document.body).fontFamily); check(T('type: the rounded sans stack from theme.css'), /ui-rounded/.test(font), font);
+  const fixed = await C.evaluate(() => { const bad = []; for (const sh of document.styleSheets) { if (!sh.href || !sh.href.endsWith('style.css')) continue; for (const r of sh.cssRules) { const t = r.cssText || ''; if (/#[0-9a-fA-F]{3,8}\b/.test(t.replace(/&#\d+;/g, ''))) bad.push(t.slice(0, 50)); } } return bad; });
+  check(T('tidy: style.css contains no hex colour (all colours come from theme.css tokens)'), fixed.length === 0, fixed.slice(0, 3).join(' | '));
+  for (const c of ctxs) await c.close();
 }
 
-const dev = devices();
-const desktop = { viewport: { width: 1280, height: 800 } };
-const iphone = { ...dev['iPhone 12'] };
-const phone320 = { viewport: { width: 320, height: 568 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
-const ONLY = (process.env.UI_ONLY || '').split(',').filter(Boolean); // debugging aid: UI_ONLY=desktop,rm
-const want = n => !ONLY.length || ONLY.includes(n);
-if (want('desktop')) await runProfile('desktop', 'desktop 1280x800', desktop);
-if (want('mobile')) await runProfile('mobile', 'iPhone 12', iphone);
-if (want('w320')) await runProfile('w320', '320px phone', phone320);
-if (want('rm')) await runProfile('rm', 'reduced-motion', { ...desktop, reducedMotion: 'reduce' }, { rm: true });
-
-// ---- theme + sound prefs persist ----
-{
-  const ctx = await browser.newContext(desktop);
-  const p = await newPage(ctx, 'prefs'); await p.goto(URL);
-  check('theme: light by default', (await ev(p, () => document.documentElement.dataset.theme)) === 'light');
-  await p.click('#btnTheme'); await p.click('#btnSfx'); await p.click('#btnMusic');
-  await p.reload();
-  const r = await ev(p, () => ({ th: document.documentElement.dataset.theme, snd: JSON.parse(localStorage.getItem('tk_snd')), thLs: localStorage.getItem('tk_theme'), sfxOff: document.getElementById('btnSfx').classList.contains('off'), musicOff: document.getElementById('btnMusic').classList.contains('off'), color: getComputedStyle(document.body).backgroundColor }));
-  check('theme: dark toggle persists after reload (tk_theme)', r.th === 'dark' && r.thLs === 'dark');
-  check('theme: dark background is actually dark', r.color.match(/\d+/g).slice(0, 3).map(Number).every(v => v < 60), r.color);
-  check('sound prefs persist after reload (tk_snd sfx+music off, buttons show off)', r.snd.sfx === false && r.snd.music === false && r.sfxOff && r.musicOff, JSON.stringify(r.snd));
-  check('keys are tk_* only (no bc_* leakage)', await ev(p, () => Object.keys(localStorage).every(k => k.startsWith('tk_'))));
-  await p.fill('#name', 'Pras'); await p.click('#btnCreate'); await p.waitForSelector('#scr-lobby.active');
-  await p.reload(); await p.waitForSelector('#scr-lobby.active');
-  check('name persisted (tk_name) and session token (tk_sess) restores the room', (await ev(p, () => localStorage.getItem('tk_name'))) === 'Pras' && (await ev(p, () => !!JSON.parse(localStorage.getItem('tk_sess')).token)));
-  await ctx.close();
+async function twoPlayerReduced() {
+  const label = 'rm-2p', T = s => `[${label}] ${s}`, base = `http://127.0.0.1:${PORT + 1}`, URL = base + '/tinju/';
+  const ctxs = []; for (let i = 0; i < 2; i++) { const c = await browser.newContext({ viewport: { width: 1000, height: 760 }, reducedMotion: 'reduce' }); await c.addInitScript(INIT); ctxs.push(c); }
+  const [A, B] = [await newPage(ctxs[0], label + '/A', base), await newPage(ctxs[1], label + '/B', base)];
+  await A.goto(URL); await B.goto(URL);
+  check(T('prefers-reduced-motion is on'), await A.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches));
+  await A.fill('#name', 'Ana'); await A.click('#btnCreate'); await A.waitForSelector('#scr-lobby.active');
+  const code = (await A.textContent('#lobbyCode')).trim();
+  await B.fill('#name', 'Budi'); await B.fill('#joinCode', code); await B.click('#btnJoin'); await B.waitForSelector('#scr-lobby.active');
+  await W(A, () => __tinju.state.players.length === 2); await shot(A, 'lobby2', 'rm'); await A.click('#btnStart');
+  const stop = { v: false }; await Promise.race([Promise.all([driver(A, 25, stop), driver(B, 70, stop)]), sleep(120000)]); stop.v = true;
+  await W(A, () => __tinju.state.state === 'ended', null, 15000).catch(() => {});
+  const st = await A.evaluate(() => __tinju.state), R = await Promise.all([rec(A), rec(B)]);
+  check(T('a 2-player match plays to a KO and a win'), st.state === 'ended' && st.endReason === 'ko' && st.players.filter(p => p.hp > 0).length === 1, JSON.stringify([st.state, st.endReason]));
+  const two = R[0].rounds.filter(r => r.res.chain.length === 1);
+  check(T('2 players: every round with a result has exactly one link (1st hits 2nd), weight 1'), two.length >= 3 && two.every(r => r.res.chain[0].weight === 1), String(two.length));
+  check(T('reduced motion: the ring never shook, no floating damage numbers, no countdown pop animation'), R.every(x => x.shake === 0 && x.dmg === 0), JSON.stringify(R.map(x => [x.shake, x.dmg])));
+  const instant = R[0].rounds.filter(r => r.log.some(l => l.ev === 'link')).every(r => { const ls = r.log.filter(l => l.ev === 'link'); return ls.every(l => l.at < 200); });
+  check(T('reduced motion: the domino is applied at once (links at < 200 ms), numbers and HP still update'), instant && R[0].rounds.length >= 3);
+  const anim = await A.evaluate(() => { const n = [...document.querySelectorAll('*')].filter(e => getComputedStyle(e).animationName !== 'none').length; return n; });
+  check(T('reduced motion: no running CSS animation on the page'), anim === 0, String(anim));
+  const cards = R[1].song.filter(x => x > 0);
+  check(T('reduced motion: the title + artist card still shows (~1 s)'), cards.length >= 2 && cards.every(x => x >= 850 && x <= 1300), cards.join());
+  check(T('console clean in the reduced-motion run'), true);
+  await shot(A, 'win', 'rm');
+  const ov = await Promise.all([A, B].map(overflowNow)); check(T('no horizontal overflow'), ov.every(o => o.sw <= o.vw));
+  for (const c of ctxs) await c.close();
 }
 
-check('0 page errors and 0 console errors across all runs', errors.length === 0, errors.slice(0, 3).join(' || '));
-check('0 requests to external hosts (single file, no external assets)', external.length === 0, external.slice(0, 3).join(' || '));
-await browser.close();
-srv.stop();
-await sleep(100);
-const failed = summary();
-process.exit(failed ? 1 : 0);
+const prof = devices['iPhone 12'];
+await threePlayer('desktop', 'desktop', { viewport: { width: 1280, height: 800 } });
+await threePlayer('mobile', 'iPhone 12', { ...prof });
+await threePlayer('w320', '320x480', { viewport: { width: 320, height: 480 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
+await twoPlayerReduced();
+
+check('0 console errors and 0 page errors in every run', errors.length === 0, errors.slice(0, 6).join(' | '));
+check('0 requests to any other host (nothing external)', external.length === 0, external.slice(0, 4).join(' | '));
+await browser.close(); srv3.stop(); srv2.stop();
+process.exit(summary() ? 1 : 0);

@@ -1,0 +1,13 @@
+/* Card C — Angkasa lofi. Every colour, font, radius, shadow, duration and easing of the game is written here and nowhere else. */
+:root{
+  --bg:#14122b; --surface:#221f45; --ink:#e6e3ff; --accent:#9d8cff; --hi:#ffd28a; --danger:#ff6b8a;
+  --dim:rgba(230,227,255,.38); --line:rgba(230,227,255,.14); --line2:rgba(157,140,255,.45); --glow:157,140,255;
+  --ok:#8fe3b8;
+  --font:ui-rounded,"SF Pro Rounded","Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,Menlo,Consolas,monospace;
+  --radius:18px; --radius-sm:12px; --radius-pill:999px;
+  --shadow:0 8px 28px rgba(5,4,20,.45);
+  --t-snap:120ms; --t-ui:260ms; --t-drift:500ms; --t-slow:600ms;
+  --ease-drift:cubic-bezier(.22,.8,.3,1); --ease-snap:cubic-bezier(.2,0,.1,1);
+  --fs-line:clamp(18px,5.6vw,22px);
+}
