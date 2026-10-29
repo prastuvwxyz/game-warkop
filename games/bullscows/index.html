@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eef3ec" id="themeColor">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="bullscows-version" content="3.0.0">
+<meta property="og:title" content="Bulls & Cows — Tebak Angka Multiplayer">
+<meta property="og:description" content="Tebak 4 angka rahasia lawan. Hijau = angka & posisi benar, kuning = angka benar posisi salah. Main bareng lewat kode room.">
+<title>Bulls & Cows — Tebak Angka</title>
+<link id="icon" rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%233d9668'/%3E%3Ctext x='32' y='44' font-size='34' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'%3E4%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<header>
+  <h1>Bulls &amp; Cows <small>Tebak 4 angka rahasia lawan</small></h1>
+  <div class="hright"><div class="pill"><span id="roomPill"></span><span class="dot" id="connDot"></span></div><button class="icon" id="btnMusic" title="Musik latar" aria-label="Musik latar">🎵</button><button class="icon" id="btnSfx" title="Efek suara" aria-label="Efek suara">🔊</button><button class="icon" id="btnTheme" title="Mode gelap/terang" aria-label="Mode gelap/terang">☾</button></div>
+</header>
+<main>
+
+<section class="screen active" id="scr-home">
+  <div class="card">
+    <label for="name">Nama kamu</label>
+    <input type="text" id="name" maxlength="16" placeholder="mis. Pras" autocomplete="nickname">
+  </div>
+  <div class="card">
+    <button class="primary" id="btnCreate" style="width:100%">Buat Room Baru</button>
+    <p class="muted" style="text-align:center;margin:12px 0">atau gabung dengan kode</p>
+    <div class="row">
+      <input type="text" id="joinCode" class="code" maxlength="5" placeholder="KODE" autocomplete="off" autocapitalize="characters" spellcheck="false">
+      <button id="btnJoin">Gabung</button>
+    </div>
+  </div>
+  <div class="card">
+    <details>
+      <summary>Cara main</summary>
+      <ul>
+        <li>Setiap pemain memasang <b>angka rahasia 4 digit</b>, semua digit berbeda (boleh diawali 0).</li>
+        <li>Giliran diacak. Pada giliranmu, pilih lawan dan tebak angkanya.</li>
+        <li><span class="sw" style="background:var(--g)"></span> hijau = digit benar, posisi benar (<i>bull</i>). <span class="sw" style="background:var(--y)"></span> kuning = digit benar, posisi salah (<i>cow</i>). <span class="sw" style="background:var(--x)"></span> abu-abu = digit tidak ada.</li>
+        <li>Empat hijau = angka lawan <b>tertebak</b>, dia tersingkir. Pemain terakhir yang bertahan menang.</li>
+        <li>Satu giliran maksimal 75 detik — lewat waktu, giliran dilewati.</li>
+      </ul>
+    </details>
+  </div>
+</section>
+
+<section class="screen" id="scr-lobby">
+  <div class="card codebox">
+    <div class="muted">Kode room</div>
+    <div class="code" id="lobbyCode">—</div>
+    <div class="row"><button class="sm ghost" id="btnCopyCode">Salin kode</button><button class="sm ghost" id="btnShare">Bagikan link</button></div>
+  </div>
+  <div class="card">
+    <h2>Pemain <span id="plCount" class="muted"></span></h2>
+    <div class="players" id="lobbyPlayers"></div>
+  </div>
+  <div class="card">
+    <h2>Angka rahasiamu</h2>
+    <div class="tiles" id="secretTiles"></div>
+    <div class="keypad" id="secretPad"></div>
+    <p class="muted" id="secretHint" style="margin:10px 0 0;text-align:center">4 digit, semua berbeda. Lawan akan menebak angka ini.</p>
+  </div>
+  <div class="row">
+    <button class="ghost" id="btnLeaveLobby">Keluar</button>
+    <button class="primary" id="btnStart">Mulai</button>
+  </div>
+  <p class="muted" id="startHint" style="text-align:center;margin:0"></p>
+</section>
+
+<section class="screen" id="scr-game">
+  <div>
+    <div class="banner other" id="turnBanner">…</div>
+    <div class="timer"><i id="timerBar"></i></div>
+  </div>
+  <div class="card">
+    <h2>Tebak angka</h2>
+    <div class="tabs" id="targetTabs"></div>
+    <div class="board" id="board" style="margin-top:8px"></div>
+    <div class="tiles" id="guessTiles" style="margin-top:12px"></div>
+    <div class="keypad" id="guessPad"></div>
+    <div class="legend" style="margin-top:10px"><span><i style="background:var(--g)"></i>posisi benar</span><span><i style="background:var(--y)"></i>posisi salah</span><span><i style="background:var(--x)"></i>tidak ada</span></div>
+  </div>
+  <div class="card">
+    <div class="secretbar"><h2 style="margin:0">Angkamu</h2><div class="tiles" id="mySecret"></div></div>
+    <div class="board" id="againstMe" style="margin-top:10px"></div>
+  </div>
+  <div class="card">
+    <h2>Pemain</h2>
+    <div class="players" id="gamePlayers"></div>
+  </div>
+  <div class="card">
+    <h2>Riwayat</h2>
+    <div class="log" id="log"></div>
+  </div>
+  <button class="ghost" id="btnLeaveGame">Keluar dari room</button>
+</section>
+
+<section class="screen" id="scr-end">
+  <div class="card winner">
+    <div class="trophy" id="trophy">🏆</div>
+    <h3 id="winnerName">—</h3>
+    <div class="muted" id="winnerSub"></div>
+  </div>
+  <div class="card">
+    <h2>Angka rahasia semua pemain</h2>
+    <div class="players" id="reveal"></div>
+  </div>
+  <div class="card">
+    <h2>Riwayat</h2>
+    <div class="log" id="logEnd" style="max-height:220px"></div>
+  </div>
+  <div class="row">
+    <button class="ghost" id="btnLeaveEnd">Keluar</button>
+    <button class="primary" id="btnAgain">Main lagi</button>
+  </div>
+  <p class="muted" id="againHint" style="text-align:center;margin:0"></p>
+</section>
+
+</main>
+<div class="footer">Bulls &amp; Cows · nalar.prastya.net</div>
+<div class="toast" id="toast"></div>
+
+<script src="src/game.js"></script>
+</body>
+</html>

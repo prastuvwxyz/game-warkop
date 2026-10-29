@@ -7,6 +7,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const DIR = path.dirname(fileURLToPath(import.meta.url));
+export const SRV = path.join(DIR, '..', 'server');      // server.js + words.js
+export const SHARED = path.join(DIR, '..', 'shared');   // the game's shared/ symlink
+export const EVIDENCE = path.join(DIR, 'evidence');     // screenshots + logs, git-ignored
 export const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // ---- PASS/FAIL accounting (one line per check, summary "PASS n / FAIL n") ----
@@ -21,8 +24,8 @@ export function makeChecker(label) {
 }
 
 // ---- server child process ----
-export function startServer(port, env = {}, logName, dir = DIR) {
-  const logDir = path.join(DIR, 'logs'); fs.mkdirSync(logDir, { recursive: true });
+export function startServer(port, env = {}, logName, dir = SRV) {
+  const logDir = path.join(EVIDENCE, 'logs'); fs.mkdirSync(logDir, { recursive: true });
   const out = fs.createWriteStream(path.join(logDir, logName || `server-${port}.log`), { flags: 'a' });
   const child = spawn(process.execPath, [path.join(dir, 'server.js')], {
     env: { ...process.env, PORT: String(port), HOST: '127.0.0.1', ...env }, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -39,7 +42,7 @@ export function startServer(port, env = {}, logName, dir = DIR) {
 
 // ---- playwright (from ./node_modules or PW_NODE_MODULES) ----
 export function loadPlaywright() {
-  const roots = [process.env.PW_NODE_MODULES, path.join(DIR, 'node_modules')].filter(Boolean);
+  const roots = [process.env.PW_NODE_MODULES, path.join(DIR, '..', '..', '..', 'node_modules')].filter(Boolean);
   for (const r of roots) {
     try { return createRequire(path.join(r, 'x.js'))('playwright'); } catch (e) {}
   }
