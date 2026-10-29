@@ -5,7 +5,7 @@ Game-game kecil buat iseng, main langsung di browser.
 
 | Game | What it is | Play | Stack |
 |---|---|---|---|
-| [Flappy](flappy/) | One-tap flyer with a rank ladder, skins and a fair pipe generator | [play](https://nalar.prastya.net/flappy/) | single static HTML file |
+| [Flappy](games/flappy/) | One-tap flyer with a rank ladder, skins and a fair pipe generator | [play](https://nalar.prastya.net/flappy/) | single static HTML file |
 | [Bulls & Cows](bulls-cows/) | Guess-the-number, 2–6 players per room, last one uncracked wins | [play](https://nalar.prastya.net/bullscows/) | Node server + WebSocket |
 | [Tinju Kata](tinju-kata/) | 1v1 typing-boxing: type the word first, throw the punch | [play](https://nalar.prastya.net/tinju/) | Node server + WebSocket |
 
@@ -14,8 +14,9 @@ no build step, no external assets. Tests use Playwright (`npm i playwright`) and
 
 ## Run one locally
 
-    # static
-    npx serve flappy            # or just open flappy/index.html
+    npm install                 # Playwright, for tests only
+    node tools/serve.mjs        # http://127.0.0.1:8080/flappy/ — same paths as production
+    node --test games/          # every game's tests
 
     # multiplayer
     cd tinju-kata && PORT=3200 node server.js     # http://127.0.0.1:3200/tinju/

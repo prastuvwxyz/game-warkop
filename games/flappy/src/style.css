@@ -1,0 +1,4 @@
+  html,body{margin:0;height:100%;background:#12161f;overflow:hidden}
+  body{display:flex;align-items:center;justify-content:center;min-height:100dvh;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none;font-family:system-ui,sans-serif;background:radial-gradient(ellipse at 50% 40%,#232a3a,#0e1118 75%)}
+  canvas{display:block;width:min(100vw,calc(100dvh*360/640));height:auto;aspect-ratio:360/640;border-radius:12px;box-shadow:0 18px 60px rgba(0,0,0,.65);touch-action:none}
+  noscript{color:#fff;font-size:18px}

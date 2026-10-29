@@ -1,0 +1,12 @@
+{
+  "name": "game-warkop",
+  "private": true,
+  "description": "Small browser games — zero runtime dependencies. Playwright is for tests only.",
+  "scripts": {
+    "serve": "node tools/serve.mjs",
+    "test": "node --test games/"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}
