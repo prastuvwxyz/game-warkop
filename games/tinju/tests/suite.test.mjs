@@ -12,17 +12,15 @@ fs.mkdirSync(EVIDENCE, { recursive: true });
 const basePort = () => 3300 + 10 * Math.floor(Math.random() * 59);
 
 // Run one check script; it prints "== <label>: PASS n / FAIL n ==".
-function check(t, script) {
-  return new Promise((resolve) => {
-    execFile(process.execPath, [path.join(HERE, script), String(basePort())], { cwd: EVIDENCE, maxBuffer: 64 << 20, timeout: 600_000 }, (err, stdout, stderr) => {
-      const out = stdout + stderr;
-      const m = out.match(/== [^:]+: PASS (\d+) \/ FAIL (\d+) ==/);
-      assert.ok(m, `${script}: no summary line\n${out.slice(-2000)}`);
-      t.diagnostic(`${script}: ${m[1]} passed, ${m[2]} failed`);
-      assert.equal(Number(m[2]), 0, out.split('\n').filter((l) => l.startsWith('FAIL')).join('\n'));
-      resolve();
-    });
+async function check(t, script) {
+  const out = await new Promise((resolve) => {
+    execFile(process.execPath, [path.join(HERE, script), String(basePort())], { cwd: EVIDENCE, maxBuffer: 64 << 20, timeout: 600_000 },
+      (err, stdout, stderr) => resolve(stdout + stderr + (err?.killed ? `\n${script}: killed after 600 s` : '')));
   });
+  const m = out.match(/== [^:]+: PASS (\d+) \/ FAIL (\d+) ==/);
+  assert.ok(m, `${script}: no summary line\n${out.slice(-2000)}`);
+  t.diagnostic(`${script}: ${m[1]} passed, ${m[2]} failed`);
+  assert.equal(Number(m[2]), 0, out.split('\n').filter((l) => l.startsWith('FAIL')).join('\n'));
 }
 
 test('protocol', { timeout: 300_000 }, (t) => check(t, 'test-proto.mjs'));

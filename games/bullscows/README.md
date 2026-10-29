@@ -15,7 +15,8 @@ Version: the `bullscows-version` meta in `index.html` (see `CHANGELOG.md`).
 - `index.html` + `src/style.css` + `src/game.js` — the client (no build step, no external assets).
 - `tests/suite.test.mjs` — runs the checks below on a server at a free port ≥ 3300:
   `test-proto.mjs` (50 protocol checks, `TURN_MS=1500`), `test-ui.mjs`, `test-audio.mjs`, `test-ios-sim.mjs`,
-  `test-refresh.mjs` (Playwright). `test-level.mjs` measures loudness on the live URL and is run by hand.
+  `test-refresh.mjs` (Playwright). Run by hand: `test-level.mjs` (loudness on the live URL) and
+  `test-ios-sim.mjs` (needs a Chromium that withholds user activation from a synthetic pointerdown — see the suite).
 - `tests/e2e/look.mjs` — look-at-it run on desktop, iPhone 12 and a 320 px phone.
 
 ## Run locally
