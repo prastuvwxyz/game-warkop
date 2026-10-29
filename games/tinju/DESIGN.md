@@ -36,7 +36,7 @@ no duplicate line. `SIGHUP`: reload + validate; invalid → keep the old bank an
 3. Damage per link = 1.0 lines 194–199 unchanged: `d = to.elapsed − from.elapsed`; margin 0.5/1/1.25 at
    `d ≤ 400 / ≤ 1000 / later`; critical = `from.typos==0 && len*1000 ≥ CRIT_CPS*from.elapsed`; combo = `from.fire`;
    `min(CAP, round(len·BASE_PER_CHAR·margin·crit·combo·ulti))`, `len` = length of the form shown.
-3b. **Rank weight** (brief 2026-10-30, Stella): `damage` is multiplied by the victim's weight `k/(n−1)` — `k` = the victim's competition rank − 1 (second finisher = 1; tied victims take the rank of their first seat), `n` = entrants; unfinished victims and 2-player rounds weigh 1; `RANK_WEIGHT=0` is pure domino. Applied after the per-link cap: `scaled = min(CAP, round(damage·weight))`. `BASE_PER_CHAR` default 0.7 (final value in CHANGELOG).
+3b. **Rank weight** (brief 2026-10-30, Stella): `damage` is multiplied by the victim's weight `k/(n−1)` — `k` = the victim's competition rank − 1 (second finisher = 1; tied victims take the rank of their first seat), `n` = entrants; unfinished victims and 2-player rounds weigh 1; `RANK_WEIGHT=0` is pure domino. Applied after the per-link cap: `scaled = min(CAP, round(damage·weight))`. `BASE_PER_CHAR` default 0.6 (brief started at 0.7; see CHANGELOG and tests/evidence/sim-2.0.txt).
 4. `applied = min(scaled, RECV_CAP − receivedThisRound[to])`; `hp = max(0, hp − applied)`.
 5. `EXTRA_LAST_HIT=1` only: rank 1's hitter also hits every member of the last rank (link `extra:true`), when there
    are ≥ 3 ranks. Default **0**.
