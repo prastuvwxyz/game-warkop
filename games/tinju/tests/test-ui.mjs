@@ -130,6 +130,8 @@ async function threePlayer(prof, label, ctxOpts) {
     shots.emoji = { A: afterA - before, B: afterB, C: afterC };
     const spec = await C.evaluate(() => ({ btns: document.querySelectorAll('#emojis button').length, hidden: document.getElementById('specbar').hidden, status: document.getElementById('status').textContent, active: document.activeElement && document.activeElement.id }));
     shots.spec = spec;
+    // B4 / U-10: sample focus on every page every 40 ms from here on; judged after the match
+    await Promise.all(pg.map(p => p.evaluate(() => { window.__foc = []; setInterval(() => { const t = window.__tinju, s = t && t.state; if (!s || !s.you) return; const m = s.players.find(q => q.id === s.you.id), l = t.line, ent = !!(l && l.round === s.round && l.entrant); window.__foc.push({ r: s.round, st: s.state, e: s.state === 'line' && ent, sp: !!(m && m.out !== null), a: document.activeElement && document.activeElement.id }); }, 40); })));
   })();
   await Promise.race([Promise.all(drivers), sleep(170000)]);
   stop.v = true;
@@ -165,6 +167,15 @@ async function threePlayer(prof, label, ctxOpts) {
   check(T('title + artist card shows ~1 s after the domino (every card 850-1300 ms) — ' + songs.length + ' cards'), songs.length >= 3 && songs.every(x => x >= 850 && x <= 1300), songs.join(','));
   const first = rounds[0];
   check(T('the card carries the song of the round'), typeof first.res.song.title === 'string' && first.res.song.title.length > 0);
+  // B4 / U-10: spectator has no focus on the typer across rounds, entrants keep it
+  {
+    const F = await Promise.all(pg.map(p => p.evaluate(() => window.__foc || [])));
+    const spec = F.flatMap(f => f.filter(x => x.sp && x.st !== 'ended')), ent = F.flatMap(f => f.filter(x => x.e && !x.sp));
+    const specRounds = new Set(spec.map(x => x.r));
+    check(T('B4/U-10: a spectator never has the typing input focused, from the KO round on, >= 2 rounds — ' + spec.length + ' samples in rounds ' + [...specRounds].join()), specRounds.size >= 2 && spec.length > 10 && spec.every(x => x.a !== 'typer'), JSON.stringify(spec.filter(x => x.a === 'typer').slice(0, 2)));
+    const entOk = ent.filter(x => x.a === 'typer').length;
+    check(T('B4/M-04: entrants keep focus on the typing input across rounds (' + entOk + '/' + ent.length + ' samples)'), ent.length > 20 && entOk / ent.length >= 0.9, entOk + '/' + ent.length);
+  }
   // KO and B1
   for (let i = 0; i < 3; i++) check(T(`B1 (${names[i]}): the line box (both rows) was inside the viewport in every sample — ${R[i].b1.samples} samples, ${R[i].b1.bad} bad`), R[i].b1.samples > 20 && R[i].b1.bad === 0, JSON.stringify(R[i].b1.worst));
   for (let i = 0; i < 3; i++) check(T(`no horizontal overflow at any time (${names[i]}): scrollWidth ${R[i].maxSw} <= ${R[i].vw}`), R[i].maxSw <= R[i].vw);

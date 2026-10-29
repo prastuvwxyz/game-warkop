@@ -200,6 +200,7 @@ function renderGame() {
   $('status').textContent = statusText();
   $('ultiBadge').classList.toggle('on', !!(S.ultiIn === 1 && (S.state === 'result' || S.state === 'countdown')));
   const spec = !!(m && (m.out !== null || (W && W.round === S.round && W.entrant === false && S.state === 'line')));
+  if (spec) dropTyperFocus();
   const midMatch = S.state !== 'ended';
   $('specbar').hidden = !(spec && midMatch) && S.state !== 'ended';
   $('linebox').hidden = S.state === 'ended' || S.state === 'paused';
@@ -249,7 +250,7 @@ function onLine(m) {
   if (m.entrant) neutralRing();
   // B1: the whole line (two rows) must be inside the viewport for host and guests — pull the box into view as it appears
   try { $('linebox').scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) {}
-  if (m.entrant) focusTyper();
+  if (m.entrant) focusTyper(); else dropTyperFocus();
   if (S) renderGame();
   ensureLineVisible();
 }
@@ -274,6 +275,8 @@ function renderLine(force) {
 }
 function typingPhase() { return !!(S && S.state === 'line' && W && W.round === S.round && W.entrant && typer); }
 function updateFocusHint() { $('focusHint').classList.toggle('on', typingPhase() && !sentDone && document.activeElement !== $('typer')); }
+// B4: a spectator must not keep the soft keyboard open over the emoji bar
+function dropTyperFocus() { const i = $('typer'); if (document.activeElement === i) { try { i.blur(); } catch (e) {} } i.value = ''; updateFocusHint(); }
 function focusTyper() { try { $('typer').focus({ preventScroll: true }); } catch (e) {} updateFocusHint(); }
 $('typer').addEventListener('input', () => {
   if (!typingPhase() || sentDone) { $('typer').value = ''; return; }
