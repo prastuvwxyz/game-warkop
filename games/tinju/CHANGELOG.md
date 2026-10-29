@@ -1,20 +1,32 @@
 # Tinju Kata — changelog
 
-## 2.0.0 — in progress (branch tinju/2.0-royale) — server side done, client NOT built
-Why it is not finished: the 10-bot simulation on the real `resolveRound()` fails K-1 (≤ 3 KOs per round in ≥ 95 % of
-matches, never ≥ 5) at every `BASE_PER_CHAR` from 0.5 to 1.0 with `RANK_WEIGHT=1`. Per the brief the build stops before art
-until Pras decides. Numbers: `tests/evidence/sim-2.0.txt`.
-- **Final `BASE_PER_CHAR` = 0.6** (the brief started at 0.7). Best allowed value: A-na's model, 10 bots: 97.1 % of matches ≤ 3 KOs in a
-  round, 1 match in 1000 with a round of ≥ 5 KOs; match length p10/p50/p90 184/206/231 s (K-2 ok); 2 players 45/58/87 s (K-3 ok); KO
-  rounds p50 7 (K-4 ok); first KO round p50 5 (K-5 ok). Bank-shaped lines (normal < 30, ULTI ≥ 30): 93.5 % and 8 matches ≥ 5 KOs.
-  Every round with ≥ 5 KOs is an ULTI round. With `EXTRA_LAST_HIT=1` (a flag, off in the brief) K-1 passes: 99.6 % / 98.6 %, 0 matches ≥ 5.
-- New: 2–10 players per room, protocol 2 (`v:2`; 1.x tabs get `error{code:'old_client'}`), domino resolution by finishing order
-  (`elapsed`, then typos; ties share a rank), rank-weighted damage, received cap 60 per round, KO → spectator with emoji,
-  `walkover`/`sat`, rematch with votes, seeded rooms (`TK_SEED`), lyric bank `server/lyrics.txt` loaded at boot and on `SIGHUP`
-  (`server/words.js` is gone). `server/engine.js` is pure (rules), `server/lyrics.js` is the loader/validator.
-- The bank in `server/lyrics.txt` is PLACEHOLDER content (46 invented songs, 252 lines) — to be replaced with the real bank.
-- Client (`index.html`, `src/`), SVG boxers, hit sounds, `test-ui.mjs`, `test-audio.mjs`, `tests/e2e/look.mjs`: still 1.0, not updated.
-  `tinju-version` meta is still 1.0.0 on purpose; do not release this branch as is.
+## 2.0.0 — 2026-10-30 (branch tinju/2.0-royale; not deployed)
+Tinju Kata becomes a lyric-typing royale for 2–10 players. Protocol 2 is incompatible with 1.x (a 1.x tab gets `old_client` and a "muat ulang" toast).
+- **Game:** everyone types the same lyric line; when all are done (or after 20 s) the punches fall like dominoes down the finishing order — 1st hits 2nd,
+  2nd hits 3rd, … the last one only takes it. Order is by own `elapsed`, then fewer typos; equal = shared rank, no hit inside it. Damage is 1.0's function
+  with the per-character base retuned for lines, multiplied by the victim's rank weight `k/(n−1)` (the slower you finish, the harder you are hit); received damage
+  per round is capped at 60. KO → spectator in the same room (8 emoji); last one standing wins; rematch by vote, same room.
+  Rounds 1–3 show the line lowercase without punctuation; from round 4 verbatim; ULTI (round 4–6, then every 4–6) draws lines of 30+ chars, ×2.5.
+- **`BASE_PER_CHAR` = 0.6** (the brief started at 0.7), `RANK_WEIGHT` 1, `EXTRA_LAST_HIT` 0. Simulation (1000 matches, 3–8 chars/s bots, real `resolveRound()`,
+  `tests/evidence/sim-2.0.txt`), A-na's model, 10 bots: match length p10/p50/p90 184/206/231 s (K-2 ok), 2 bots 45/58/87 s (K-3 ok), rounds with a KO p50 7 (K-4 ok),
+  first KO round p50 5 (K-5 ok), 97.1 % of matches never have more than 3 KOs in a round.
+- **Open item for Pras (K-1, not a build blocker per Stella 2026-10-30 00:58):** K-1 asks "≤ 3 KOs per round in ≥ 95 % of matches and never ≥ 5". At 0.6, 1 match in 1000
+  has a round with ≥ 5 KOs (A-na's model); with bank-shaped lines (normal < 30, ULTI ≥ 30 chars) 93.5 % are ≤ 3 and 8 matches in 1000 have ≥ 5 — every one of them an ULTI round.
+  No base from 0.5 to 1.0 passes. Not applied, for Pras to decide: `TK_EXTRA_LAST_HIT=1` (a flag; passes K-1 on both models, 99.6 % / 98.6 %, 0 matches ≥ 5) or `ULTI_X` 1.25–1.5.
+- **Server:** `server/engine.js` (pure rules, `resolveRound`), `server/lyrics.js` (loader/validator), `server/server.js` (rooms, protocol, `TK_*` overrides, `TK_SEED` replays a match),
+  lyrics loaded at boot and on `SIGHUP` (invalid file: logged, old bank kept; running matches keep their snapshot). `server/words.js` is gone.
+- **Client:** `index.html` + `src/{main,net,audio,art,typing}.js` as ES modules, `src/theme.css` (every colour, font, radius, duration and easing — card C, Angkasa lofi) and
+  `src/style.css` (layout only). Seven SVG poses (`assets/img/boxer-*.svg`: idle, jab, uppercut, block, ouch, ko, win), one design in four colourways (recoloured at load;
+  **one skin set**, no per-skin drawings). Lobby for 2–10, avatar row (up to 9 others, static images + HP bars), the two big boxers (left: who hit you, right: who you hit),
+  the domino (~0.15 s per link, snap then drift), strict-typo lyric box, song title + artist card for 1 s, ULTI shake, spectator emoji, rematch votes.
+  Four layered hit sounds (impact click + low thump + tail, synthesised) and a soft detuned lobby pad. Input `autocapitalize=off autocorrect=off spellcheck=false inputmode=text`;
+  curly quotes map to straight, a trailing space after the last character is ignored. B1: the line box is scrolled into view on `line`.
+  `tk_name/tk_sess/tk_snd/tk_skin` kept (old `tk_skin` maps modulo 4); `tk_theme` ignored; the ☾ toggle is gone.
+- **Content:** `server/lyrics.txt` is still **placeholder content** (46 invented songs, 252 lines). The real bank (Indonesian songs everyone can finish from memory) has to be supplied;
+  drop it in the same format and send `SIGHUP`.
+- **Tests:** `test-rules.mjs` (resolveRound, O-01…O-33, D-1…D-9, rank weight, typing), `test-proto.mjs`, `test-ui.mjs` (3 players through the real server on desktop / iPhone 12 / 320×480
+  + a 2-player reduced-motion match), `test-audio.mjs`, `tests/e2e/look.mjs` (10-player room, 3 devices), `sim-2.0.mjs`.
+- Not verified: a real iPhone and a real Android keyboard (autocorrect, prediction, trailing space), frame times on real hardware, the placeholder bank's tone.
 
 ## 1.0.0 — 2026-10-29
 - First release: 1v1 typing-boxing, HP 100, ULTI words every 4–6 rounds, rematch, canvas-drawn boxers, sound.

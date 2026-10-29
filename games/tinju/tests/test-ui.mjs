@@ -238,7 +238,8 @@ async function twoPlayerReduced() {
   for (const c of ctxs) await c.close();
 }
 
-const prof = devices['iPhone 12'];
+const prof = devices()['iPhone 12'];
+if (!prof || !prof.viewport) throw new Error('iPhone 12 device descriptor missing');
 await threePlayer('desktop', 'desktop', { viewport: { width: 1280, height: 800 } });
 await threePlayer('mobile', 'iPhone 12', { ...prof });
 await threePlayer('w320', '320x480', { viewport: { width: 320, height: 480 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
