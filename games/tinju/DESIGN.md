@@ -36,7 +36,8 @@ no duplicate line. `SIGHUP`: reload + validate; invalid → keep the old bank an
 3. Damage per link = 1.0 lines 194–199 unchanged: `d = to.elapsed − from.elapsed`; margin 0.5/1/1.25 at
    `d ≤ 400 / ≤ 1000 / later`; critical = `from.typos==0 && len*1000 ≥ CRIT_CPS*from.elapsed`; combo = `from.fire`;
    `min(CAP, round(len·BASE_PER_CHAR·margin·crit·combo·ulti))`, `len` = length of the form shown.
-4. `applied = min(damage, RECV_CAP − receivedThisRound[to])`; `hp = max(0, hp − applied)`.
+3b. **Rank weight** (brief 2026-10-30, Stella): `damage` is multiplied by the victim's weight `k/(n−1)` — `k` = the victim's competition rank − 1 (second finisher = 1; tied victims take the rank of their first seat), `n` = entrants; unfinished victims and 2-player rounds weigh 1; `RANK_WEIGHT=0` is pure domino. Applied after the per-link cap: `scaled = min(CAP, round(damage·weight))`. `BASE_PER_CHAR` default 0.7 (final value in CHANGELOG).
+4. `applied = min(scaled, RECV_CAP − receivedThisRound[to])`; `hp = max(0, hp − applied)`.
 5. `EXTRA_LAST_HIT=1` only: rank 1's hitter also hits every member of the last rank (link `extra:true`), when there
    are ≥ 3 ranks. Default **0**.
 6. Streak/fire (1.0 lines 202–204, "win" = dealt ≥ 1 hit): hitters as 1.0's winner (all its links use the same
@@ -86,7 +87,7 @@ Removed from 1.x: `word` (→ `line`), `result.winner/tier/damage/margin` (→ `
   (`elapsed` itself must stay ≤ `WORD_CAP_MS`; the slack lets a 19.9 s finisher's packet land).
 - Ties: `elapsed` → `typos` → same rank, no hit. Arrival order never decides.
 - Randomness: `room.seed` (crypto at create, or `TK_SEED`); `rng = mulberry32(seed + matchNo)` drives the line bag
-  shuffle (no line repeats in a match) and ULTI scheduling (first at round 4–6, then every 4–6, as 1.0 line 217).
+  shuffle (no line repeats in a match) and ULTI scheduling (first at round 4–6, then every 4–6, as 1.0 line 217). **Lyric pick (brief 2026-10-30, Stella):** normal rounds draw lines whose shown form is < 30 chars; an ULTI round draws a line ≥ 30 chars, verbatim — two bags, each shuffled by `rng`, no repeats in a match.
   Same seed + bank + `done` sequence → same lines, ULTIs, chain. `crypto` stays for codes and tokens only.
 
 ## Disconnect and rejoin
