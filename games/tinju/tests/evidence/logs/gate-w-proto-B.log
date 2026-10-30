@@ -1,0 +1,131 @@
+PASS lyrics.txt: loads and validates (>= 40 songs, >= 150 short, >= 40 long)
+PASS lyrics.txt: every song has at least one line >= 30 chars
+PASS lyrics.txt: 4-6 lines per song, ASCII only, full and plain forms 15-45 chars, plain forms unique
+PASS validator: 39 songs -> error names "songs"
+PASS validator: 40 songs boots (boundary)
+PASS validator: 199 lines -> error
+PASS validator: a 14-char line -> error naming 15-45
+PASS validator: a 15-char line is fine (boundary)
+PASS validator: a 46-char line -> error
+PASS validator: a 45-char line is fine (boundary)
+PASS validator: plain form < 15 (punctuation-heavy line) -> error
+PASS validator: curly quote -> ASCII error
+PASS validator: double space and trailing space -> error
+PASS validator: duplicate line -> error
+PASS validator: too few short lines / too few long lines are named
+PASS parser: block without "title | artist" and block without lines are reported
+PASS parser: comments (# ...) and CRLF are accepted
+PASS loadFile: missing file -> errors, no throw
+PASS loadFile: empty file -> errors (needs songs)
+PASS boot: empty bank -> exit 1 and the message names the rule
+PASS boot: 39 songs -> exit 1
+PASS boot: a 14-char line -> exit 1
+PASS boot: a block without "title | artist" -> exit 1
+PASS boot: missing file -> exit 1
+PASS boot: exactly 40 songs boots (boundary) and /health reports the bank size
+PASS GET /tinju/health -> {ok,rooms,players,uptime,lyrics{songs,lines}}
+PASS create without v:2 -> error code old_client ("muat ulang")
+PASS join with v:1 and rejoin without v -> old_client as well (a 1.x tab with a saved session)
+PASS create -> joined{code(5), token(32 hex), id(8 hex), v:2}
+PASS second create while in a room is rejected
+PASS start with 1 player rejected
+PASS unknown t is ignored without a reply (ping after it answers, no error queued)
+PASS invalid JSON -> error, connection survives
+PASS duplicate skins are allowed (10 players, 4 skins)
+PASS skin out of range -> error
+PASS skin change is broadcast
+PASS non-host start rejected
+PASS state players carry id,name,skin,online,isHost,hp,streak,fire,out,rematch and no token
+PASS state.you.id and cfg (HP, MAX_PLAYERS 10, LINK_MS) are present
+PASS 11th join -> "Room penuh (maks 10 pemain)"
+PASS 10 players: start -> every socket gets countdown{round:1, ms, endsAt, serverTime}
+PASS B3 (10 sockets): line.revealAt >= countdown.endsAt and the frame arrives after it
+PASS every socket gets the identical line payload in one tick (< 50 ms spread)
+PASS line{round,text,form,ulti,ultiIn,entrant,revealAt,endsAt,serverTime}: round 1 is the plain form
+PASS plain form = lowercase [a-z0-9 ], and it is the plain form of a bank line
+PASS state messages never contain the line text
+PASS join while a match is running rejected
+PASS progress{round, finished, of} is a count; it does not say who
+PASS P-04: the round closes right after the last done (not at the cap)
+PASS P-01: finishing order is by claimed elapsed (400,600,800,900,1200 ... 2200) although cs[9] ... cs[4] arrived first, cs[3] before them all
+PASS result chain is a domino: 9 links, each from the previous rank to the next
+PASS result fields: order[], chain[], sat[], hp{}, fire{}, ko[], song{title,artist}, endsAt, serverTime
+PASS result endsAt = now + RESULT 20 + LINK 5 x 9 + TITLE 10 (+- 40 ms)
+PASS link fields: from,to,tier,d,margin,critical,combo,ulti,damage,weight,applied,extra
+PASS wiring: the server result equals resolveRound() on the same claims (applied per link, hp)
+PASS first finisher loses nothing; a 9-link chain moved HP only for ranks 2-10
+PASS result is relayed to every socket (all 10 got the same chain)
+PASS done for a finished round -> error code stale
+PASS P-10: elapsed 149, 20001, non-integer, string, negative -> bad_elapsed
+PASS P-24: typos negative / 100 / non-integer -> bad_typos
+PASS P-10: elapsed 150 is accepted (lower boundary)
+PASS P-24: second done in a round -> dup
+PASS P-24: done for another round number -> stale
+PASS P-10: elapsed 20000 accepted (upper boundary); order 150 < 19999 < 20000
+PASS P-24: oversize frame closes the socket, server survives
+PASS server still healthy after a big frame
+PASS P-05: result at revealAt + WORD_CAP 3000 + SLACK 300 (+- 250 ms)
+PASS P-05: the two unfinished are the last rank and are hit by the last FINISHER only, clean
+PASS P-05: no hit between the unfinished
+PASS P-06: nobody finishes -> no hits, HP unchanged, empty chain
+PASS P-07: a tie at the front -> lowest seat (cs[0]) hits cs[2]; the tied cs[1] hits nobody and nobody hits it
+PASS P-07: tied ranks share rank number 1,1,3
+PASS P-11: rounds 1-3 are plain (lowercase, [a-z0-9 ], no double space) — 90 rounds checked
+PASS P-12: from round 4 the form is full (verbatim)
+PASS P-13: first ULTI in round 4-6 (was 6); every gap 4-6 (5,5,5,4,5,6,4,4,6,4,4,4,6,5,6,6,5)
+PASS P-13: gaps 4, 5 and 6 each seen in 90 rounds
+PASS lyric pick: ULTI rounds draw lines >= 30 chars, normal rounds lines < 30 chars
+PASS P-14: no line repeats within the 90-round match
+PASS wire D-1 (len 25, base 1, pure domino): A>B 19, B>C 31, claims sent in the reverse order of elapsed
+PASS wire D-1: order A,B,C and hp 100000 - 0/19/31
+PASS wire D-2 (len 20): tie at the end — A hits B and C for 30, they do not hit each other
+PASS wire O-01 (len 18): clean + critical = 34 for A>B (d 1200); B>C follows with d 4200 clean
+PASS SPEC "sepeda" won by 1200 ms vs 2400 ms, 0 typos = 34 (base 3, 2 players)
+PASS SPEC 6 letters, won by 300 ms with 1 typo = 9 (block)
+PASS SPEC ulti "Kopi-Susu!" clean + critical = 60 (raw 140.6, capped)
+PASS 2 players, same elapsed and same typos -> draw: no link, HP unchanged (1.0 behaviour)
+PASS winner by elapsed, not arrival: the slower claim (cs[0] 2600) arrived first, cs[1] (1300) still hits
+PASS KO happens: the slowest player is knocked out; result.ko lists them
+PASS state.players[].out = "ko" for the KO'd player; the others are still in (out null)
+PASS P-19: after the KO the spectator gets the next line with entrant:false; the two others entrant:true
+PASS P-19: a spectator's done -> error code spectator, no effect on the chain
+PASS P-19: the spectator's emoji is broadcast to every socket (from, e)
+PASS P-28: > 2 emoji per second from one player are dropped silently (second burst message never arrives)
+PASS P-28: e outside 0..7 -> error
+PASS P-28: an alive player in the match cannot throw emoji (error, nothing relayed)
+PASS end{winner, reason:"ko", hp{}}: the last one standing is cs[0]
+PASS emoji is allowed in the ended state for everyone
+PASS P-20: with only 2 of 3 online voted the match does not start yet
+PASS P-20: rematch starts when every online player voted: same room code and ids, HP full, round 1, plain form, nobody out
+PASS rematch: the host may start early with >= 2 votes; the non-voter becomes out:"sat" and is not an entrant
+PASS rematch: the sat player gets entrant:false lines
+PASS P-22: a player dropping mid-round shows online:false to the others
+PASS P-22: rejoin by token returns the same id; HP and skin kept
+PASS P-22: the line is NOT re-sent to the rejoiner during the round
+PASS P-22: the rejoiner is locked out of the round they dropped in (stale)
+PASS P-22: the rejoiner is an entrant, unfinished, and takes at most one hit (clean, from the last finisher)
+PASS the rejoined socket receives the live results again
+PASS P-29: a player offline at reveal is in sat[] — not in order, no hit given or taken
+PASS walkover: offline > WALKOVER_MS in a match -> out:"walkover", HP frozen, the match goes on
+PASS walkover: the only other player offline for WALKOVER_MS -> end{winner: the one left, reason:"walkover"}
+PASS rejoin after the end still works while the room exists (ended state)
+PASS rejoin with a bad token -> rejoin_failed
+PASS rejoin during the countdown: countdown is re-sent with the same endsAt
+PASS P-17: B3 — line.revealAt >= countdown.endsAt in 200/200 rounds x 10 sockets (early: 0)
+PASS P-17: no line frame arrived before countdown.endsAt - 3 ms in 200 rounds (premature: 0)
+PASS P-18: the same line to every socket in 200/200 rounds, receive spread max 1 ms (< 50)
+PASS P-14: 200 rounds in one match with a 650-line bank — it did not end by "bank"
+PASS P-30: TK_SEED replays a match — two rooms with the same seed, bank and done sequence: identical lines, ULTIs and chains (14 rounds)
+PASS P-16: SIGHUP with a valid bank (+1 song) -> /health shows 47 songs, process stays up
+PASS P-16: the running match keeps its bank snapshot — none of the new song's lines show up
+PASS P-16: the next match draws from the new bank (a "Lagu Baru Sekali" line / song card appears)
+PASS P-16: SIGHUP with an invalid bank -> process stays up and keeps the old bank (47 songs)
+PASS P-16: the server log says "lyrics reloaded" for the good bank and "REJECTED" for the bad one
+PASS lobby: leave removes the player at once; host and the other stay
+PASS lobby: offline > LOBBY_OFFLINE_MS (1500 in this run) -> removed from the room
+PASS done before joining a room -> error
+PASS leave mid-match: host passes to a present player; the leaver stays out:"walkover" until the match ends
+PASS leave mid-match: the round in flight still resolves with the remaining players (leaver was an entrant, unfinished, took a hit)
+
+== test-proto: PASS 128 / FAIL 0 ==
+exit=0 secs=91

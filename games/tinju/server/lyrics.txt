@@ -1,0 +1,352 @@
+# Tinju Kata 2.0 lyric bank -- starter bank (Stella, 2026-10-30).
+# Only traditional / public-domain material: lagu daerah (anonymous), lagu wajib whose composers died before 1956
+# (W.R. Supratman 1938, C. Simanjuntak 1946), peribahasa and pantun. The pop / TikTok block is Pras's to add:
+# same format, append below, then `systemctl --user kill -s HUP tinju` (no release).
+# Format: blocks separated by a blank line; first line `title | artist`; then 4-8 lines. ASCII only, 15-45 chars.
+
+Indonesia Raya | W.R. Supratman
+Indonesia tanah airku
+Tanah tumpah darahku
+Di sanalah aku berdiri
+Jadi pandu ibuku
+Marilah kita berseru, Indonesia bersatu!
+Untuk Indonesia Raya
+
+Ibu Kita Kartini | W.R. Supratman
+Ibu kita Kartini, putri sejati
+Putri Indonesia, harum namanya
+Ibu kita Kartini, pendekar bangsa
+Pendekar kaumnya untuk merdeka
+Wahai ibu kita Kartini
+Sungguh besar cita-citanya
+
+Di Timur Matahari | W.R. Supratman
+Di timur matahari mulai bercahya
+Bangun dan berdiri kawan semua
+Marilah mengatur barisan kita
+Pemuda pemudi Indonesia
+
+Maju Tak Gentar | C. Simanjuntak
+Maju tak gentar, membela yang benar
+Maju tak gentar, hak kita diserang
+Maju serentak, mengusir penyerang
+Maju serentak, tentu kita menang
+Menerkam menerjang terjang
+Majulah majulah menang
+
+Tanah Tumpah Darahku | C. Simanjuntak
+Tanah tumpah darahku yang suci mulia
+Indah dan permai bagaikan intan permata
+Tanah airku tanah bahagia
+Tanah tumpah darahku yang suci
+
+Rasa Sayange | Lagu daerah Maluku
+Rasa sayange, rasa sayang sayange
+Lihat Nona dari jauh rasa sayang sayange
+Kalau ada sumur di ladang
+Boleh kita menumpang mandi
+Kalau ada umurku panjang
+Boleh kita berjumpa lagi
+
+Ampar-Ampar Pisang | Lagu daerah Kalimantan Selatan
+Ampar ampar pisang, pisangku balum masak
+Masak sabigi dihurung bari-bari
+Manggalepak manggalepok
+Patah kayu bengkok
+Bengkok dimakan api, apinya cangcurupan
+Nang mana batis kutung dikitipi dawang
+
+Soleram | Lagu daerah Riau
+Soleram, soleram
+Soleram anak yang manis
+Anak manis janganlah dicium sayang
+Kalau dicium merahlah pipinya
+Satu dua tiga dan empat
+Lima enam tujuh delapan
+
+Gundul-Gundul Pacul | Lagu daerah Jawa Tengah
+Gundul gundul pacul cul, gembelengan
+Nyunggi nyunggi wakul kul, gembelengan
+Wakul ngglimpang segane dadi sak latar
+Gundul gundul pacul cul
+Nyunggi nyunggi wakul kul
+Segane dadi sak latar
+
+Lir-Ilir | Sunan Kalijaga
+Lir ilir lir ilir, tandure wis sumilir
+Tak ijo royo-royo
+Tak sengguh temanten anyar
+Lunyu lunyu penekno
+Kanggo mbasuh dodotiro
+Mumpung padhang rembulane
+
+Cublak-Cublak Suweng | Lagu daerah Jawa Tengah
+Cublak cublak suweng, suwenge ting gelenter
+Cublak cublak suweng
+Suwenge ting gelenter
+Mambu ketundhung gudel
+Pak empo lera-lere
+Sopo ngguyu ndhelikake
+
+Suwe Ora Jamu | Lagu daerah Jawa Tengah
+Suwe ora jamu, jamu godhong telo
+Suwe ora ketemu, ketemu pisan gawe gelo
+Jamu godhong telo
+Suwe ora ketemu
+Ketemu pisan gawe gelo
+
+Jaranan | Lagu daerah Jawa Tengah
+Jaranan jaranan jarane jaran teji
+Sing numpak ndara Bei
+Sing ngiring para mantri
+Jeg jeg nong, jeg jeg gung
+Jrek jrek nong, jrek jrek gung
+Prok prok prok, gedebug jedher
+
+Padhang Bulan | Lagu daerah Jawa Tengah
+Yo prakanca dolanan ing njaba
+Padhang bulan padhange kaya rina
+Rembulane e sing ngawe-awe
+Ngelingake aja padha turu sore
+
+Menthok-Menthok | Lagu daerah Jawa Tengah
+Menthok menthok tak kandhani
+Mung lakumu angisin-isini
+Mbok ya aja ngetok ana kandhang wae
+Enak enak ngorok ora nyambut gawe
+Menthok menthok mung lakumu
+
+Sluku-Sluku Bathok | Lagu daerah Jawa Tengah
+Sluku sluku bathok, bathoke ela elo
+Sluku sluku bathok
+Bathoke ela elo
+Si rama menyang solo
+Oleh olehe payung motha
+Mak jenthit lolo lobah
+
+Yamko Rambe Yamko | Lagu daerah Papua
+Hee yamko rambe yamko aronawa kombe
+Teemi nokibe kubano ko bombe ko
+Yuma no bungo awe ade
+Hongke hongke hongke riro
+Hongke jombe jombe riro
+
+Apuse | Lagu daerah Papua
+Apuse kokon dao, yarabe soren doreri
+Apuse kokon dao
+Yarabe soren doreri
+Wuf lenso bani nema baki pase
+Arafabye aswarakwar
+
+Anak Kambing Saya | Lagu daerah Nusa Tenggara Timur
+Mana dimana anak kambing saya
+Anak kambing tuan ada di pohon waru
+Mana dimana jantung hati saya
+Jantung hati tuan ada di kampung baru
+Caca marica he hei
+Caca marica ada di kampung baru
+
+Potong Bebek Angsa | Lagu daerah Nusa Tenggara Timur
+Potong bebek angsa, masak di kuali
+Nona minta dansa, dansa empat kali
+Sorong ke kiri, sorong ke kanan
+Potong bebek angsa
+Nona minta dansa
+Dansa empat kali
+
+Bolelebo | Lagu daerah Nusa Tenggara Timur
+Bolelebo ita nusa lelebo, malole simalole
+Malole simalole, ita nusa le malole
+Bolelebo ita nusa lelebo
+Ita nusa le malole
+Ie, ita nusa lelebo
+
+Burung Kakatua | Lagu daerah Maluku
+Burung kakatua, hinggap di jendela
+Nenek sudah tua, giginya tinggal dua
+Hinggap di jendela
+Nenek sudah tua
+Giginya tinggal dua
+Lesbum lesbum lesbum la la la
+
+Naik-Naik ke Puncak Gunung | Lagu daerah Maluku
+Naik naik ke puncak gunung
+Tinggi tinggi sekali
+Kiri kanan kulihat saja
+Banyak pohon cemara
+Kiri kanan kulihat saja, banyak pohon cemara
+
+Sarinande | Lagu daerah Maluku
+Sarinande, putri Sarinande, mengapa tangis
+Aduhlah papa, asap api masuk di mata
+Sarinande, putri Sarinande
+Mengapa tangis matamu bengkak
+Aduh mama, aduhlah papa
+Asap api masuk di mata
+
+Ayo Mama | Lagu daerah Maluku
+Ayam hitam telurnya putih
+Mencari makan di pinggir kali
+Sinyo hitam giginya putih
+Kalau tertawa manis sekali
+Ayo mama, jangan mama marah beta
+Dia cuma, dia cuma cium beta
+
+Hela Rotan | Lagu daerah Maluku
+Hela hela rotane, rotane tifa jawa
+Hela hela rotane
+Rotane tifa jawa
+Hela rotan e, hela rotan e
+
+Sipatokaan | Lagu daerah Sulawesi Utara
+Sayang sayang si patokaan
+Matego tego gorokan sayang
+Sako mangemo tanah man jauh
+Mangemo milei leklako sayang
+Sako mangemo tanah man jauh, mangemo milei
+
+O Ina Ni Keke | Lagu daerah Sulawesi Utara
+O ina ni keke, mangewi sako
+Mangewang aki wenang, tumeles baleko
+Weane weane weane toyo
+Daimo siapa ko tare makiwe
+O ina ni keke, mangewi sako, mangewang
+
+Bungong Jeumpa | Lagu daerah Aceh
+Bungong jeumpa, bungong jeumpa meugah di Aceh
+Bungong teuleubeh, teuleubeh indah lagoina
+Puteh kuneng, meujampu mirah
+Bungong si ulah indah lagoina
+Lam sinar buleun, lam sinar buleun
+
+Butet | Lagu daerah Sumatera Utara
+Butet dipangungsian do amangmu ale butet
+Da margurilla da mardarurat ale butet
+Butet, dipangungsian do amangmu
+I doge doge doge i da inang
+Ale butet, ale butet
+
+Sinanggar Tulo | Lagu daerah Sumatera Utara
+Sinanggar tulo tulo a tulo, sinanggar tulo
+Sinanggar tulo tulo a tulo
+Tung so boi do hape holong rohakki
+Tung so boi do hape
+Tu boru ni tulang
+
+Injit-Injit Semut | Lagu daerah Jambi
+Injit injit semut, siapa sakit naik di atas
+Injit injit semut
+Siapa sakit naik di atas
+Kalau pergi ke Surabaya
+Jangan lupa membeli pita
+Kalau adik sudah bekerja
+
+Cing Cangkeling | Lagu daerah Jawa Barat
+Kleung dengdek buah kopi raranggeuyan
+Keun anu dewek ulah pati diheureuyan
+Cing cangkeling manuk cingkleung cindeten
+Cing cangkeling
+Manuk cingkleung cindeten
+Bapa satar buleneng
+
+Tokecang | Lagu daerah Jawa Barat
+Tokecang tokecang bala gendir tosblong
+Angeun kacang angeun kacang sapependil kosong
+Tokecang tokecang
+Bala gendir tosblong
+Aya listrik di masigit
+Meuni caang katingalna
+
+Jali-Jali | Lagu daerah Betawi
+Ini dia si jali-jali
+Lagunya enak, lagunya enak merdu sekali
+Capek sedikit tidak perduli sayang
+Asalkan tuan, asalkan tuan senang di hati
+Palinglah enak si mangga udang
+Hei sayang disayang
+
+Kicir-Kicir | Lagu daerah Betawi
+Kicir kicir ini lagunya
+Lagu lama ya tuan dari Jakarta
+Saya menyanyi ya tuan memang sengaja
+Untuk menghibur menghibur hati nan duka
+Burung dara burung merpati
+Terbang cepat ya tuan tiada tara
+
+Nina Bobo | Lagu tradisional
+Nina bobo, oh nina bobo
+Kalau tidak bobo digigit nyamuk
+Nina bobo oh nina bobo, kalau tidak bobo
+Kalau tidak bobo
+Bobolah bobo, anakku sayang
+
+Pok Ame-Ame | Lagu tradisional
+Pok ame ame, belalang kupu-kupu
+Siang makan nasi, kalau malam minum susu
+Belalang kupu-kupu
+Siang makan nasi
+Kalau malam minum susu
+
+Peribahasa Hewan | Tradisional
+Ada udang di balik batu
+Bagai pungguk merindukan bulan
+Gajah mati meninggalkan gading
+Seperti katak dalam tempurung
+Bagai anjing dengan kucing
+Bagai air di daun talas
+
+Peribahasa Air | Tradisional
+Air beriak tanda tak dalam
+Air tenang menghanyutkan
+Air susu dibalas air tuba
+Sedia payung sebelum hujan
+Air cucuran atap jatuhnya ke pelimbahan juga
+Bagai air dengan minyak
+
+Peribahasa Kerja | Tradisional
+Sedikit demi sedikit, lama-lama menjadi bukit
+Berakit-rakit ke hulu
+Berenang-renang ke tepian
+Bersakit-sakit dahulu
+Bersenang-senang kemudian
+Tak ada rotan, akar pun jadi
+
+Peribahasa Hidup | Tradisional
+Di mana bumi dipijak
+Di situ langit dijunjung
+Tong kosong nyaring bunyinya
+Malu bertanya sesat di jalan
+Buah jatuh tak jauh dari pohonnya
+Besar pasak daripada tiang
+
+Peribahasa Pergaulan | Tradisional
+Mulutmu harimaumu, menerkam kepalamu
+Ada gula ada semut
+Tak kenal maka tak sayang
+Habis manis sepah dibuang
+Lempar batu sembunyi tangan
+Dikasih hati minta jantung
+
+Pantun Budi | Tradisional
+Pisang emas dibawa berlayar
+Masak sebiji di atas peti
+Hutang emas boleh dibayar
+Hutang budi dibawa mati
+Pisang emas dibawa berlayar, masak sebiji
+Hutang emas boleh dibayar, hutang budi
+
+Pantun Belajar | Tradisional
+Buah cempedak di luar pagar
+Ambil galah tolong jolokkan
+Saya budak baru belajar
+Kalau salah tolong tunjukkan
+Buah cempedak di luar pagar, ambil galah
+Saya budak baru belajar, kalau salah
+
+Pantun Cinta | Tradisional
+Dari mana datangnya cinta, dari mata
+Dari mana datangnya lintah
+Dari sawah turun ke kali
+Dari mana datangnya cinta
+Dari mata turun ke hati
+Jalan-jalan ke kota Paris

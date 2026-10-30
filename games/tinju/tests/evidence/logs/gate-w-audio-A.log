@@ -1,0 +1,37 @@
+PASS no AudioContext before the first gesture (ctx null, 0 oscillators, 0 contexts)
+PASS music button pulses (class wait) until the first gesture
+PASS first gesture creates the AudioContext, state running
+PASS soft pad starts by default: pad nodes + >= 9 oscillators (8 chord voices + LFO)
+PASS pad voices are detuned (-7 and +7 cents both present)
+PASS pad is built from triangles (soft)
+PASS pulse stops after the gesture
+PASS music off: pad released, pref saved in tk_snd, button shows off
+PASS music on again: pad back
+PASS jab: layered — at least 3 sound sources (click + thump + tail): 1 oscillators + 2 noise
+PASS block: layered — at least 3 sound sources (click + thump + tail): 2 oscillators + 1 noise
+PASS uppercut: layered — at least 3 sound sources (click + thump + tail): 2 oscillators + 2 noise
+PASS ko: layered — at least 3 sound sources (click + thump + tail): 4 oscillators + 2 noise
+PASS jab: has an impact click (noise burst) and a low thump (oscillator)
+PASS block: has an impact click (noise burst) and a low thump (oscillator)
+PASS uppercut: has an impact click (noise burst) and a low thump (oscillator)
+PASS ko: has an impact click (noise burst) and a low thump (oscillator)
+PASS the four graphs all differ (distinguishable with eyes closed): 1/2/sine  2/1/square+triangle  2/2/sawtooth+sine  4/2/sine+triangle+triangle+triangle
+PASS uppercut and ko are heavier than jab (more sources)
+PASS kept sounds still play: tap, err, win, lose, roundBell each make >= 1 oscillator
+PASS effects off: a hit makes no sound source
+PASS effects off is saved in tk_snd
+PASS after a reload no AudioContext exists until a tap (autoplay policy)
+PASS after the tap the pad plays again (music pref on)
+PASS lobby: the pad is playing
+PASS the pad stops when the countdown starts
+PASS the match ended in a KO (HP 30)
+PASS hit sounds fired in the match on both screens (hitter and victim hear it)
+PASS the KO sound played for the knocked-out round on both screens
+PASS only the four hit sounds are used for hits (jab/block/uppercut/ko)
+PASS the pad is back at the end screen (lobby/ended play the pad)
+PASS iPhone 12: no AudioContext before a tap
+PASS iPhone 12: a tap unlocks audio (running) and starts the pad
+PASS 0 console errors and 0 page errors
+
+== test-audio: PASS 34 / FAIL 0 ==
+exit=0 secs=16

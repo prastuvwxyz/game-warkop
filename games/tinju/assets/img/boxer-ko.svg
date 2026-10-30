@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+<!-- Tinju Kata astronaut boxer. Palette (recoloured per skin): body #e6e3ff · accent #9d8cff · glove #ffd28a · visor #221f45 -->
+<ellipse cx="82" cy="193" rx="46" ry="6" fill="#14122b" opacity=".35"/>
+<g transform="rotate(-78 90 186) translate(-10 6)">
+<path d="M60 122L98 160" stroke="#e6e3ff" stroke-width="13" stroke-linecap="round"/><circle cx="98" cy="160" r="15" fill="#ffd28a"/><circle cx="94" cy="155" r="4" fill="#e6e3ff" opacity=".55"/>
+<circle cx="62" cy="180" r="13" fill="#e6e3ff"/><circle cx="100" cy="180" r="13" fill="#e6e3ff"/>
+<circle cx="80" cy="140" r="40" fill="#e6e3ff"/><path d="M42 150a40 40 0 0 0 76 0z" fill="#9d8cff"/>
+<circle cx="103" cy="118" r="7" fill="#9d8cff" opacity=".9"/>
+<circle cx="86" cy="76" r="30" fill="#e6e3ff"/><ellipse cx="102" cy="75" rx="21" ry="16" fill="#221f45"/>
+<circle cx="110" cy="68" r="4" fill="#9d8cff" opacity=".8"/>
+<path d="M91 69l9 9m0-9l-9 9M105 69l9 9m0-9l-9 9" stroke="#ffd28a" stroke-width="2.6" stroke-linecap="round"/>
+<path d="M102 122L70 150" stroke="#e6e3ff" stroke-width="13" stroke-linecap="round"/><circle cx="70" cy="150" r="15" fill="#ffd28a"/><circle cx="66" cy="145" r="4" fill="#e6e3ff" opacity=".55"/>
+<path d="M60 85l2 5 5 .5-4 3.5 1.5 5-4.5-3-4.5 3 1.5-5-4-3.5 5-.5z" fill="#ffd28a"/><path d="M110 63l2 5 5 .5-4 3.5 1.5 5-4.5-3-4.5 3 1.5-5-4-3.5 5-.5z" fill="#ffd28a"/><path d="M150 93l2 5 5 .5-4 3.5 1.5 5-4.5-3-4.5 3 1.5-5-4-3.5 5-.5z" fill="#ffd28a"/>
+</g></svg>

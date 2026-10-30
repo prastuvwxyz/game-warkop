@@ -1,0 +1,5 @@
+FAIL U-01 (B1, worst-case bank 29/45 chars): whole line box and line inside the 320x480 viewport for HOST and both GUESTS, every round (guest1 scrolled to bottom, guest2 to top before each reveal)  | 12/36 page-rounds ok, 45-char reveals seen 6 r1 Host@320x480 {"top":666,"bottom":736,"left":10,"right":310,"lt":681,"lb":707,"vh":480,"vw":320,"sy":35,"len":29,"rows":1} ; r1 Guest2@320x480 {"top":701,"bottom":771,"left":10,"right":310,"lt":716,"lb":742,"vh":480,"vw":320,"sy":0,"len":29,"rows":1} ; r2 Host@320x480 {"top":666,"bottom":736,"left":10,"right":310,"lt":681,"lb":707,"vh":480,"vw":320,"sy":35,"len":29,"rows":1}
+PASS U-13: 0 page errors and 0 console errors across every page in this run  | errors=0 
+PASS no request left 127.0.0.1 in any page of this run (external URLs)
+
+== gate-ui MUTB1T: PASS 2 / FAIL 1 ==

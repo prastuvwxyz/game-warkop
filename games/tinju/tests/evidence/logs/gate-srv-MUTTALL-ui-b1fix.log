@@ -1,0 +1,19 @@
+2026-10-29T19:06:25.804Z lyrics loaded {"songs":40,"lines":200,"normal":160,"ulti":40}
+2026-10-29T19:06:25.812Z tinju listening 127.0.0.1:3545 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T19:06:26.295Z room create 5C2DY Host
+2026-10-29T19:06:26.664Z room join 5C2DY Guest1
+2026-10-29T19:06:27.013Z room join 5C2DY Guest2
+2026-10-29T19:06:27.076Z match start 5C2DY match#1 seed=3657221535 players=3
+2026-10-29T19:06:28.170Z round 5C2DY 1 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:30.858Z round 5C2DY 2 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:33.547Z round 5C2DY 3 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:36.237Z round 5C2DY 4 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:39.791Z round 5C2DY 5 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:43.174Z round 5C2DY 6 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:45.845Z round 5C2DY 7 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:48.552Z round 5C2DY 8 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:51.237Z round 5C2DY 9 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:53.902Z round 5C2DY 10 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:56.578Z round 5C2DY 11 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:59.267Z round 5C2DY 12 n=3 done=3 links=2 ko=0 order=dc11512b,22501497,ce1eb518 arrival=dc11512b,22501497,ce1eb518
+2026-10-29T19:06:59.288Z SIGTERM

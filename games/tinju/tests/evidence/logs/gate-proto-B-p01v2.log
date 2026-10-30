@@ -1,0 +1,6 @@
+PASS P-01: 5 bots, done sent slowest-claim first (fastest arrives 1.2 s after the first): order by own elapsed  | 20/20 rounds 
+PASS P-01/P-03: every link (from, to, applied, combo) and HP after = my oracle at the shipped config, 20 rounds  | 20/20
+PASS P-23: 11th join -> error "Room penuh (maks 10 pemain)"; room still 10  | Room penuh (maks 10 pemain)
+PASS P-23: start with 1 player refused, state stays lobby  | Butuh 2 pemain online
+
+== gate-proto Bp01: PASS 4 / FAIL 0 ==

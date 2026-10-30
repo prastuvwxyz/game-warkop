@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 640" width="360" height="640" font-family="ui-monospace,Menlo,Consolas,monospace">
+<!-- Blueprint: #0d3b66 #124e89 #e8f1ff #faf0ca #f95738 -->
+<defs><pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#124e89" stroke-width="1"/></pattern>
+<pattern id="G" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M100 0H0V100" fill="none" stroke="#124e89" stroke-width="2"/></pattern></defs>
+<rect width="360" height="640" fill="#0d3b66"/><rect width="360" height="640" fill="url(#g)"/><rect width="360" height="640" fill="url(#G)"/>
+<rect x="10" y="10" width="340" height="620" fill="none" stroke="#e8f1ff" stroke-width="1.5"/>
+<g fill="none" stroke="#e8f1ff" stroke-width="1.5">
+<path d="M10 560H350M250 560V630M10 596H250"/></g>
+<text x="18" y="578" font-size="8" fill="#e8f1ff">SHEET 01 / TINJU KATA</text><text x="18" y="613" font-size="8" fill="#e8f1ff">SCALE 1:1  REV 1.1</text>
+<text x="258" y="582" font-size="8" fill="#faf0ca">DWG NO.</text><text x="258" y="612" font-size="14" fill="#faf0ca">KT-006</text>
+<text x="180" y="62" text-anchor="middle" font-size="40" font-weight="700" fill="#e8f1ff" letter-spacing="2">TINJU KATA</text>
+<path d="M40 74H320" stroke="#faf0ca" stroke-width="1"/><path d="M40 70v8M320 70v8" stroke="#faf0ca"/>
+<!-- HP dimension bars -->
+<g stroke="#e8f1ff" fill="none"><path d="M24 110H164M24 104v12M164 104v12M196 110H336M196 104v12M336 104v12"/></g>
+<rect x="24" y="106" width="110" height="8" fill="#e8f1ff"/><rect x="196" y="106" width="46" height="8" fill="#e8f1ff"/>
+<text x="24" y="98" font-size="10" fill="#faf0ca">P1 · HP 78</text><text x="336" y="98" font-size="10" fill="#faf0ca" text-anchor="end">P2 · HP 33</text>
+<!-- ring -->
+<path d="M10 440H350M30 440L50 250M330 440L310 250M50 250H310" fill="none" stroke="#e8f1ff" stroke-width="1" stroke-dasharray="6 4"/>
+<!-- boxer left (punching) -->
+<g fill="none" stroke="#e8f1ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="110" cy="250" r="22"/><path d="M110 272V350M110 290L170 300L214 292M110 296L132 330"/><path d="M110 350L90 440M110 350L140 440"/>
+<rect x="212" y="282" width="24" height="22" rx="8" fill="#0d3b66"/></g>
+<!-- boxer right (hit) -->
+<g fill="none" stroke="#e8f1ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="262" cy="262" r="22"/><path d="M252 284L240 352M248 300L224 328M246 300L274 330"/><path d="M240 352L226 440M240 352L262 440"/>
+<rect x="212" y="316" width="22" height="20" rx="8" fill="#0d3b66" transform="rotate(-20 223 326)"/></g>
+<!-- impact lines -->
+<g stroke="#f95738" stroke-width="3" stroke-linecap="round"><path d="M248 238l14-22M262 228l4-24M236 246l-22-12M274 238l22-14M280 262l24 4"/></g>
+<text x="238" y="206" font-size="14" font-weight="700" fill="#f95738">HIT</text>
+<!-- dimension arrows -->
+<g stroke="#faf0ca" stroke-width="1" fill="#faf0ca"><path d="M112 468H210M112 462v12M210 462v12"/><path d="M112 468l8-4v8zM210 468l-8-4v8z"/></g>
+<text x="161" y="486" font-size="11" text-anchor="middle" fill="#faf0ca">JAB · 62</text>
+<g stroke="#faf0ca" fill="#faf0ca"><path d="M320 228V338M314 228h12M314 338h12"/></g>
+<text x="330" y="288" font-size="9" fill="#faf0ca" transform="rotate(90 330 288)" text-anchor="middle">−34</text>
+<!-- KO stamp -->
+<g transform="rotate(-14 290 170)"><rect x="248" y="150" width="84" height="40" fill="none" stroke="#f95738" stroke-width="3"/><text x="290" y="181" font-size="28" font-weight="700" text-anchor="middle" fill="#f95738">KO</text></g>
+<!-- word tiles -->
+<g stroke="#e8f1ff" stroke-width="1.5"><rect x="44" y="505" width="40" height="44" fill="#e8f1ff"/><rect x="88" y="505" width="40" height="44" fill="#e8f1ff"/><rect x="132" y="505" width="40" height="44" fill="#e8f1ff"/><rect x="176" y="505" width="40" height="44" fill="#e8f1ff"/><rect x="220" y="505" width="40" height="44" fill="none" stroke-dasharray="4 3"/><rect x="264" y="505" width="40" height="44" fill="none"/></g>
+<g font-size="28" font-weight="700" text-anchor="middle" fill="#0d3b66"><text x="64" y="537">s</text><text x="108" y="537">e</text><text x="152" y="537">p</text><text x="196" y="537">e</text></g>
+<g font-size="28" font-weight="700" text-anchor="middle" fill="#faf0ca"><text x="240" y="537">d</text><text x="284" y="537">a</text></g>
+<path d="M220 553h40" stroke="#f95738" stroke-width="3"/>
+</svg>

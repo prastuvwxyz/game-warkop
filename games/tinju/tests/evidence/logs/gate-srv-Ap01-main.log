@@ -1,0 +1,41 @@
+2026-10-29T19:03:49.802Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T19:03:49.811Z tinju listening 127.0.0.1:3520 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T19:03:49.862Z room create FFAA5 Bot0
+2026-10-29T19:03:49.864Z room join FFAA5 Bot1
+2026-10-29T19:03:49.867Z room join FFAA5 Bot2
+2026-10-29T19:03:49.870Z room join FFAA5 Bot3
+2026-10-29T19:03:49.873Z room join FFAA5 Bot4
+2026-10-29T19:03:49.876Z match start FFAA5 match#1 seed=1312504394 players=5
+2026-10-29T19:03:51.232Z round FFAA5 1 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:03:52.736Z round FFAA5 2 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:03:54.241Z round FFAA5 3 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:03:55.745Z round FFAA5 4 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:03:57.249Z round FFAA5 5 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:03:58.751Z round FFAA5 6 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:04:00.255Z round FFAA5 7 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:04:01.760Z round FFAA5 8 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:04:03.262Z round FFAA5 9 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:04:04.767Z round FFAA5 10 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:04:06.270Z round FFAA5 11 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:04:07.775Z round FFAA5 12 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:04:09.280Z round FFAA5 13 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:04:10.785Z round FFAA5 14 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:04:12.290Z round FFAA5 15 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:04:13.794Z round FFAA5 16 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:04:15.298Z round FFAA5 17 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:04:16.803Z round FFAA5 18 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:04:18.307Z round FFAA5 19 n=5 done=5 links=4 ko=0 order=b7b99f53,df2f87cb,1dabdba1,245a5b08,15f5b10d arrival=15f5b10d,245a5b08,1dabdba1,df2f87cb,b7b99f53
+2026-10-29T19:04:19.811Z round FFAA5 20 n=5 done=5 links=4 ko=0 order=1dabdba1,15f5b10d,df2f87cb,245a5b08,b7b99f53 arrival=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1
+2026-10-29T19:04:20.124Z room create E6P3P Bot0
+2026-10-29T19:04:20.127Z room join E6P3P Bot1
+2026-10-29T19:04:20.130Z room join E6P3P Bot2
+2026-10-29T19:04:20.133Z room join E6P3P Bot3
+2026-10-29T19:04:20.136Z room join E6P3P Bot4
+2026-10-29T19:04:20.140Z room join E6P3P Bot5
+2026-10-29T19:04:20.143Z room join E6P3P Bot6
+2026-10-29T19:04:20.146Z room join E6P3P Bot7
+2026-10-29T19:04:20.149Z room join E6P3P Bot8
+2026-10-29T19:04:20.152Z room join E6P3P Bot9
+2026-10-29T19:04:20.161Z room create QJHFH Solo
+2026-10-29T19:04:20.169Z SIGTERM
+2026-10-29T19:04:20.171Z round FFAA5 21 n=5 done=0 links=0 ko=0 order=b7b99f53,245a5b08,df2f87cb,15f5b10d,1dabdba1 arrival=

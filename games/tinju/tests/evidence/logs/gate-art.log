@@ -1,0 +1,37 @@
+ART (rendered by me at 200x200 from assets/img/*.svg with the 4 palette swaps of src/art.js):
+  skin 0/idle: 200x200, coverage 26.4 %, bbox 36,46,144,198, quantised colours 64
+  skin 0/jab: 200x200, coverage 27.9 %, bbox 36,46,199,198, quantised colours 65
+  skin 0/uppercut: 200x200, coverage 26.9 %, bbox 36,29,152,198, quantised colours 83
+  skin 0/block: 200x200, coverage 25.5 %, bbox 36,50,134,198, quantised colours 72
+  skin 0/ouch: 200x200, coverage 23.5 %, bbox 20,8,127,199, quantised colours 96
+  skin 0/ko: 200x200, coverage 9.9 %, bbox 0,113,127,199, quantised colours 51
+  skin 0/win: 200x200, coverage 30.6 %, bbox 23,9,168,198, quantised colours 71
+  skin 1/idle: 200x200, coverage 26.4 %, bbox 36,46,144,198, quantised colours 73
+  skin 1/jab: 200x200, coverage 27.9 %, bbox 36,46,199,198, quantised colours 73
+  skin 1/uppercut: 200x200, coverage 26.9 %, bbox 36,29,152,198, quantised colours 94
+  skin 1/block: 200x200, coverage 25.5 %, bbox 36,50,134,198, quantised colours 77
+  skin 1/ouch: 200x200, coverage 23.5 %, bbox 20,8,127,199, quantised colours 107
+  skin 1/ko: 200x200, coverage 9.9 %, bbox 0,113,127,199, quantised colours 51
+  skin 1/win: 200x200, coverage 30.6 %, bbox 23,9,168,198, quantised colours 72
+  skin 2/idle: 200x200, coverage 26.4 %, bbox 36,46,144,198, quantised colours 74
+  skin 2/jab: 200x200, coverage 27.9 %, bbox 36,46,199,198, quantised colours 73
+  skin 2/uppercut: 200x200, coverage 26.9 %, bbox 36,29,152,198, quantised colours 93
+  skin 2/block: 200x200, coverage 25.5 %, bbox 36,50,134,198, quantised colours 74
+  skin 2/ouch: 200x200, coverage 23.5 %, bbox 20,8,127,199, quantised colours 106
+  skin 2/ko: 200x200, coverage 9.9 %, bbox 0,113,127,199, quantised colours 61
+  skin 2/win: 200x200, coverage 30.6 %, bbox 23,9,168,198, quantised colours 78
+  skin 3/idle: 200x200, coverage 26.4 %, bbox 36,46,144,198, quantised colours 62
+  skin 3/jab: 200x200, coverage 27.9 %, bbox 36,46,199,198, quantised colours 64
+  skin 3/uppercut: 200x200, coverage 26.9 %, bbox 36,29,152,198, quantised colours 84
+  skin 3/block: 200x200, coverage 25.5 %, bbox 36,50,134,198, quantised colours 62
+  skin 3/ouch: 200x200, coverage 23.5 %, bbox 20,8,127,199, quantised colours 87
+  skin 3/ko: 200x200, coverage 9.9 %, bbox 0,113,127,199, quantised colours 45
+  skin 3/win: 200x200, coverage 30.6 %, bbox 23,9,168,198, quantised colours 66
+  pose-to-pose silhouette difference (skin 0, % of union pixels): min 16.1 max 88 :: {"idle~jab":26.1,"idle~uppercut":25.3,"idle~ouch":57,"idle~ko":85.4,"idle~win":29.6,"jab~uppercut":34.6,"jab~ouch":66.3,"jab~ko":87.6,"jab~win":39.7,"uppercut~win":24.2,"block~idle":16.1,"block~jab":33.2,"block~uppercut":24.3,"block~ouch":50.1,"block~ko":82.9,"block~win":31.3,"ouch~uppercut":52.4,"ouch~win":57.4,"ko~uppercut":86.2,"ko~ouch":78.2,"ko~win":88}
+  shots-A/ten-ring-guest3-320x480.png: 640x960, mean luminance 50/255, colours(5-bit) 1442, % near card colours {"bg":5.1,"surface":40.2,"ink":1.1,"accent":1,"hi":0.3,"danger":0}
+  shots-A/ten-domino-guest5-320x480.png: 640x960, mean luminance 52.4/255, colours(5-bit) 1351, % near card colours {"bg":5.2,"surface":39.9,"ink":2.3,"accent":2.2,"hi":0.3,"danger":0.1}
+  shots-A/spec-iphone12.png: 1170x1992, mean luminance 48.6/255, colours(5-bit) 1813, % near card colours {"bg":5.8,"surface":39.6,"ink":0.8,"accent":0.3,"hi":0,"danger":0}
+  shots-A/b1-Guest1-45.png: 640x960, mean luminance 50.5/255, colours(5-bit) 1540, % near card colours {"bg":4.2,"surface":40.8,"ink":1.1,"accent":0.7,"hi":0.5,"danger":0}
+  evidence/look-320x480-line.png: 640x960, mean luminance 49.8/255, colours(5-bit) 1509, % near card colours {"bg":5.2,"surface":39.9,"ink":0.8,"accent":1.2,"hi":0,"danger":0}
+  evidence/look-iphone-12-domino.png: 1170x1992, mean luminance 50.3/255, colours(5-bit) 1591, % near card colours {"bg":7.5,"surface":44.6,"ink":2,"accent":1.7,"hi":0.2,"danger":0.1}
+  evidence/look-desktop-domino.png: 1280x800, mean luminance 39.2/255, colours(5-bit) 1237, % near card colours {"bg":21.4,"surface":60.9,"ink":0.5,"accent":0.6,"hi":0.1,"danger":0}

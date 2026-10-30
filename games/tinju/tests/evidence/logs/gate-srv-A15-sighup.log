@@ -1,0 +1,40 @@
+2026-10-29T18:48:14.031Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:48:14.040Z tinju listening 127.0.0.1:3407 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:48:14.087Z room create ACHEH Bot0
+2026-10-29T18:48:14.089Z room join ACHEH Bot1
+2026-10-29T18:48:14.092Z match start ACHEH match#1 seed=798990952 players=2
+2026-10-29T18:48:14.159Z round ACHEH 1 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:14.259Z round ACHEH 2 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:14.358Z round ACHEH 3 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:14.362Z lyrics reloaded {"songs":40,"lines":200,"normal":160,"ulti":40}
+2026-10-29T18:48:14.767Z round ACHEH 4 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:14.868Z round ACHEH 5 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:14.969Z round ACHEH 6 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.071Z round ACHEH 7 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.171Z round ACHEH 8 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.271Z round ACHEH 9 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.372Z round ACHEH 10 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.474Z round ACHEH 11 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.574Z round ACHEH 12 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.674Z round ACHEH 13 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.773Z round ACHEH 14 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.873Z round ACHEH 15 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:15.972Z round ACHEH 16 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:16.074Z round ACHEH 17 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:16.173Z round ACHEH 18 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:16.274Z round ACHEH 19 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:16.373Z round ACHEH 20 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:16.472Z round ACHEH 21 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:16.571Z round ACHEH 22 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:16.671Z round ACHEH 23 n=2 done=2 links=1 ko=0 order=d13baa9c,cdf32bd2 arrival=d13baa9c,cdf32bd2
+2026-10-29T18:48:16.681Z room create RRUF8 Bot0
+2026-10-29T18:48:16.684Z room join RRUF8 Bot1
+2026-10-29T18:48:16.687Z match start RRUF8 match#1 seed=679332859 players=2
+2026-10-29T18:48:16.750Z round RRUF8 1 n=2 done=2 links=1 ko=0 order=95d4dbbb,e5cd522d arrival=95d4dbbb,e5cd522d
+2026-10-29T18:48:16.851Z round RRUF8 2 n=2 done=2 links=1 ko=0 order=95d4dbbb,e5cd522d arrival=95d4dbbb,e5cd522d
+2026-10-29T18:48:16.949Z round RRUF8 3 n=2 done=2 links=1 ko=0 order=95d4dbbb,e5cd522d arrival=95d4dbbb,e5cd522d
+2026-10-29T18:48:17.047Z round RRUF8 4 n=2 done=2 links=1 ko=0 order=95d4dbbb,e5cd522d arrival=95d4dbbb,e5cd522d
+2026-10-29T18:48:17.146Z round RRUF8 5 n=2 done=2 links=1 ko=0 order=95d4dbbb,e5cd522d arrival=95d4dbbb,e5cd522d
+2026-10-29T18:48:17.248Z round RRUF8 6 n=2 done=2 links=1 ko=0 order=95d4dbbb,e5cd522d arrival=95d4dbbb,e5cd522d
+2026-10-29T18:48:17.251Z lyrics reload REJECTED, keeping the old bank: need >= 40 songs, have 1 | "Rusak": "terlalu pendek": full form is 14 chars, need 15-45 | need >= 200 lines, have 1 | need >= 150 lines shorter than 30 chars (normal rounds), have 0 | need >= 40 lines of 30+ chars (ULTI rounds), have 0
+2026-10-29T18:48:17.653Z SIGTERM

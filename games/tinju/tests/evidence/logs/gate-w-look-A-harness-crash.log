@@ -1,0 +1,16 @@
+node:fs:1630
+  const result = binding.readdir(
+                         ^
+
+Error: ENOENT: no such file or directory, scandir '/tmp/nalar-tool-sandbox/.cache/ms-playwright'
+    at Object.readdirSync (node:fs:1630:26)
+    at launchBrowser (file:///tmp/ana-g2/A/games/tinju/tests/test-lib.mjs:56:21)
+    at async file:///tmp/ana-g2/A/games/tinju/tests/e2e/look.mjs:30:17 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: '/tmp/nalar-tool-sandbox/.cache/ms-playwright'
+}
+
+Node.js v24.22.1
+exit=1

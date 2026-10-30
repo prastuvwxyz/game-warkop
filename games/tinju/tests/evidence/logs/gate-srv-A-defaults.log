@@ -1,0 +1,9 @@
+2026-10-29T18:45:48.575Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:45:48.584Z tinju listening 127.0.0.1:3402 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:45:48.590Z room create 54XVP Bot0
+2026-10-29T18:45:48.592Z room join 54XVP Bot1
+2026-10-29T18:45:48.595Z room join 54XVP Bot2
+2026-10-29T18:45:48.598Z room join 54XVP Bot3
+2026-10-29T18:45:48.601Z match start 54XVP match#1 seed=1775448774 players=4
+2026-10-29T18:46:12.004Z round 54XVP 1 n=4 done=3 links=3 ko=0 order=a6db2a15,84514962,2708bd35,1cfdabb7 arrival=a6db2a15,2708bd35,84514962
+2026-10-29T18:46:12.010Z SIGTERM

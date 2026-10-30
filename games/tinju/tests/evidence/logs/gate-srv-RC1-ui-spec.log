@@ -1,0 +1,11 @@
+2026-10-29T23:53:39.574Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T23:53:39.584Z tinju listening 127.0.0.1:3333 base /tinju hp 1 base_per_char 0.6 rank_weight 1
+2026-10-29T23:53:40.176Z room create RQZ8X P0
+2026-10-29T23:53:40.541Z room join RQZ8X P1
+2026-10-29T23:53:40.925Z room join RQZ8X P2
+2026-10-29T23:53:41.342Z room join RQZ8X P3
+2026-10-29T23:53:41.420Z match start RQZ8X match#1 seed=661411622 players=4
+2026-10-29T23:53:42.159Z round RQZ8X 1 n=4 done=4 links=1 ko=1 order=51159129,79aaf8a1,87b3e7be,7bf0250f arrival=51159129,79aaf8a1,87b3e7be,7bf0250f
+2026-10-29T23:53:45.906Z round RQZ8X 2 n=3 done=3 links=2 ko=2 order=51159129,79aaf8a1,87b3e7be arrival=51159129,79aaf8a1,87b3e7be
+2026-10-29T23:53:47.507Z match end RQZ8X ko 51159129
+2026-10-29T23:53:49.573Z SIGTERM

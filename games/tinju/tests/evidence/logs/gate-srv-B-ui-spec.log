@@ -1,0 +1,11 @@
+2026-10-29T19:01:29.468Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T19:01:29.478Z tinju listening 127.0.0.1:3473 base /tinju hp 1 base_per_char 0.6 rank_weight 1
+2026-10-29T19:01:29.911Z room create 3GKKY P0
+2026-10-29T19:01:30.259Z room join 3GKKY P1
+2026-10-29T19:01:30.742Z room join 3GKKY P2
+2026-10-29T19:01:31.125Z room join 3GKKY P3
+2026-10-29T19:01:31.204Z match start 3GKKY match#1 seed=1458269514 players=4
+2026-10-29T19:01:31.945Z round 3GKKY 1 n=4 done=4 links=1 ko=1 order=bd7b8dff,e22e343c,076cde02,d973b2ac arrival=bd7b8dff,e22e343c,076cde02,d973b2ac
+2026-10-29T19:01:35.649Z round 3GKKY 2 n=3 done=3 links=2 ko=2 order=bd7b8dff,e22e343c,076cde02 arrival=bd7b8dff,e22e343c,076cde02
+2026-10-29T19:01:37.251Z match end 3GKKY ko bd7b8dff
+2026-10-29T19:01:39.261Z SIGTERM

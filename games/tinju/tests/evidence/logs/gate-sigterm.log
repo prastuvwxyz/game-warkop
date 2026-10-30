@@ -1,0 +1,4 @@
+SIGTERM idle server: exited {"code":0,"sig":null,"ms":6} | log: 2026-10-29T19:09:33.132Z SIGTERM
+SIGTERM with an open WebSocket + room: exited {"code":0,"sig":null,"ms":2006} | log: 2026-10-29T19:09:38.086Z SIGTERM
+SIGTERM idle server: exited {"code":0,"sig":null,"ms":6} | log: 2026-10-29T19:09:42.827Z SIGTERM
+SIGTERM with an open WebSocket + room: exited {"code":0,"sig":null,"ms":2006} | log: 2026-10-29T19:09:47.776Z SIGTERM

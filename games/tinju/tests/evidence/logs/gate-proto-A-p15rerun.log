@@ -1,0 +1,32 @@
+PASS P-15: boot with 39 songs -> exit 1, message names the rule  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/bad.txt): /  - need >= 40 songs, have 39 /  - need >= 150 lines shorter than 30 chars (normal rounds), have 128
+PASS P-15: boot with a 14-char line -> exit 1, message names the rule  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/bad.txt): /  - "Indonesia Raya": "abcdefghijklmn": full form is 14 chars, need 15-45 / 
+PASS P-15: boot with a 46-char line -> exit 1, message names the rule  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/bad.txt): /  - "Indonesia Raya": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq": full form is 46 chars, need 15-45 / 
+PASS P-15: boot with curly quote -> exit 1, message names the rule  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/bad.txt): /  - "Indonesia Raya": "aku tak ’lupa’ padamu ya": printable ASCII only (no curly quotes, tabs, accents) / 
+PASS P-15: boot with double space -> exit 1, message names the rule  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/bad.txt): /  - "Indonesia Raya": "aku  tak lupa padamu ya kawan": leading/trailing/double space / 
+PASS P-15: boot with duplicate line -> exit 1, message names the rule  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/bad.txt): /  - "Ibu Kita Kartini": "Indonesia tanah airku": duplicate line / 
+PASS P-15: boot with 149 lines < 30 (brief: >= 150) -> exit 1, message names the rule  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/bad.txt): /  - need >= 150 lines shorter than 30 chars (normal rounds), have 149 / 
+PASS P-15: boot with 39 lines >= 30 (brief: >= 40) -> exit 1, message names the rule  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/bad.txt): /  - need >= 40 lines of 30+ chars (ULTI rounds), have 39 / 
+PASS P-15: a block without "title | artist" -> exit 1  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/notitle.txt):
+ - block 1: first line must be "title | artist", got "Indonesia tanah airku"
+
+PASS P-15: empty file -> exit 1  | code 1
+PASS P-15: missing file -> exit 1  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/missing-nope.txt):
+ - cannot read /tmp/ana-g2/tmp-A15/missing-no
+PASS P-15: a 15-char and a 45-char line boot (boundaries)  | 1,"ulti":94}
+2026-10-29T18:48:06.458Z tinju listening 127.0.0.1:3406 base /tinju hp 100 base_per_char 0.6 rank_weight 1
+
+PASS P-15: exactly 40 songs (all 255 lines kept) boots (boundary)  | aded {"songs":40,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:48:08.966Z tinju listening 127.0.0.1:3406 base /tinju hp 100 base_per_char 0.6 rank_weight 1
+
+PASS P-15: 199 lines total (short/long minima kept) -> exit 1 naming ">= 200 lines"  | code 1 :: lyrics invalid (/tmp/ana-g2/tmp-A15/l199.txt):
+ - need >= 200 lines, have 199
+
+PASS P-15: 200 lines boots (boundary)  | 1,"ulti":49}
+2026-10-29T18:48:11.542Z tinju listening 127.0.0.1:3406 base /tinju hp 100 base_per_char 0.6 rank_weight 1
+
+PASS P-16: SIGHUP with a valid new bank -> process stays up, /health lyrics = 40 songs / 200 lines, log says reloaded  | [{"songs":46,"lines":255,"normal":161,"ulti":94},{"songs":40,"lines":200,"normal":160,"ulti":40}]
+PASS P-16: the running match keeps its snapshot: 20 more rounds, every line from the OLD bank
+PASS P-16: the next match draws only from the new bank (lines + song card)  | gerbang 17 baris 2 ok / gerbang 33 baris 3 ok
+PASS P-16: SIGHUP with an invalid bank -> process stays up, keeps the new bank (40 songs), logs REJECTED  | {"songs":40,"lines":200,"normal":160,"ulti":40}
+
+== gate-proto A15: PASS 19 / FAIL 0 ==

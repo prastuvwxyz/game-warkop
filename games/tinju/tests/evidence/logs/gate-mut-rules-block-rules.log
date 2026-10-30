@@ -1,0 +1,155 @@
+PASS CFG defaults: BASE_PER_CHAR 0.6, RANK_WEIGHT 1, EXTRA_LAST_HIT 0, CAP 60, RECV_CAP 60  | {"b":0.6,"rw":1,"x":0}
+  O-01 len 6 W 1200/0 L 2400: engine clean/crit true/combo false/applied 34 · oracle clean 6×3×1.25×1.5 = 33.75 → 34 · expected 34
+  O-02 len 6 W 1500/1 L 1800: engine block/crit false/combo false/applied 9 · oracle block 6×3×0.5 = 9 → 9 · expected 9
+  O-03 len 10 W 2000/0 L unf: engine clean/crit true/combo false/applied 60 · oracle clean 10×3×1.25×1.5×2.5 = 140.625 → 141 → cap 60 · expected 60
+  O-04 len 6 W 2000/1 L 2000: engine block/crit false/combo false/applied 9 · oracle block 6×3×0.5 = 9 → 9 · expected 9
+  O-05 len 6 W 2000/1 L 2390: engine block/crit false/combo false/applied 9 · oracle block 6×3×0.5 = 9 → 9 · expected 9
+  O-06 len 6 W 2000/1 L 2399: engine block/crit false/combo false/applied 9 · oracle block 6×3×0.5 = 9 → 9 · expected 9
+  O-07 len 6 W 2000/1 L 2400: engine jab/crit false/combo false/applied 18 · oracle block 6×3×0.5 = 9 → 9 · expected 9
+  O-08 len 6 W 2000/1 L 2401: engine jab/crit false/combo false/applied 18 · oracle jab 6×3×1 = 18 → 18 · expected 18
+  O-09 len 6 W 2000/1 L 2410: engine jab/crit false/combo false/applied 18 · oracle jab 6×3×1 = 18 → 18 · expected 18
+  O-10 len 6 W 2000/1 L 2999: engine jab/crit false/combo false/applied 18 · oracle jab 6×3×1 = 18 → 18 · expected 18
+  O-11 len 6 W 2000/1 L 3000: engine jab/crit false/combo false/applied 18 · oracle jab 6×3×1 = 18 → 18 · expected 18
+  O-12 len 6 W 2000/1 L 3001: engine clean/crit false/combo false/applied 23 · oracle clean 6×3×1.25 = 22.5 → 23 · expected 23
+  O-13 len 6 W 2000/1 L 3010: engine clean/crit false/combo false/applied 23 · oracle clean 6×3×1.25 = 22.5 → 23 · expected 23
+  O-14 len 6 W 2000/1 L unf: engine clean/crit false/combo false/applied 23 · oracle clean 6×3×1.25 = 22.5 → 23 · expected 23
+  O-15 len 6 W 1225/0 L unf: engine clean/crit false/combo false/applied 23 · oracle clean 6×3×1.25 = 22.5 → 23 · expected 23
+  O-16 len 6 W 1201/0 L unf: engine clean/crit false/combo false/applied 23 · oracle clean 6×3×1.25 = 22.5 → 23 · expected 23
+  O-17 len 6 W 1200/0 L unf: engine clean/crit true/combo false/applied 34 · oracle clean 6×3×1.25×1.5 = 33.75 → 34 · expected 34
+  O-18 len 6 W 1200/1 L unf: engine clean/crit false/combo false/applied 23 · oracle clean 6×3×1.25 = 22.5 → 23 · expected 23
+  O-19 len 4 W 2000/1 L 2100: engine block/crit false/combo false/applied 6 · oracle block 4×3×0.5 = 6 → 6 · expected 6
+  O-20 len 5 W 2000/1 L 2100: engine block/crit false/combo false/applied 8 · oracle block 5×3×0.5 = 7.5 → 8 · expected 8
+  O-21 len 5 W 1000/0 L 1500: engine jab/crit true/combo false/applied 23 · oracle jab 5×3×1×1.5 = 22.5 → 23 · expected 23
+  O-22 len 9 W 1800/0 L unf: engine clean/crit true/combo false/applied 51 · oracle clean 9×3×1.25×1.5 = 50.625 → 51 · expected 51
+  O-23 len 9 W 1800/0 L unf: engine clean/crit true/combo true/applied 60 · oracle clean 9×3×1.25×1.5×1.25 = 63.2813 → 63 → cap 60 · expected 60
+  O-24 len 8 W 1600/0 L unf: engine clean/crit true/combo true/applied 56 · oracle clean 8×3×1.25×1.5×1.25 = 56.25 → 56 · expected 56
+  O-25 len 6 W 2000/1 L 2500: engine jab/crit false/combo true/applied 23 · oracle jab 6×3×1×1.25 = 22.5 → 23 · expected 23
+  O-26 len 8 W 3000/1 L 3500: engine jab/crit false/combo false/applied 60 · oracle jab 8×3×1×2.5 = 60 → 60 · expected 60
+  O-27 len 8 W 3000/1 L 3100: engine block/crit false/combo false/applied 30 · oracle block 8×3×0.5×2.5 = 30 → 30 · expected 30
+  O-28 len 9 W 3000/1 L 3500: engine jab/crit false/combo false/applied 60 · oracle jab 9×3×1×2.5 = 67.5 → 68 → cap 60 · expected 60
+  O-29 len 14 W 2800/0 L 2900: engine block/crit true/combo false/applied 60 · oracle block 14×3×0.5×1.5×2.5 = 78.75 → 79 → cap 60 · expected 60
+FAIL P-02a: literal 1.0 rows O-01..O-29 at base 3, 2 entrants, RANK_WEIGHT=1: damage = 1.0 plan, HP = 100 - damage  | 28/29 O-07:18
+FAIL P-02a: literal 1.0 rows O-01..O-29 at base 3, 2 entrants, RANK_WEIGHT=0: damage = 1.0 plan, HP = 100 - damage  | 28/29 O-07:18
+FAIL P-02b: plan §1 rows O-01..O-33 at base 1, 2 entrants  | 32/33 O-07:18
+  ship O-01: oracle 18×0.6×1.25×1.5 = 20.25 → 20 · engine 20
+  ship O-02: oracle 18×0.6×0.5 = 5.4 → 5 · engine 5
+  ship O-03: oracle 30×0.6×1.25×1.5×2.5 = 84.375 → 84 → cap 60 · engine 60
+  ship O-04: oracle 18×0.6×0.5 = 5.4 → 5 · engine 5
+  ship O-05: oracle 18×0.6×0.5 = 5.4 → 5 · engine 5
+  ship O-06: oracle 18×0.6×0.5 = 5.4 → 5 · engine 5
+  ship O-07: oracle 18×0.6×0.5 = 5.4 → 5 · engine 11
+  ship O-08: oracle 18×0.6×1 = 10.8 → 11 · engine 11
+  ship O-09: oracle 18×0.6×1 = 10.8 → 11 · engine 11
+  ship O-10: oracle 18×0.6×1 = 10.8 → 11 · engine 11
+  ship O-11: oracle 18×0.6×1 = 10.8 → 11 · engine 11
+  ship O-12: oracle 18×0.6×1.25 = 13.5 → 13 · engine 13
+  ship O-13: oracle 18×0.6×1.25 = 13.5 → 13 · engine 13
+  ship O-14: oracle 18×0.6×1.25 = 13.5 → 13 · engine 13
+  ship O-15: oracle 18×0.6×1.25 = 13.5 → 13 · engine 13
+  ship O-16: oracle 18×0.6×1.25 = 13.5 → 13 · engine 13
+  ship O-17: oracle 18×0.6×1.25×1.5 = 20.25 → 20 · engine 20
+  ship O-18: oracle 18×0.6×1.25 = 13.5 → 13 · engine 13
+  ship O-19: oracle 15×0.6×0.5 = 4.5 → 5 · engine 5
+  ship O-20: oracle 17×0.6×0.5 = 5.1 → 5 · engine 5
+  ship O-21: oracle 15×0.6×1×1.5 = 13.5 → 14 · engine 14
+  ship O-22: oracle 27×0.6×1.25×1.5 = 30.375 → 30 · engine 30
+  ship O-23: oracle 27×0.6×1.25×1.5×1.25 = 37.9688 → 38 · engine 38
+  ship O-24: oracle 24×0.6×1.25×1.5×1.25 = 33.75 → 34 · engine 34
+  ship O-25: oracle 18×0.6×1×1.25 = 13.5 → 13 · engine 13
+  ship O-26: oracle 24×0.6×1×2.5 = 36 → 36 · engine 36
+  ship O-27: oracle 24×0.6×0.5×2.5 = 18 → 18 · engine 18
+  ship O-28: oracle 27×0.6×1×2.5 = 40.5 → 41 · engine 41
+  ship O-29: oracle 40×0.6×0.5×1.5×2.5 = 45 → 45 · engine 45
+  ship O-30: oracle 40×0.6×1.25×1.5 = 45 → 45 · engine 45
+  ship O-31: oracle 40×0.6×1.25 = 30 → 30 · engine 30
+  ship O-32: oracle 32×0.6×1.25×1.5 = 36 → 36 · engine 36
+  ship O-33: oracle 40×0.6×0.5 = 12 → 12 · engine 12
+FAIL P-02c: rows O-01..O-33 at the shipped base 0.6, 2 entrants: engine = my oracle  | 32/33 O-07: engine 11 oracle 5
+PASS P-03 D-1 (plan §1b hand numbers: base 1, RANK_WEIGHT 0): every HP after  | {"A":100,"B":81,"C":69}
+PASS P-03 D-2 (plan §1b hand numbers: base 1, RANK_WEIGHT 0): every HP after  | {"A":100,"B":51,"C":39}
+PASS P-03 D-3 (plan §1b hand numbers: base 1, RANK_WEIGHT 0): every HP after  | {"A":100,"B":72,"C":62,"D":85,"E":62}
+PASS P-03 D-4 (plan §1b hand numbers: base 1, RANK_WEIGHT 0): every HP after  | {"A":100,"B":12,"C":2,"D":25,"E":2}
+FAIL P-03 D-5 (plan §1b hand numbers: base 1, RANK_WEIGHT 0): every HP after  | {"P1":100,"P2":85,"P3":80,"P4":75,"P5":90,"P6":90,"P7":75,"P8":90,"P9":75,"P10":75}
+PASS P-03 D-6 (plan §1b hand numbers: base 1, RANK_WEIGHT 0): every HP after  | {"P1":100,"P2":10,"P3":30,"P4":0,"P5":60,"P6":10,"P7":10,"P8":40,"P9":0,"P10":40}
+PASS P-03 D-7 (plan §1b hand numbers: base 1, RANK_WEIGHT 0, EXTRA_LAST_HIT 1): every HP after  | {"A":100,"B":40,"C":40}
+PASS P-03 D-7off (plan §1b hand numbers: base 1, RANK_WEIGHT 0): every HP after  | {"A":100,"B":40,"C":50}
+PASS P-03 D-8 (plan §1b hand numbers: base 1, RANK_WEIGHT 0): every HP after  | {"A":100,"B":62,"C":62}
+PASS P-03 D-9 (plan §1b hand numbers: base 1, RANK_WEIGHT 0): every HP after  | {"P0":100,"P1":100,"P2":100,"P3":100,"P4":100}
+  ship D-1 len 25:
+    A>B d 300 block+crit: 25×0.6×0.5×1.5 = 11.25 → 11 ; w 11×1/2 = 5.5 → 6 ; applied 6
+    B>C d 1500 clean: 25×0.6×1.25 = 18.75 → 19 ; w 19 ; applied 19
+    HP after {"A":100,"B":94,"C":81}
+PASS P-03 D-1 at the shipped config (base 0.6, RANK_WEIGHT 1): links, HP, fire, streak = my oracle
+  ship D-2 len 20:
+    A>B d 1000 jab+crit: 20×0.6×1×1.5 = 18 → 18 ; w 18×1/2 = 9 → 9 ; applied 9
+    A>C d 1000 jab+crit: 20×0.6×1×1.5 = 18 → 18 ; w 18×1/2 = 9 → 9 ; applied 9
+    HP after {"A":100,"B":72,"C":60}
+PASS P-03 D-2 at the shipped config (base 0.6, RANK_WEIGHT 1): links, HP, fire, streak = my oracle
+  ship D-3 len 30:
+    A>B d 200 block+crit+combo: 30×0.6×0.5×1.5×1.25 = 16.875 → 17 ; w 17×1/4 = 4.25 → 4 ; applied 4
+    B>C d 1300 clean: 30×0.6×1.25 = 22.5 → 23 ; w 23×2/4 = 11.5 → 12 ; applied 12
+    C>D d 100 block: 30×0.6×0.5 = 9 → 9 ; w 9×3/4 = 6.75 → 7 ; applied 7
+    D>E d ∞ clean: 30×0.6×1.25 = 22.5 → 23 ; w 23 ; applied 23
+    HP after {"A":100,"B":96,"C":88,"D":93,"E":77}
+PASS P-03 D-3 at the shipped config (base 0.6, RANK_WEIGHT 1): links, HP, fire, streak = my oracle
+  ship D-4 len 36 ULTI:
+    A>B d 1800 clean+crit: 36×0.6×1.25×1.5×2.5 = 101.25 → 101 → cap 60 ; w 60×1/4 = 15 → 15 ; applied 15
+    B>C d 500 jab: 36×0.6×1×2.5 = 54 → 54 ; w 54×2/4 = 27 → 27 ; applied 27
+    C>D d ∞ clean: 36×0.6×1.25×2.5 = 67.5 → 67 → cap 60 ; w 60 ; applied 60
+    C>E d ∞ clean: 36×0.6×1.25×2.5 = 67.5 → 67 → cap 60 ; w 60 ; applied 60
+    HP after {"A":100,"B":57,"C":35,"D":25,"E":2}
+PASS P-03 D-4 at the shipped config (base 0.6, RANK_WEIGHT 1): links, HP, fire, streak = my oracle
+  ship D-5 len 20:
+    P1>P2 d 300 block+crit: 20×0.6×0.5×1.5 = 9 → 9 ; w 9×1/9 = 1 → 1 ; applied 1
+    P2>P3 d 400 block: 20×0.6×0.5 = 6 → 6 ; w 6×2/9 = 1.3333 → 1 ; applied 1
+    P3>P4 d 1100 clean: 20×0.6×1.25 = 15 → 15 ; w 15×3/9 = 5 → 5 ; applied 5
+    P4>P5 d 0 block: 20×0.6×0.5 = 6 → 6 ; w 6×4/9 = 2.6667 → 3 ; applied 3
+    P5>P6 d 300 block: 20×0.6×0.5 = 6 → 6 ; w 6×5/9 = 3.3333 → 3 ; applied 3
+    P6>P7 d 1100 clean: 20×0.6×1.25 = 15 → 15 ; w 15×6/9 = 10 → 10 ; applied 10
+    P7>P8 d 50 block: 20×0.6×0.5 = 6 → 6 ; w 6×7/9 = 4.6667 → 5 ; applied 5
+    P8>P9 d 1750 clean: 20×0.6×1.25 = 15 → 15 ; w 15×8/9 = 13.3333 → 13 ; applied 13
+    P9>P10 d 6000 clean: 20×0.6×1.25 = 15 → 15 ; w 15 ; applied 15
+    HP after {"P1":100,"P2":99,"P3":99,"P4":95,"P5":97,"P6":97,"P7":90,"P8":95,"P9":87,"P10":85}
+FAIL P-03 D-5 at the shipped config (base 0.6, RANK_WEIGHT 1): links, HP, fire, streak = my oracle  | {"eng":[1,3,5,3,3,10,5,13,15],"hp":{"P1":100,"P2":99,"P3":97,"P4":95,"P5":97,"P6":97,"P7":90,"P8":95,"P9":87,"P10":85}}
+  ship D-6 len 40:
+    P1>P2 d 300 block+crit: 40×0.6×0.5×1.5 = 18 → 18 ; w 18×1/9 = 2 → 2 ; applied 2
+    P2>P3 d 700 jab: 40×0.6×1 = 24 → 24 ; w 24×2/9 = 5.3333 → 5 ; applied 5
+    P3>P4 d 900 jab+combo: 40×0.6×1×1.25 = 30 → 30 ; w 30×3/9 = 10 → 10 ; applied 10
+    P4>P5 d 600 jab: 40×0.6×1 = 24 → 24 ; w 24×4/9 = 10.6667 → 11 ; applied 11
+    P5>P6 d 1500 clean: 40×0.6×1.25 = 30 → 30 ; w 30×5/9 = 16.6667 → 17 ; applied 17
+    P6>P7 d 100 block: 40×0.6×0.5 = 12 → 12 ; w 12×6/9 = 8 → 8 ; applied 8
+    P7>P8 d 1900 clean+combo: 40×0.6×1.25×1.25 = 37.5 → 38 ; w 38×7/9 = 29.5556 → 30 ; applied 30
+    P8>P9 d ∞ clean: 40×0.6×1.25 = 30 → 30 ; w 30 ; applied 30
+    P8>P10 d ∞ clean: 40×0.6×1.25 = 30 → 30 ; w 30 ; applied 30
+    HP after {"P1":100,"P2":38,"P3":65,"P4":40,"P5":89,"P6":43,"P7":22,"P8":70,"P9":15,"P10":60}
+PASS P-03 D-6 at the shipped config (base 0.6, RANK_WEIGHT 1): links, HP, fire, streak = my oracle
+  ship D-7 len 40:
+    A>B d 500 jab+crit: 40×0.6×1×1.5 = 36 → 36 ; w 36×1/2 = 18 → 18 ; applied 18
+    B>C d 1500 clean: 40×0.6×1.25 = 30 → 30 ; w 30 ; applied 30
+    A>C d 2000 clean+crit: 40×0.6×1.25×1.5 = 45 → 45 ; w 45 ; applied 30
+    HP after {"A":100,"B":82,"C":40}
+PASS P-03 D-7 at the shipped config (base 0.6, RANK_WEIGHT 1, EXTRA 1): links, HP, fire, streak = my oracle
+  ship D-7off len 40:
+    A>B d 500 jab+crit: 40×0.6×1×1.5 = 36 → 36 ; w 36×1/2 = 18 → 18 ; applied 18
+    B>C d 1500 clean: 40×0.6×1.25 = 30 → 30 ; w 30 ; applied 30
+    HP after {"A":100,"B":82,"C":70}
+PASS P-03 D-7off at the shipped config (base 0.6, RANK_WEIGHT 1): links, HP, fire, streak = my oracle
+  ship D-8 len 30:
+    A>B d ∞ clean: 30×0.6×1.25 = 22.5 → 23 ; w 23 ; applied 23
+    A>C d ∞ clean: 30×0.6×1.25 = 22.5 → 23 ; w 23 ; applied 23
+    HP after {"A":100,"B":77,"C":77}
+PASS P-03 D-8 at the shipped config (base 0.6, RANK_WEIGHT 1): links, HP, fire, streak = my oracle
+  ship D-9 len 30:
+    
+    HP after {"P0":100,"P1":100,"P2":100,"P3":100,"P4":100}
+PASS P-03 D-9 at the shipped config (base 0.6, RANK_WEIGHT 1): links, HP, fire, streak = my oracle
+PASS P-07: 3-way tie in front -> lowest seat (B) hits D; A and C hit nobody, take nothing  | ["B>D"]
+PASS P-07: 2 players, same elapsed + typos -> no hit, streaks unchanged (1.0 draw)
+PASS P-21/C1: a tied non-hitter (B) has its streak reset, as the brief says ("hits nobody … tied … reset"); A (hitter) goes to 3 -> fire  | [{"A":0,"B":0,"C":0},{"A":true,"B":false,"C":false}]
+PASS P-08: 300 random rounds (N 3-10, len 15-45, ULTI 20 %, fire 20 %, EXTRA_LAST_HIT 0) engine = my oracle (chain, applied, crit, combo, HP, fire, streak)  | mismatches 0  · rounds with a tie 30
+PASS P-08: invariants (EXTRA 0): nobody receives > 60 in a round; HP never < 0; the sole first finisher never loses HP  | over 0 neg 0 firstLost 0
+PASS P-08: 300 random rounds (N 3-10, len 15-45, ULTI 20 %, fire 20 %, EXTRA_LAST_HIT 1) engine = my oracle (chain, applied, crit, combo, HP, fire, streak)  | mismatches 0  · rounds with a tie 42
+PASS P-08: invariants (EXTRA 1): nobody receives > 60 in a round; HP never < 0  | over 0 neg 0 firstLost 0
+PASS P-09: EXTRA_LAST_HIT=1 with only 2 ranks -> no extra link
+
+== gate-rules: PASS 27 / FAIL 6 ==

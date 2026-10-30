@@ -1,0 +1,13 @@
+2026-10-29T18:57:30.374Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:57:30.383Z tinju listening 127.0.0.1:3421 base /tinju hp 1 base_per_char 0.6 rank_weight 1
+2026-10-29T18:57:30.392Z room create MTESH Bot0
+2026-10-29T18:57:30.394Z room join MTESH Bot1
+2026-10-29T18:57:30.397Z room join MTESH Bot2
+2026-10-29T18:57:30.401Z room join MTESH Bot3
+2026-10-29T18:57:30.405Z room join MTESH Bot4
+2026-10-29T18:57:30.409Z match start MTESH match#1 seed=2852401544 players=5
+2026-10-29T18:57:30.565Z round MTESH 1 n=5 done=5 links=2 ko=2 order=b6d95c4b,844c8ffe,787ce02b,004f6f7e,79dd3eec arrival=b6d95c4b,844c8ffe,787ce02b,004f6f7e,79dd3eec
+2026-10-29T18:57:30.914Z round MTESH 2 n=3 done=3 links=2 ko=2 order=b6d95c4b,844c8ffe,787ce02b arrival=b6d95c4b,844c8ffe,787ce02b
+2026-10-29T18:57:30.954Z match end MTESH ko b6d95c4b
+2026-10-29T18:57:30.959Z match start MTESH match#2 seed=2852401544 players=5
+2026-10-29T18:57:31.115Z SIGTERM

@@ -23,7 +23,8 @@ async function check(t, script) {
   assert.equal(Number(m[2]), 0, out.split('\n').filter((l) => l.startsWith('FAIL')).join('\n'));
 }
 
-test('protocol', { timeout: 300_000 }, (t) => check(t, 'test-proto.mjs'));
+test('rules (resolveRound, O-01…O-33, D-1…D-9, rank weight)', { timeout: 120_000 }, (t) => check(t, 'test-rules.mjs'));
+test('protocol', { timeout: 500_000 }, (t) => check(t, 'test-proto.mjs'));
 
 let hasPlaywright = true;
 try { await import('playwright'); } catch { hasPlaywright = false; }

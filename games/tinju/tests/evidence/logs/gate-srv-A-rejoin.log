@@ -1,0 +1,11 @@
+2026-10-29T18:47:17.104Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:47:17.115Z tinju listening 127.0.0.1:3405 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:47:17.124Z room create QSXSC Bot0
+2026-10-29T18:47:17.126Z room join QSXSC Bot1
+2026-10-29T18:47:17.129Z room join QSXSC Bot2
+2026-10-29T18:47:17.132Z room join QSXSC Bot3
+2026-10-29T18:47:17.135Z room join QSXSC Bot4
+2026-10-29T18:47:17.138Z match start QSXSC match#1 seed=3061729407 players=5
+2026-10-29T18:47:17.945Z round QSXSC 1 n=5 done=5 links=4 ko=0 order=cff6d21f,55ed40dd,a0f1630e,2e411e2d,80c5d217 arrival=cff6d21f,55ed40dd,a0f1630e,2e411e2d,80c5d217
+2026-10-29T18:47:40.061Z round QSXSC 2 n=5 done=4 links=4 ko=0 order=cff6d21f,55ed40dd,2e411e2d,80c5d217,a0f1630e arrival=cff6d21f,55ed40dd,2e411e2d,80c5d217
+2026-10-29T18:47:41.156Z SIGTERM

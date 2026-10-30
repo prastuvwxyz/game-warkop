@@ -1,0 +1,19 @@
+2026-10-29T23:53:57.907Z lyrics loaded {"songs":40,"lines":200,"normal":160,"ulti":40}
+2026-10-29T23:53:57.916Z tinju listening 127.0.0.1:3340 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T23:53:58.441Z room create K9RWQ Host
+2026-10-29T23:53:58.808Z room join K9RWQ Guest1
+2026-10-29T23:53:59.174Z room join K9RWQ Guest2
+2026-10-29T23:53:59.219Z match start K9RWQ match#1 seed=4271795084 players=3
+2026-10-29T23:54:00.320Z round K9RWQ 1 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:02.990Z round K9RWQ 2 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:05.658Z round K9RWQ 3 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:08.333Z round K9RWQ 4 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:11.793Z round K9RWQ 5 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:14.480Z round K9RWQ 6 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:17.146Z round K9RWQ 7 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:19.812Z round K9RWQ 8 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:22.476Z round K9RWQ 9 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:25.164Z round K9RWQ 10 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:27.858Z round K9RWQ 11 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:30.552Z round K9RWQ 12 n=3 done=3 links=2 ko=0 order=3be4fe66,ede68306,ad3e00d2 arrival=3be4fe66,ede68306,ad3e00d2
+2026-10-29T23:54:30.584Z SIGTERM

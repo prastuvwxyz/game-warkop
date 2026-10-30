@@ -1,0 +1,41 @@
+2026-10-29T18:45:17.412Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:45:17.422Z tinju listening 127.0.0.1:3400 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T18:45:17.471Z room create ESSA4 Bot0
+2026-10-29T18:45:17.473Z room join ESSA4 Bot1
+2026-10-29T18:45:17.477Z room join ESSA4 Bot2
+2026-10-29T18:45:17.480Z room join ESSA4 Bot3
+2026-10-29T18:45:17.483Z room join ESSA4 Bot4
+2026-10-29T18:45:17.487Z match start ESSA4 match#1 seed=1906566757 players=5
+2026-10-29T18:45:18.846Z round ESSA4 1 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:20.349Z round ESSA4 2 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:21.853Z round ESSA4 3 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:23.356Z round ESSA4 4 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:24.861Z round ESSA4 5 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:26.363Z round ESSA4 6 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:27.866Z round ESSA4 7 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:29.370Z round ESSA4 8 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:30.874Z round ESSA4 9 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:32.374Z round ESSA4 10 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:33.877Z round ESSA4 11 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:35.379Z round ESSA4 12 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:36.882Z round ESSA4 13 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:38.385Z round ESSA4 14 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:39.888Z round ESSA4 15 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:41.392Z round ESSA4 16 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:42.894Z round ESSA4 17 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:44.399Z round ESSA4 18 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:45.902Z round ESSA4 19 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:47.404Z round ESSA4 20 n=5 done=5 links=4 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=893be59f,248dc933,c28a5a3f,d84edc65,088b4fb7
+2026-10-29T18:45:47.716Z room create FDR6S Bot0
+2026-10-29T18:45:47.719Z room join FDR6S Bot1
+2026-10-29T18:45:47.722Z room join FDR6S Bot2
+2026-10-29T18:45:47.726Z room join FDR6S Bot3
+2026-10-29T18:45:47.729Z room join FDR6S Bot4
+2026-10-29T18:45:47.732Z room join FDR6S Bot5
+2026-10-29T18:45:47.735Z room join FDR6S Bot6
+2026-10-29T18:45:47.738Z room join FDR6S Bot7
+2026-10-29T18:45:47.741Z room join FDR6S Bot8
+2026-10-29T18:45:47.744Z room join FDR6S Bot9
+2026-10-29T18:45:47.752Z room create 8TT3Z Solo
+2026-10-29T18:45:47.761Z SIGTERM
+2026-10-29T18:45:47.765Z round ESSA4 21 n=5 done=0 links=0 ko=0 order=088b4fb7,d84edc65,c28a5a3f,248dc933,893be59f arrival=

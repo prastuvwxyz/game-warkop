@@ -1,0 +1,17 @@
+2026-10-29T19:01:02.189Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T19:01:02.200Z tinju listening 127.0.0.1:3472 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T19:01:02.648Z room create 8TZP8 Phone
+2026-10-29T19:01:03.028Z room join 8TZP8 D1
+2026-10-29T19:01:03.460Z room join 8TZP8 D2
+2026-10-29T19:01:03.530Z match start 8TZP8 match#1 seed=3072172001 players=3
+2026-10-29T19:01:04.768Z round 8TZP8 1 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:07.325Z round 8TZP8 2 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:09.892Z round 8TZP8 3 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:12.459Z round 8TZP8 4 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:15.022Z round 8TZP8 5 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:17.605Z round 8TZP8 6 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:20.166Z round 8TZP8 7 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:22.727Z round 8TZP8 8 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:25.285Z round 8TZP8 9 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:27.842Z round 8TZP8 10 n=3 done=3 links=2 ko=0 order=e8ff29c7,f19bad81,1e95f73c arrival=e8ff29c7,f19bad81,1e95f73c
+2026-10-29T19:01:29.420Z SIGTERM

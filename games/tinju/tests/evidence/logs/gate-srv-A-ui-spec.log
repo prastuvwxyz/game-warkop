@@ -1,0 +1,22 @@
+2026-10-29T18:54:46.113Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:54:46.123Z tinju listening 127.0.0.1:3453 base /tinju hp 1 base_per_char 0.6 rank_weight 1
+2026-10-29T18:54:46.576Z room create CEGNZ P0
+2026-10-29T18:54:46.926Z room join CEGNZ P1
+2026-10-29T18:54:47.293Z room join CEGNZ P2
+2026-10-29T18:54:47.674Z room join CEGNZ P3
+2026-10-29T18:54:47.754Z match start CEGNZ match#1 seed=2479811480 players=4
+2026-10-29T18:54:48.492Z round CEGNZ 1 n=4 done=4 links=1 ko=1 order=fb9895c2,05da7d27,0a547754,755effdf arrival=fb9895c2,05da7d27,0a547754,755effdf
+2026-10-29T18:54:52.183Z round CEGNZ 2 n=3 done=3 links=2 ko=2 order=fb9895c2,05da7d27,0a547754 arrival=fb9895c2,05da7d27,0a547754
+2026-10-29T18:54:53.783Z match end CEGNZ ko fb9895c2
+2026-10-29T18:54:55.762Z SIGTERM
+2026-10-29T18:56:37.055Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T18:56:37.063Z tinju listening 127.0.0.1:3453 base /tinju hp 1 base_per_char 0.6 rank_weight 1
+2026-10-29T18:56:37.505Z room create 5DCA4 P0
+2026-10-29T18:56:37.854Z room join 5DCA4 P1
+2026-10-29T18:56:38.354Z room join 5DCA4 P2
+2026-10-29T18:56:38.722Z room join 5DCA4 P3
+2026-10-29T18:56:38.782Z match start 5DCA4 match#1 seed=676082574 players=4
+2026-10-29T18:56:39.523Z round 5DCA4 1 n=4 done=4 links=1 ko=1 order=e437dbb3,1458e8d3,48642686,067e25e2 arrival=e437dbb3,1458e8d3,48642686,067e25e2
+2026-10-29T18:56:43.223Z round 5DCA4 2 n=3 done=3 links=2 ko=2 order=e437dbb3,1458e8d3,48642686 arrival=e437dbb3,1458e8d3,48642686
+2026-10-29T18:56:44.825Z match end 5DCA4 ko e437dbb3
+2026-10-29T18:56:46.816Z SIGTERM
