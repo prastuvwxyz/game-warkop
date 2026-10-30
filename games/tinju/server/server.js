@@ -159,9 +159,13 @@ function sendLine(room) {
       endsAt: room.phaseEndsAt, serverTime: Date.now() });
   }
 }
-function maybeClose(room) { // every ONLINE entrant has a valid done -> no need to wait for the cap
+function maybeClose(room) { // every ONLINE entrant who can still finish has a valid done -> no need to wait for the cap
   if (room.state !== 'line') return;
-  for (const id of room.entrants) { const p = room.players.get(id); if (p && p.online && !room.dones.has(id)) return; }
+  for (const id of room.entrants) {
+    const p = room.players.get(id);
+    if (p && p.lockedRound === room.round) continue; // rejoined mid-line: locked out, its done is always stale; it stays an entrant and still takes the hit
+    if (p && p.online && !room.dones.has(id)) return;
+  }
   closeRound(room);
 }
 function onDone(ws, room, p, m) {
@@ -363,7 +367,7 @@ function onDisconnect(ws) {
   if (!plist(room).some(p => p.online)) room.allOfflineSince = Date.now();
   armOffline(room, player);
   if (room.state === 'line') maybeClose(room);
-  if (rooms.has(room.code) && room.state !== 'result') broadcast(room); else if (rooms.has(room.code)) broadcast(room);
+  if (rooms.has(room.code)) broadcast(room);
 }
 setInterval(() => {
   const now = Date.now();

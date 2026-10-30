@@ -401,8 +401,10 @@ let lobby;
   back.send({ t: 'done', round: rd, elapsed: 600, typos: 0 }); const stale = await back.wait('error');
   check('P-22: the rejoiner is locked out of the round they dropped in (stale)', stale.code === 'stale');
   for (const i of [0, 1, 2]) { cs[i].send({ t: 'done', round: rd, elapsed: 1000 + i * 400, typos: 0 }); await sleep(6); }
-  cs[4].send({ t: 'done', round: rd, elapsed: 3000, typos: 0 });
-  const res = await cs[0].wait('result', () => true, 6000);
+  const tLast = Date.now(); cs[4].send({ t: 'done', round: rd, elapsed: 3000, typos: 0 });
+  const res = await cs[0].wait('result', () => true, 6000); const stallMs = Date.now() - tLast;
+  console.log('P-22b timing: result arrived ' + stallMs + ' ms after the last online non-locked entrant finished (cap ' + (3000 + 300) + ' ms from reveal)');
+  check('P-22b: a rejoiner locked out of the round does not hold it open: result < 1000 ms after the last finish (cap would be ~3000 ms)', stallMs < 1000, String(stallMs));
   check('P-22: the rejoiner is an entrant, unfinished, and takes at most one hit (clean, from the last finisher)', res.order.find(o => o.id === id).elapsed === null && res.chain.filter(c => c.to === id).length === 1 && res.chain.find(c => c.to === id).from === cs[4].id);
   const rr = await back.wait('result', () => true, 3000).catch(() => null);
   check('the rejoined socket receives the live results again', !!rr && rr.round === rd);

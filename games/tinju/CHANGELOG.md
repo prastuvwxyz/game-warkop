@@ -8,6 +8,7 @@ Tinju Kata becomes a lyric-typing royale for 2–10 players. Protocol 2 is incom
   per round is capped at 60. KO → spectator in the same room (8 emoji); last one standing wins; rematch by vote, same room.
   Rounds 1–3 show the line lowercase without punctuation; from round 4 verbatim; ULTI (round 4–6, then every 4–6) draws lines of 30+ chars, ×2.5.
 - **Fix B4 (gate U-10):** a KO'd player / spectator drops focus on the hidden typing input (on `line` with `entrant:false`, on KO and on rejoin as spectator), so the phone keyboard no longer stays open over the emoji bar; entrants keep focus across rounds.
+- **Fix (PR #1 review, Jiwoo P1):** a player who rejoins mid-line is locked out of that round, but `maybeClose()` still waited for their `done`, so the room froze until the word cap (8.3 s after the last finish in the 3-player repro). It now skips entrants with `lockedRound === round` (they stay entrants and still take the hit). Proto test P-22b asserts the result arrives < 1 s after the last finish. Also dropped a redundant if/else in `onDisconnect`.
 - **`BASE_PER_CHAR` = 0.6** (the brief started at 0.7), `RANK_WEIGHT` 1, `EXTRA_LAST_HIT` 0. Simulation (1000 matches, 3–8 chars/s bots, real `resolveRound()`,
   `tests/evidence/sim-2.0.txt`), A-na's model, 10 bots: match length p10/p50/p90 184/206/231 s (K-2 ok), 2 bots 45/58/87 s (K-3 ok), rounds with a KO p50 7 (K-4 ok),
   first KO round p50 5 (K-5 ok), 97.1 % of matches never have more than 3 KOs in a round.
