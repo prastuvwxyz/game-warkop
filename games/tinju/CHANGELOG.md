@@ -1,5 +1,15 @@
 # Tinju Kata — changelog
 
+## 2.1.0 — 2026-10-30 (branch tinju/2.1-ranking; not deployed)
+Final standings: when the match ends, the end card lists every player 1st to 10th and how they went out. Protocol stays `v:2`; a 2.0 client ignores the new field.
+- **Rules (Pras, 2026-10-30; DESIGN.md "Standings (2.1.0)"):** place = reverse order of leaving the ring; survivors first (HP desc). Same round: KO above walkover; KOs by their finishing rank in that round (equal = shared place, 1, 2, 2, 4); same-round walkovers by later leaver.
+- **Server:** per player `outRound` / `outRank` / `outAt`, set once where `out` becomes `ko` or `walkover`, reset on rematch / back to lobby / join in `ended`. Pure `computeStandings()` in `engine.js`. The table is built once in `endMatch()` before players who left are deleted, stored on `room.standings`, and the same array rides on `end`, the rejoin `end` and `state.room.standings` (`null` unless ended). Row: `{id, name, skin, place, hp, out, round}` (`name`/`skin` added so a player who left still has a row). `out:'sat'` players have no row.
+- **Client:** `#standings` list in the end card: place, avatar, name ("(kamu)" + outline on your row), `HP n` / `KO ronde n` / `keluar ronde n`. The list scrolls inside the card; the Rematch row stays below it.
+- **End screen layout:** on `ended` the ring shrinks (`clamp(72px,15vh,150px)`), the in-match bars (HP bar, status, ULTI badge) are hidden and the emoji bar moves below the card, so the list and Rematch fit 320×480 (Rematch 381–426 px of 480). Only the emoji bar can still be below the fold.
+- **Tests:** `test-ui` / `look.mjs` expect version 2.1.0; new `tests/e2e/look-end.mjs` (10 players, two real browsers + 8 bots, one walkover).
+- **Unchanged:** damage, domino, rank weight, look, lyric bank. `test-rules` is still 90/0.
+- **Tests:** new `tests/test-standings.mjs` (ST-1…ST-11 on `computeStandings()`, SP-1…SP-4 over the wire), wired into `suite.test.mjs`.
+
 ## 2.0.0 — 2026-10-30 (branch tinju/2.0-royale; not deployed)
 Tinju Kata becomes a lyric-typing royale for 2–10 players. Protocol 2 is incompatible with 1.x (a 1.x tab gets `old_client` and a "muat ulang" toast).
 - **Game:** everyone types the same lyric line; when all are done (or after 20 s) the punches fall like dominoes down the finishing order — 1st hits 2nd,

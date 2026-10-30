@@ -2,7 +2,7 @@
 // the other seats), plays rounds, and is checked on: desktop 1280x800, iPhone 12, 320x480.
 //   node tests/e2e/look.mjs                         # starts games/tinju/server/server.js on a free port >= 3700
 //   GAME_URL=https://nalar.prastya.net/tinju/ DEVICES="iPhone 12" node tests/e2e/look.mjs
-// Per device: 0 console/page errors, 0 requests to another host, version meta 2.0.0, no horizontal overflow, 9 avatars in
+// Per device: 0 console/page errors, 0 requests to another host, version meta 2.1.0, no horizontal overflow, 9 avatars in
 // the row with HP bars, B1 (whole line box inside the viewport at every line), frame gaps during the domino (4x CPU throttle on mobile).
 // Screenshots: tests/evidence/look-<device>-{home,lobby10,line,domino}.png
 import fs from 'node:fs';
@@ -80,7 +80,7 @@ for (const name of wanted) {
     await page.waitForFunction(r => __tinju.lastResult && __tinju.lastResult.round >= r, round, { timeout: 25000 });
   }
   const gaps = await page.evaluate(() => window.__gaps.slice().sort((a, b) => a - b)); const p95 = gaps.length ? gaps[Math.floor(gaps.length * .95)] : 0;
-  const ok = res.status() === 200 && version === '2.0.0' && !ovHome && !ovLobby && !ovGame && lobbyRows === 10 && avatars === 9 && b1.bad === 0 && domino && errors.length === 0 && foreign.length === 0;
+  const ok = res.status() === 200 && version === '2.1.0' && !ovHome && !ovLobby && !ovGame && lobbyRows === 10 && avatars === 9 && b1.bad === 0 && domino && errors.length === 0 && foreign.length === 0;
   if (!ok) fail++;
   console.log(`${ok ? 'PASS' : 'FAIL'} ${name}: HTTP ${res.status()} · version ${version} · overflow home/lobby/game ${ovHome}/${ovLobby}/${ovGame} · lobby rows ${lobbyRows} · avatars ${avatars} · B1 ${b1.n - b1.bad}/${b1.n} · domino ${domino} · frames ${frames}, max gap ${maxGap} ms, p95 ${p95} ms (informational, software rendering${name !== 'desktop' ? ', 4x CPU throttle' : ''}) · console errors ${errors.length} · external requests ${foreign.length}${errors.length ? ' · ' + errors.slice(0, 3).join(' | ') : ''}${foreign.length ? ' · ' + foreign.slice(0, 3).join(' ') : ''}${notes.length ? ' · ' + notes.join(' ; ') : ''}`);
   bs.forEach(w => { try { w.close(); } catch (e) {} });

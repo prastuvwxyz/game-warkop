@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const path = require('path');
 const { send, upgrade } = require('../shared/server/ws.js');
 const { createHttpServer } = require('../shared/server/static.js');
-const { makeCfg, mulberry32, resolveRound } = require('./engine.js');
+const { makeCfg, mulberry32, resolveRound, computeStandings } = require('./engine.js');
 const { loadFile, matchBags } = require('./lyrics.js');
 
 const PORT = Number(process.env.PORT || 3200);
@@ -63,14 +63,14 @@ function newRoom() {
   const seed = ENV_SEED !== null ? ENV_SEED : crypto.randomBytes(4).readUInt32BE(0);
   const room = { code, hostId: null, state: 'lobby', players: new Map(), round: 0, timer: null, phaseEndsAt: 0, seatNo: 0,
     entrants: new Set(), dones: new Map(), seed, matchNo: 0, rng: null, bank: null, bags: null, ultiAt: 0, line: null, lastResult: null,
-    revealAt: 0, winnerId: null, endReason: null, pausedFrom: null, createdAt: Date.now(), lastActivity: Date.now(), allOfflineSince: null };
+    revealAt: 0, winnerId: null, endReason: null, standings: null, pausedFrom: null, createdAt: Date.now(), lastActivity: Date.now(), allOfflineSince: null };
   rooms.set(code, room);
   return room;
 }
 function addPlayer(room, name, ws, skin) {
   const id = crypto.randomBytes(4).toString('hex'), token = crypto.randomBytes(16).toString('hex');
   const p = { id, token, name: cleanName(name), skin: validSkin(skin) ? skin : 0, ws, online: true, offlineSince: null, leaveTimer: null, joinedAt: Date.now(),
-    seat: ++room.seatNo, hp: CFG.HP, streak: 0, fire: false, out: null, left: false, lockedRound: 0, rematch: false, emojiAt: 0 };
+    seat: ++room.seatNo, hp: CFG.HP, streak: 0, fire: false, out: null, outRound: null, outRank: null, outAt: null, left: false, lockedRound: 0, rematch: false, emojiAt: 0 };
   room.players.set(id, p);
   if (!room.hostId) room.hostId = id;
   return p;
@@ -82,6 +82,7 @@ function view(room, me) {
     // NOTE: never contains the line text; it travels only in the `line` message (DESIGN "Messages").
     players: plist(room).map(p => ({ id: p.id, name: p.name, skin: p.skin, online: p.online && !p.left, isHost: p.id === room.hostId,
       hp: p.hp, streak: p.streak, fire: p.fire, out: p.out, rematch: p.rematch })),
+    standings: room.state === 'ended' ? room.standings : null,
     phaseEndsAt: room.phaseEndsAt, ultiIn: room.ultiAt && inMatch(room) ? ultiIn(room) : null, winnerId: room.winnerId, endReason: room.endReason,
     serverTime: Date.now(),
     cfg: { HP: CFG.HP, COUNTDOWN_MS: CFG.COUNTDOWN_MS, WORD_CAP_MS: CFG.WORD_CAP_MS, RESULT_MS: CFG.RESULT_MS, LINK_MS: CFG.LINK_MS, TITLE_MS: CFG.TITLE_MS,
@@ -98,6 +99,17 @@ function setTimer(room, ms, fn) {
   const st = room.state, r = room.round;
   room.timer = setTimeout(() => { if (room.state !== st || room.round !== r) return; fn(); }, Math.max(0, ms));
 }
+// p.out changes from null exactly once per match: record when (round), how it ranked that round, and the time. Never overwritten.
+function markOut(room, p, kind, rank) {
+  if (p.out !== null) return;
+  p.out = kind; p.outRound = room.round; p.outRank = kind === 'ko' ? rank : null; p.outAt = Date.now();
+}
+// Final table, computed once in endMatch() before players who left are deleted. 'sat' players have no row.
+function buildStandings(room) {
+  const rows = plist(room).filter(p => p.out !== 'sat').map(p => ({ id: p.id, seat: p.seat, alive: p.out === null, hp: p.hp,
+    kind: p.out, outRound: p.outRound, outRank: p.outRank, outAt: p.outAt, name: p.name, skin: p.skin }));
+  return computeStandings(rows).map(r => ({ id: r.id, name: r.name, skin: r.skin, place: r.place, hp: r.hp, out: r.kind, round: r.outRound }));
+}
 function resetMatch(room, voters) {
   room.matchNo++;
   room.rng = mulberry32((room.seed + room.matchNo) >>> 0);
@@ -106,9 +118,10 @@ function resetMatch(room, voters) {
   for (const p of plist(room)) {
     p.hp = CFG.HP; p.streak = 0; p.fire = false; p.lockedRound = 0; p.rematch = false;
     p.out = (voters && !voters.has(p.id)) || !p.online ? 'sat' : null;
+    p.outRound = p.outRank = p.outAt = null;
   }
   room.round = 0; room.line = null; room.lastResult = null; room.entrants = new Set(); room.dones.clear();
-  room.winnerId = null; room.endReason = null; room.pausedFrom = null;
+  room.winnerId = null; room.endReason = null; room.pausedFrom = null; room.standings = null;
 }
 function startMatch(room, voters) {
   clearTimeout(room.timer);
@@ -185,7 +198,8 @@ function closeRound(room) {
   const ents = [...room.entrants].map(id => room.players.get(id)).filter(Boolean);
   const res = resolveRound(ents.map(p => ({ id: p.id, seat: p.seat, hp: p.hp, streak: p.streak, fire: p.fire })), room.dones,
     { text: room.line.text, ulti: room.line.ulti }, CFG);
-  for (const p of ents) { p.hp = res.hp[p.id]; p.streak = res.streak[p.id]; p.fire = res.fire[p.id]; if (p.hp <= 0 && !p.out) p.out = 'ko'; }
+  for (const p of ents) { p.hp = res.hp[p.id]; p.streak = res.streak[p.id]; p.fire = res.fire[p.id];
+    if (p.hp <= 0 && !p.out) markOut(room, p, 'ko', res.order.find(o => o.id === p.id).rank); }
   const sat = alive(room).filter(p => !room.entrants.has(p.id)).map(p => p.id);
   const hpAll = Object.fromEntries(plist(room).map(p => [p.id, p.hp]));
   const fireAll = Object.fromEntries(plist(room).map(p => [p.id, p.fire]));
@@ -212,12 +226,13 @@ function endMatch(room, reason, winnerId) {
   const al = alive(room);
   if (reason === 'ko' || reason === 'walkover') winnerId = al.length === 1 ? al[0].id : null;
   else if (reason === 'bank') { const s = al.slice().sort((x, y) => y.hp - x.hp); winnerId = s.length && (s.length === 1 || s[0].hp !== s[1].hp) ? s[0].id : null; }
+  room.standings = buildStandings(room);
   room.state = 'ended'; room.endReason = reason; room.winnerId = winnerId; room.phaseEndsAt = 0; room.pausedFrom = null; room.line = null;
   for (const p of plist(room)) { p.rematch = false; if (p.left) { room.players.delete(p.id); } else if (!p.online) armOffline(room, p); }
   if (room.players.size === 0) return destroyRoom(room);
   if (!room.players.has(room.hostId)) pickHost(room);
   log('match end', room.code, reason, winnerId || '-');
-  sendAll(room, { t: 'end', winner: winnerId, reason, hp: Object.fromEntries(plist(room).map(p => [p.id, p.hp])) });
+  sendAll(room, { t: 'end', winner: winnerId, reason, hp: Object.fromEntries(plist(room).map(p => [p.id, p.hp])), standings: room.standings });
   broadcast(room);
 }
 function pickHost(room) {
@@ -226,7 +241,7 @@ function pickHost(room) {
 }
 // A player went walkover (offline too long, or left). The match goes on while >= 2 are alive.
 function dropFromMatch(room, p) {
-  if (p.out === null) p.out = 'walkover';
+  markOut(room, p, 'walkover');
   const al = alive(room);
   if (al.length <= 1) { if (room.state === 'result') return; /* afterResult ends it with the result card */ return endMatch(room, 'walkover', null); }
   broadcast(room);
@@ -249,7 +264,8 @@ function removePlayer(room, p) {
 function destroyRoom(room) { clearTimeout(room.timer); for (const p of room.players.values()) clearTimeout(p.leaveTimer); rooms.delete(room.code); }
 function backToLobby(room) {
   clearTimeout(room.timer); room.timer = null;
-  for (const p of plist(room)) { p.hp = CFG.HP; p.streak = 0; p.fire = false; p.out = null; p.rematch = false; }
+  for (const p of plist(room)) { p.hp = CFG.HP; p.streak = 0; p.fire = false; p.out = null; p.outRound = p.outRank = p.outAt = null; p.rematch = false; }
+  room.standings = null;
   room.state = 'lobby'; room.round = 0; room.phaseEndsAt = 0; room.ultiAt = 0; room.winnerId = null; room.endReason = null; room.line = null;
   broadcast(room);
 }
@@ -283,7 +299,7 @@ function handle(ws, m) {
     if (room.state !== 'lobby' && room.state !== 'ended') return fail(ws, 'Permainan di room ini sudah berjalan');
     if (plist(room).length >= CFG.MAX_PLAYERS) return fail(ws, 'Room penuh (maks ' + CFG.MAX_PLAYERS + ' pemain)');
     const p = addPlayer(room, m.name, ws, m.skin); ctx.room = room; ctx.player = p; touch(room);
-    if (room.state === 'ended') p.out = null; // a newcomer waits for the rematch vote like everyone else
+    if (room.state === 'ended') { p.out = null; p.outRound = p.outRank = p.outAt = null; } // a newcomer waits for the rematch vote like everyone else
     log('room join', room.code, p.name);
     send(ws, { t: 'joined', code: room.code, token: p.token, id: p.id, v: 2 });
     return broadcast(room);
@@ -303,7 +319,7 @@ function handle(ws, m) {
     if (room.state === 'countdown') sendCountdown(room, p);
     else if (room.state === 'result' && room.lastResult) send(ws, room.lastResult);
     else if (room.state === 'paused' && aliveOnline(room).length >= 2) beginCountdown(room);
-    else if (room.state === 'ended') { send(ws, { t: 'end', winner: room.winnerId, reason: room.endReason, hp: Object.fromEntries(plist(room).map(q => [q.id, q.hp])) }); tryAutoRematch(room); }
+    else if (room.state === 'ended') { send(ws, { t: 'end', winner: room.winnerId, reason: room.endReason, hp: Object.fromEntries(plist(room).map(q => [q.id, q.hp])), standings: room.standings }); tryAutoRematch(room); }
     return;
   }
   if (!ctx.room) return fail(ws, 'Belum masuk room');
@@ -378,7 +394,7 @@ setInterval(() => {
 
 // ---------- HTTP + WebSocket (shared/server) ----------
 const server = createHttpServer({ base: BASE, root: ROOT, health: () => ({ rooms: rooms.size, players: [...rooms.values()].reduce((n, r) => n + r.players.size, 0),
-  lyrics: BANK.stats, version: '2.0.0' }) });
+  lyrics: BANK.stats, version: '2.1.0' }) });
 server.on('upgrade', (req, socket, head) => upgrade(req, socket, head, BASE + '/ws', { handle, fail, onDisconnect, log }));
 server.listen(PORT, HOST, () => log('tinju listening', HOST + ':' + PORT, 'base', BASE, 'hp', CFG.HP, 'base_per_char', CFG.BASE_PER_CHAR, 'rank_weight', CFG.RANK_WEIGHT));
 process.on('SIGTERM', () => { log('SIGTERM'); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000).unref(); });

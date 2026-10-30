@@ -93,7 +93,7 @@ async function threePlayer(prof, label, ctxOpts) {
   for (const p of pg) await p.goto(URL);
   const ov0 = await overflowNow(A); check(T('home: no horizontal overflow'), ov0.sw <= ov0.vw, JSON.stringify(ov0));
   check(T('no ☾ theme toggle in the header (removed)'), (await A.$('#btnTheme')) === null && !(await A.textContent('header')).includes('☾'));
-  check(T('tinju-version meta is 2.0.0'), (await A.getAttribute('meta[name="tinju-version"]', 'content')) === '2.0.0');
+  check(T('tinju-version meta is 2.1.0'), (await A.getAttribute('meta[name="tinju-version"]', 'content')) === '2.1.0');
   await A.evaluate(() => { localStorage.setItem('tk_theme', 'dark'); });
   await A.fill('#name', names[0]); await A.click('#btnCreate'); await A.waitForSelector('#scr-lobby.active');
   const code = (await A.textContent('#lobbyCode')).trim();

@@ -156,3 +156,64 @@ client → server: `create{name,skin}` · `join{code,name,skin}` · `rejoin{code
 server → client: `joined{code,token,id}` · `state{room}` · `countdown{round,ms,endsAt,serverTime}` ·
 `word{round,text,ulti,ultiIn,revealAt,capMs}` · `result{round,winner,tier,damage,margin,critical,combo,ulti,hp,elapsed,fire}` ·
 `end{winner,reason,hp}` · `error{msg,code?}` · `rejoin_failed` · `left` · `pong`
+
+---
+
+# Tinju Kata 2.1 — final standings (change brief, 2026-10-30)
+
+Live: https://nalar.prastya.net/tinju/ (2.0.0)   ·   Tier: **Multiplayer** — the `end` message gains a `standings`
+field and the server must remember *when* each player went out (`outRound`), so the WebSocket protocol changes
+(additively) and Jiwoo adds the rule to `DESIGN.md` before Wasawho builds. Version **2.1.0** (minor: new feature,
+protocol 2 stays compatible — a 2.0 client ignores the new field). Branch `tinju/2.1-ranking`.
+
+Pras, 2026-10-30 15:38: "tambahkan ranking juga — kalau yang main, siapa yang urutan 1–10".
+
+## The change in one breath
+When the match ends, every player sees the full table: who finished 1st to 10th, with how they went out. Today the
+end card only names the winner and shows the last KO in the ring; eight other people learn nothing about where they
+placed.
+
+## Rules (Jiwoo writes them into DESIGN.md; do not change without asking)
+- **Place = reverse order of leaving the ring.** The winner is 1st. Among the KO'd, the later the KO round, the
+  higher the place.
+- **Same round, several KOs:** the one who finished typing *earlier* in that round places higher (their `rank` in
+  that round's `order`). Equal rank (a tie in that round) → shared place; the next place skips (1, 2, 2, 4).
+- **Walkover (left or offline > 20 s) counts as going out in that round**, placed *below* anyone KO'd in the same
+  round. Leaving is a forfeit, not a result.
+- **`reason: 'bank'`** (lyrics ran out): the alive players are placed first, by HP descending; equal HP → shared
+  place. KO'd players follow by the rule above.
+- **Match cancelled by walkover with one player left:** that player is 1st, the rest by the rule above. The card
+  still says "Pertandingan dibatalkan".
+- The server computes the table; the client only draws it. A player who rejoins an ended room receives the same
+  table (it rides on `state` for `ended`, as `winnerId` does today).
+
+## Must have in 2.1.0
+- Server: per player `outRound` (round of KO or walkover, `null` while alive) and `outRank` (their `order.rank` in
+  that round), set where `p.out` is set today (`server.js` ≈ line 188 and `onWalkover`). `end` and the `ended`
+  `state` carry `standings: [{id, place, hp, out: null|'ko'|'walkover', round}]`, sorted by place.
+- End card: the standings list under the title, one row per player — place, skin avatar, name, and the fate: `HP 37`
+  for a survivor, `KO ronde 5`, `keluar ronde 3`. Your own row is highlighted. 10 rows fit on an iPhone 12 and at
+  320×480 without covering the Rematch button (scroll inside the card if it must, never the page).
+- Rule tests for every bullet above (incl. a 3-way tie in one round and a walkover in the same round as a KO);
+  proto test that `end.standings` and the rejoin `state` agree; look-at-it run at 320×480 and iPhone 12 with 10
+  players on the end screen.
+- `CHANGELOG.md` 2.1.0 entry; `tinju-version` meta = 2.1.0.
+
+## Not in 2.1
+- A live standings panel during the match — the avatar row already shows HP and per-round finishing rank.
+- A win tally across rematches in the same room ("Dewi 3 — Bima 1") — asked Pras below; if yes, it is 2.2 and
+  lives in room memory only (nothing saved across devices).
+- Stats per player (chars/s, typos, hits landed) — later, if the table alone is not enough.
+- Any change to damage, domino, rank weight, the look, the lyric bank.
+
+## Controls / Saved on the device / Content
+Unchanged. New localStorage keys: none.
+
+## Risks
+- Ten rows + two big boxers + Rematch on a 320×480 screen is tight — the gate is the look-at-it screenshot, not a
+  guess. If it does not fit, the ring shrinks on the end screen, the list never does.
+- "Who went out in the same round places by finishing rank" is a Stella default, not a Pras ruling; cheap to change
+  (one comparator) if the playtest finds it unfair.
+
+## How to run
+    node tools/serve.mjs            # http://127.0.0.1:8080/tinju/   (server: PORT=3300 node games/tinju/server/server.js)
