@@ -205,6 +205,7 @@ function renderGame() {
   $('specbar').hidden = !(spec && midMatch) && S.state !== 'ended';
   $('linebox').hidden = S.state === 'ended' || S.state === 'paused';
   $('endCard').hidden = S.state !== 'ended';
+  $('scr-game').classList.toggle('ended', S.state === 'ended');
   $('leaveRow').hidden = S.state === 'ended';
   if (S.state === 'ended') renderEnd(); 
   else if (!playing) {

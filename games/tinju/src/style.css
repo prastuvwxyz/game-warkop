@@ -112,7 +112,11 @@ details summary{cursor:pointer;font-weight:600}details ul{padding-left:18px;marg
 .specbar{display:flex;flex-direction:column;gap:4px;align-items:center;padding:6px;background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--line)}
 #emojis{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}#emojis button{font-size:20px;padding:3px 8px;line-height:1.2}
 .endcard{text-align:center;padding:12px}.endcard h3{margin:0 0 4px;font-size:22px;font-weight:600}.endcard .sub{color:var(--dim);font-size:14px;margin-bottom:10px}
-.standings{list-style:none;margin:0 0 10px;padding:0;max-height:clamp(96px,32vh,300px);overflow-y:auto;overscroll-behavior:contain;text-align:left;display:flex;flex-direction:column;gap:2px}
+/* End screen: the table and Rematch must fit the viewport. The ring shrinks, the in-match bars go, the emoji bar drops below the card. */
+#scr-game.ended .ring{height:clamp(72px,15vh,150px)}
+#scr-game.ended #meBar,#scr-game.ended #status,#scr-game.ended #ultiBadge{display:none}
+#scr-game.ended #specbar{order:2}
+.standings{list-style:none;margin:0 0 10px;padding:0;max-height:clamp(96px,calc(100dvh - 370px),340px);overflow-y:auto;overscroll-behavior:contain;text-align:left;display:flex;flex-direction:column;gap:2px}
 .standings li{display:flex;align-items:center;gap:8px;padding:3px 6px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid transparent;min-height:30px}
 .standings li.me{border-color:var(--accent)}
 .standings .pl{flex:0 0 18px;text-align:center;font-weight:700;color:var(--accent)}
