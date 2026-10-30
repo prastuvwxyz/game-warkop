@@ -1,0 +1,142 @@
+PASS [desktop] home: no horizontal overflow
+PASS [desktop] no ☾ theme toggle in the header (removed)
+PASS [desktop] tinju-version meta is 2.0.0
+PASS [desktop] create -> lobby with a 5-char code
+PASS [desktop] lobby shows 3 players on every screen
+PASS [desktop] skin pick is broadcast and saved in tk_skin
+PASS [desktop] guest sees Mulai disabled, host enabled
+PASS [desktop] lobby: no horizontal overflow
+PASS [desktop] lobby art loaded: 28 boxer images (4 skins x 7 poses)
+PASS [desktop] input: autocapitalize=off autocorrect=off spellcheck=false inputmode=text, 16 px, not display:none
+PASS [desktop] match ran to the end: state ended, reason ko, winner set
+PASS [desktop] played 6 rounds with hits (>= 4) and the ULTI round 4 was reached
+PASS [desktop] there were 3-player rounds where all three finished
+PASS [desktop] domino: ~0.15 s per link (100-300 ms gap, first link 250-700 ms in), avatars in finishing order, left = who hit me, right = who I hit — 4/4 rounds
+PASS [desktop] big boxers use the 7 poses: attacker jab/uppercut, victim block/ouch/ko
+PASS [desktop] poses seen on the left/right boxers include a punch and a reaction
+PASS [desktop] title + artist card shows ~1 s after the domino (every card 850-1300 ms) — 6 cards
+PASS [desktop] the card carries the song of the round
+PASS [desktop] B4/U-10: a spectator never has the typing input focused, from the KO round on, >= 2 rounds — 197 samples in rounds 6,5
+PASS [desktop] B4/M-04: entrants keep focus on the typing input across rounds (65/65 samples)
+PASS [desktop] B1 (Ana): the line box (both rows) was inside the viewport in every sample — 318 samples, 0 bad
+PASS [desktop] B1 (Budi): the line box (both rows) was inside the viewport in every sample — 323 samples, 0 bad
+PASS [desktop] B1 (Cici): the line box (both rows) was inside the viewport in every sample — 322 samples, 0 bad
+PASS [desktop] no horizontal overflow at any time (Ana): scrollWidth 1280 <= 1280
+PASS [desktop] no horizontal overflow at any time (Budi): scrollWidth 1280 <= 1280
+PASS [desktop] no horizontal overflow at any time (Cici): scrollWidth 1280 <= 1280
+PASS [desktop] strict typo: wrong char -> red tile, 1 typo, the extra key is ignored (input mirror = typed + bad)
+PASS [desktop] strict typo: backspace removes the red char, typing continues
+PASS [desktop] the typo reached the server: Budi's typos is 1 in round 1
+PASS [desktop] ULTI: a link with ulti:true was played, the ring shook (>= 1 shake on at least one screen), "ULTI!"/"KRITIKAL!" burst shown
+PASS [desktop] ULTI line text is longer than 30 chars and shown verbatim (form full)
+PASS [desktop] KO -> spectator view: emoji bar with 8 buttons, "penonton" status, keyboard not focused
+PASS [desktop] emoji from the spectator float on the other screens (Ana and Budi got 2)
+PASS [desktop] exactly one player left with HP > 0; the other two are out
+PASS [desktop] win screen: end card visible, a winner named, the winner's boxer in the win pose on the left
+PASS [desktop] end screen: no horizontal overflow
+PASS [desktop] rematch: all three vote -> same room, countdown round 1, HP full, nobody out
+PASS [desktop] saved keys are only tk_name, tk_sess, tk_skin, tk_snd, tk_theme (old, ignored)
+PASS [desktop] reload: rejoin by token puts the player back in the same room
+PASS [desktop] tk_theme is ignored, not deleted
+PASS [desktop] card C look: dark background from theme.css
+PASS [desktop] type: the rounded sans stack from theme.css
+PASS [desktop] tidy: style.css contains no hex colour (all colours come from theme.css tokens)
+PASS [iPhone 12] home: no horizontal overflow
+PASS [iPhone 12] no ☾ theme toggle in the header (removed)
+PASS [iPhone 12] tinju-version meta is 2.0.0
+PASS [iPhone 12] create -> lobby with a 5-char code
+PASS [iPhone 12] lobby shows 3 players on every screen
+PASS [iPhone 12] skin pick is broadcast and saved in tk_skin
+PASS [iPhone 12] guest sees Mulai disabled, host enabled
+PASS [iPhone 12] lobby: no horizontal overflow
+PASS [iPhone 12] lobby art loaded: 28 boxer images (4 skins x 7 poses)
+PASS [iPhone 12] input: autocapitalize=off autocorrect=off spellcheck=false inputmode=text, 16 px, not display:none
+PASS [iPhone 12] match ran to the end: state ended, reason ko, winner set
+PASS [iPhone 12] played 6 rounds with hits (>= 4) and the ULTI round 4 was reached
+PASS [iPhone 12] there were 3-player rounds where all three finished
+PASS [iPhone 12] domino: ~0.15 s per link (100-300 ms gap, first link 250-700 ms in), avatars in finishing order, left = who hit me, right = who I hit — 4/4 rounds
+PASS [iPhone 12] big boxers use the 7 poses: attacker jab/uppercut, victim block/ouch/ko
+PASS [iPhone 12] poses seen on the left/right boxers include a punch and a reaction
+PASS [iPhone 12] title + artist card shows ~1 s after the domino (every card 850-1300 ms) — 6 cards
+PASS [iPhone 12] the card carries the song of the round
+PASS [iPhone 12] B4/U-10: a spectator never has the typing input focused, from the KO round on, >= 2 rounds — 194 samples in rounds 6,5
+PASS [iPhone 12] B4/M-04: entrants keep focus on the typing input across rounds (68/68 samples)
+PASS [iPhone 12] B1 (Ana): the line box (both rows) was inside the viewport in every sample — 337 samples, 0 bad
+PASS [iPhone 12] B1 (Budi): the line box (both rows) was inside the viewport in every sample — 336 samples, 0 bad
+PASS [iPhone 12] B1 (Cici): the line box (both rows) was inside the viewport in every sample — 335 samples, 0 bad
+PASS [iPhone 12] no horizontal overflow at any time (Ana): scrollWidth 390 <= 390
+PASS [iPhone 12] no horizontal overflow at any time (Budi): scrollWidth 390 <= 390
+PASS [iPhone 12] no horizontal overflow at any time (Cici): scrollWidth 390 <= 390
+PASS [iPhone 12] strict typo: wrong char -> red tile, 1 typo, the extra key is ignored (input mirror = typed + bad)
+PASS [iPhone 12] strict typo: backspace removes the red char, typing continues
+PASS [iPhone 12] the typo reached the server: Budi's typos is 1 in round 1
+PASS [iPhone 12] ULTI: a link with ulti:true was played, the ring shook (>= 1 shake on at least one screen), "ULTI!"/"KRITIKAL!" burst shown
+PASS [iPhone 12] ULTI line text is longer than 30 chars and shown verbatim (form full)
+PASS [iPhone 12] KO -> spectator view: emoji bar with 8 buttons, "penonton" status, keyboard not focused
+PASS [iPhone 12] emoji from the spectator float on the other screens (Ana and Budi got 2)
+PASS [iPhone 12] exactly one player left with HP > 0; the other two are out
+PASS [iPhone 12] win screen: end card visible, a winner named, the winner's boxer in the win pose on the left
+PASS [iPhone 12] end screen: no horizontal overflow
+PASS [iPhone 12] rematch: all three vote -> same room, countdown round 1, HP full, nobody out
+PASS [iPhone 12] saved keys are only tk_name, tk_sess, tk_skin, tk_snd, tk_theme (old, ignored)
+PASS [iPhone 12] reload: rejoin by token puts the player back in the same room
+PASS [iPhone 12] tk_theme is ignored, not deleted
+PASS [iPhone 12] card C look: dark background from theme.css
+PASS [iPhone 12] type: the rounded sans stack from theme.css
+PASS [iPhone 12] tidy: style.css contains no hex colour (all colours come from theme.css tokens)
+PASS [320x480] home: no horizontal overflow
+PASS [320x480] no ☾ theme toggle in the header (removed)
+PASS [320x480] tinju-version meta is 2.0.0
+PASS [320x480] create -> lobby with a 5-char code
+PASS [320x480] lobby shows 3 players on every screen
+PASS [320x480] skin pick is broadcast and saved in tk_skin
+PASS [320x480] guest sees Mulai disabled, host enabled
+PASS [320x480] lobby: no horizontal overflow
+PASS [320x480] lobby art loaded: 28 boxer images (4 skins x 7 poses)
+PASS [320x480] input: autocapitalize=off autocorrect=off spellcheck=false inputmode=text, 16 px, not display:none
+PASS [320x480] match ran to the end: state ended, reason ko, winner set
+PASS [320x480] played 6 rounds with hits (>= 4) and the ULTI round 4 was reached
+PASS [320x480] there were 3-player rounds where all three finished
+PASS [320x480] domino: ~0.15 s per link (100-300 ms gap, first link 250-700 ms in), avatars in finishing order, left = who hit me, right = who I hit — 4/4 rounds
+PASS [320x480] big boxers use the 7 poses: attacker jab/uppercut, victim block/ouch/ko
+PASS [320x480] poses seen on the left/right boxers include a punch and a reaction
+PASS [320x480] title + artist card shows ~1 s after the domino (every card 850-1300 ms) — 6 cards
+PASS [320x480] the card carries the song of the round
+PASS [320x480] B4/U-10: a spectator never has the typing input focused, from the KO round on, >= 2 rounds — 199 samples in rounds 6,5
+PASS [320x480] B4/M-04: entrants keep focus on the typing input across rounds (66/66 samples)
+PASS [320x480] B1 (Ana): the line box (both rows) was inside the viewport in every sample — 320 samples, 0 bad
+PASS [320x480] B1 (Budi): the line box (both rows) was inside the viewport in every sample — 319 samples, 0 bad
+PASS [320x480] B1 (Cici): the line box (both rows) was inside the viewport in every sample — 321 samples, 0 bad
+PASS [320x480] no horizontal overflow at any time (Ana): scrollWidth 320 <= 320
+PASS [320x480] no horizontal overflow at any time (Budi): scrollWidth 320 <= 320
+PASS [320x480] no horizontal overflow at any time (Cici): scrollWidth 320 <= 320
+PASS [320x480] strict typo: wrong char -> red tile, 1 typo, the extra key is ignored (input mirror = typed + bad)
+PASS [320x480] strict typo: backspace removes the red char, typing continues
+PASS [320x480] the typo reached the server: Budi's typos is 1 in round 1
+PASS [320x480] ULTI: a link with ulti:true was played, the ring shook (>= 1 shake on at least one screen), "ULTI!"/"KRITIKAL!" burst shown
+PASS [320x480] ULTI line text is longer than 30 chars and shown verbatim (form full)
+PASS [320x480] KO -> spectator view: emoji bar with 8 buttons, "penonton" status, keyboard not focused
+PASS [320x480] emoji from the spectator float on the other screens (Ana and Budi got 2)
+PASS [320x480] exactly one player left with HP > 0; the other two are out
+PASS [320x480] win screen: end card visible, a winner named, the winner's boxer in the win pose on the left
+PASS [320x480] end screen: no horizontal overflow
+PASS [320x480] rematch: all three vote -> same room, countdown round 1, HP full, nobody out
+PASS [320x480] saved keys are only tk_name, tk_sess, tk_skin, tk_snd, tk_theme (old, ignored)
+PASS [320x480] reload: rejoin by token puts the player back in the same room
+PASS [320x480] tk_theme is ignored, not deleted
+PASS [320x480] card C look: dark background from theme.css
+PASS [320x480] type: the rounded sans stack from theme.css
+PASS [320x480] tidy: style.css contains no hex colour (all colours come from theme.css tokens)
+PASS [rm-2p] prefers-reduced-motion is on
+PASS [rm-2p] a 2-player match plays to a KO and a win
+PASS [rm-2p] 2 players: every round with a result has exactly one link (1st hits 2nd), weight 1
+PASS [rm-2p] reduced motion: the ring never shook, no floating damage numbers, no countdown pop animation
+PASS [rm-2p] reduced motion: the domino is applied at once (links at < 200 ms), numbers and HP still update
+PASS [rm-2p] reduced motion: no running CSS animation on the page
+PASS [rm-2p] reduced motion: the title + artist card still shows (~1 s)
+PASS [rm-2p] console clean in the reduced-motion run
+PASS [rm-2p] no horizontal overflow
+PASS 0 console errors and 0 page errors in every run
+PASS 0 requests to any other host (nothing external)
+
+== test-ui: PASS 140 / FAIL 0 ==

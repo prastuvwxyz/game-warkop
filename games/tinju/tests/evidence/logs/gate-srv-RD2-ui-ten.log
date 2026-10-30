@@ -1,0 +1,26 @@
+2026-10-29T23:54:30.628Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T23:54:30.636Z tinju listening 127.0.0.1:3341 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T23:54:31.293Z room create JX2BQ H
+2026-10-29T23:54:31.692Z room join JX2BQ G1
+2026-10-29T23:54:32.075Z room join JX2BQ G2
+2026-10-29T23:54:32.456Z room join JX2BQ G3
+2026-10-29T23:54:32.823Z room join JX2BQ G4
+2026-10-29T23:54:33.206Z room join JX2BQ G5
+2026-10-29T23:54:33.624Z room join JX2BQ G6
+2026-10-29T23:54:34.027Z room join JX2BQ G7
+2026-10-29T23:54:34.439Z room join JX2BQ G8
+2026-10-29T23:54:34.842Z room join JX2BQ G9
+2026-10-29T23:54:35.235Z match start JX2BQ match#1 seed=2230400895 players=10
+2026-10-29T23:54:36.365Z round JX2BQ 1 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=73bc51f3,b0ebebbc,f27f15e2,dc0e1b7d,73cc0771,90b9b8e8,ddbc157b,858d5a02,0ba85f85,f9a59adf
+2026-10-29T23:54:40.126Z round JX2BQ 2 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,f27f15e2,dc0e1b7d,90b9b8e8,73cc0771,ddbc157b
+2026-10-29T23:54:43.886Z round JX2BQ 3 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=73bc51f3,b0ebebbc,0ba85f85,f9a59adf,dc0e1b7d,73cc0771,90b9b8e8,ddbc157b,858d5a02,f27f15e2
+2026-10-29T23:54:47.887Z round JX2BQ 4 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=858d5a02,ddbc157b,73bc51f3,dc0e1b7d,f9a59adf,90b9b8e8,0ba85f85,f27f15e2,73cc0771,b0ebebbc
+2026-10-29T23:54:51.662Z round JX2BQ 5 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=73bc51f3,0ba85f85,b0ebebbc,90b9b8e8,ddbc157b,858d5a02,dc0e1b7d,f27f15e2,f9a59adf,73cc0771
+2026-10-29T23:54:55.427Z round JX2BQ 6 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,f27f15e2,dc0e1b7d,73cc0771,90b9b8e8,ddbc157b
+2026-10-29T23:54:59.179Z round JX2BQ 7 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=b0ebebbc,0ba85f85,858d5a02,dc0e1b7d,73bc51f3,73cc0771,f27f15e2,f9a59adf,ddbc157b,90b9b8e8
+2026-10-29T23:55:02.952Z round JX2BQ 8 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=73bc51f3,b0ebebbc,858d5a02,0ba85f85,f27f15e2,dc0e1b7d,73cc0771,f9a59adf,ddbc157b,90b9b8e8
+2026-10-29T23:55:06.709Z round JX2BQ 9 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=b0ebebbc,0ba85f85,858d5a02,73bc51f3,f9a59adf,73cc0771,f27f15e2,dc0e1b7d,ddbc157b,90b9b8e8
+2026-10-29T23:55:10.493Z round JX2BQ 10 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=73bc51f3,b0ebebbc,0ba85f85,f27f15e2,f9a59adf,90b9b8e8,ddbc157b,858d5a02,dc0e1b7d,73cc0771
+2026-10-29T23:55:14.249Z round JX2BQ 11 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=73bc51f3,b0ebebbc,f9a59adf,dc0e1b7d,858d5a02,0ba85f85,f27f15e2,73cc0771,90b9b8e8,ddbc157b
+2026-10-29T23:55:18.004Z round JX2BQ 12 n=10 done=10 links=9 ko=0 order=73bc51f3,b0ebebbc,0ba85f85,858d5a02,f9a59adf,dc0e1b7d,f27f15e2,73cc0771,90b9b8e8,ddbc157b arrival=73bc51f3,f27f15e2,90b9b8e8,73cc0771,ddbc157b,0ba85f85,b0ebebbc,858d5a02,f9a59adf,dc0e1b7d
+2026-10-29T23:55:19.866Z SIGTERM

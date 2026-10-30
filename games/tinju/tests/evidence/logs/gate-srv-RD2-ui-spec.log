@@ -1,0 +1,11 @@
+2026-10-29T23:55:47.566Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T23:55:47.575Z tinju listening 127.0.0.1:3343 base /tinju hp 1 base_per_char 0.6 rank_weight 1
+2026-10-29T23:55:48.054Z room create NERBR P0
+2026-10-29T23:55:48.518Z room join NERBR P1
+2026-10-29T23:55:49.020Z room join NERBR P2
+2026-10-29T23:55:49.386Z room join NERBR P3
+2026-10-29T23:55:49.448Z match start NERBR match#1 seed=554059749 players=4
+2026-10-29T23:55:50.161Z round NERBR 1 n=4 done=4 links=1 ko=1 order=ef8b8ccc,c1eb37a4,84345805,3e0ebf6e arrival=ef8b8ccc,c1eb37a4,84345805,3e0ebf6e
+2026-10-29T23:55:53.878Z round NERBR 2 n=3 done=3 links=2 ko=2 order=ef8b8ccc,c1eb37a4,84345805 arrival=ef8b8ccc,c1eb37a4,84345805
+2026-10-29T23:55:55.478Z match end NERBR ko ef8b8ccc
+2026-10-29T23:55:57.496Z SIGTERM

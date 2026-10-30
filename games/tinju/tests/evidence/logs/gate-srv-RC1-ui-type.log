@@ -1,0 +1,17 @@
+2026-10-29T23:53:12.101Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T23:53:12.111Z tinju listening 127.0.0.1:3332 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T23:53:12.528Z room create R4P66 Phone
+2026-10-29T23:53:12.894Z room join R4P66 D1
+2026-10-29T23:53:13.339Z room join R4P66 D2
+2026-10-29T23:53:13.422Z match start R4P66 match#1 seed=1020990329 players=3
+2026-10-29T23:53:14.647Z round R4P66 1 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:17.206Z round R4P66 2 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:19.774Z round R4P66 3 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:22.343Z round R4P66 4 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:24.922Z round R4P66 5 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:27.491Z round R4P66 6 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:30.057Z round R4P66 7 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:32.621Z round R4P66 8 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:35.192Z round R4P66 9 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:37.765Z round R4P66 10 n=3 done=3 links=2 ko=0 order=338be30b,cd583283,f45ee251 arrival=338be30b,cd583283,f45ee251
+2026-10-29T23:53:39.518Z SIGTERM

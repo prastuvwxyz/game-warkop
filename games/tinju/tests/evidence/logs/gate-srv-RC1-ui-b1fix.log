@@ -1,0 +1,19 @@
+2026-10-29T23:51:50.295Z lyrics loaded {"songs":40,"lines":200,"normal":160,"ulti":40}
+2026-10-29T23:51:50.306Z tinju listening 127.0.0.1:3330 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T23:51:50.866Z room create NBFWF Host
+2026-10-29T23:51:51.230Z room join NBFWF Guest1
+2026-10-29T23:51:51.596Z room join NBFWF Guest2
+2026-10-29T23:51:51.658Z match start NBFWF match#1 seed=2089712977 players=3
+2026-10-29T23:51:52.749Z round NBFWF 1 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:51:55.441Z round NBFWF 2 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:51:58.151Z round NBFWF 3 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:00.830Z round NBFWF 4 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:04.310Z round NBFWF 5 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:06.997Z round NBFWF 6 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:09.683Z round NBFWF 7 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:12.370Z round NBFWF 8 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:15.036Z round NBFWF 9 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:17.723Z round NBFWF 10 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:20.410Z round NBFWF 11 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:23.082Z round NBFWF 12 n=3 done=3 links=2 ko=0 order=8691f246,724dfcae,e84596fd arrival=8691f246,724dfcae,e84596fd
+2026-10-29T23:52:23.109Z SIGTERM

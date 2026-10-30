@@ -1,0 +1,17 @@
+2026-10-29T23:55:19.939Z lyrics loaded {"songs":46,"lines":255,"normal":161,"ulti":94}
+2026-10-29T23:55:19.950Z tinju listening 127.0.0.1:3342 base /tinju hp 100000 base_per_char 0.6 rank_weight 1
+2026-10-29T23:55:20.452Z room create ZQ6MD Phone
+2026-10-29T23:55:20.875Z room join ZQ6MD D1
+2026-10-29T23:55:21.422Z room join ZQ6MD D2
+2026-10-29T23:55:21.599Z match start ZQ6MD match#1 seed=4116778337 players=3
+2026-10-29T23:55:22.857Z round ZQ6MD 1 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:25.412Z round ZQ6MD 2 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:27.967Z round ZQ6MD 3 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:30.523Z round ZQ6MD 4 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:33.085Z round ZQ6MD 5 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:35.659Z round ZQ6MD 6 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:38.224Z round ZQ6MD 7 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:40.778Z round ZQ6MD 8 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:43.336Z round ZQ6MD 9 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:45.901Z round ZQ6MD 10 n=3 done=3 links=2 ko=0 order=b3be7a1a,fdbbd5e7,cca0ada4 arrival=b3be7a1a,fdbbd5e7,cca0ada4
+2026-10-29T23:55:47.516Z SIGTERM

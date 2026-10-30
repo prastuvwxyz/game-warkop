@@ -1,12 +1,21 @@
 # Tinju Kata 2.0.0 — Release gate, Stage A
 
 Date: 2026-10-30 (runs between 01:39 and 02:10 WIB, by the log file times in /tmp/ana-g2/logs) · Author: A-na (QA) · Plan: `tests/PLAN-2.0.md` §6
-Commit under test: **`49ad6b8`** on `tinju/2.0-royale`. `git pull` said "Already up to date"; HEAD and `origin/tinju/2.0-royale` were both `49ad6b8` at the start and again before this commit. The branch did not move.
+Commit under test: **`49ad6b8`** (Stage A), re-run of U-10/U-06/U-13 on **`f334d3a`** (§0) on `tinju/2.0-royale`. `git pull` said "Already up to date"; HEAD and `origin/tinju/2.0-royale` were both `49ad6b8` at the start and again before this commit. The branch did not move.
 How: `git archive 49ad6b8` into two separate copies, `/tmp/ana-g2/A` (run 1) and `/tmp/ana-g2/B` (run 2). Every suite and every check of mine ran once on each copy. Ports used: 3300–3561. Never 3100 or 3200; both were still live and untouched at the end. Nothing deployed, no sudo, no file outside `tests/` changed.
 Logs: `tests/evidence/logs/gate-*` (copied from `/tmp/ana-g2/logs/`). My scripts: `tests/plan-2.0/gate/`.
 PM decisions gated against, not re-litigated: `BASE_PER_CHAR` 0.6, `RANK_WEIGHT` 1, `EXTRA_LAST_HIT` 0 (`PASS CFG defaults: BASE_PER_CHAR 0.6, RANK_WEIGHT 1, EXTRA_LAST_HIT 0, CAP 60, RECV_CAP 60`, gate-rules-A/B). B2 (44 px) stays waived. K-1 is reported as FAIL, waived pending Pras.
 
-## Verdict: NO-GO for Stella's go request, as of `49ad6b8`
+## Verdict: GO for Stella's go request to Pras, as of `f334d3a` (re-run 2026-10-30 07:00–07:20 WIB, §0)
+
+Stage A passes. The one blocking failure at `49ad6b8`, U-10 (B4), is fixed in `f334d3a`. U-10, U-06 and U-13 passed twice on two fresh copies of `f334d3a`, and Wasawho's UI suite passed twice too (§0). `f334d3a` changes only `src/main.js` (+4/−1) and `CHANGELOG.md` outside `tests/`; server and engine are byte-identical to `49ad6b8`. So the protocol, rules, B3 and simulation results below still stand for `f334d3a`.
+
+This GO is for **the go request only, not a release.** Still open:
+- **K-1** is FAIL, waived pending Pras (Stella's waiver, 2026-10-30). The waiver should quote the real-bank numbers, 93.7 % and 8 in 1000 matches with ≥ 5 KOs in a round, not "1 in 1000" (§4).
+- **Stage B,** M-01…M-05 on a real iPhone and Android after deploy. Only Pras may waive these.
+- **B5** (tapping the line removes focus, S2): Stella's call, 2.0.0 or 2.0.1. Not re-tested in this round.
+
+### History: NO-GO for Stella's go request, as of `49ad6b8`
 
 One blocking case fails in both runs, and only Pras may waive it:
 
@@ -15,6 +24,23 @@ One blocking case fails in both runs, and only Pras may waive it:
 Every other blocking case in Stage A passes in both runs, including B1 (host + 2 guests and 10 players at 320×480, plus a worst-case 45-character bank) and B3 (200/200 rounds, both runs). K-1 fails as expected and is waived pending Pras (§4).
 
 The verdict becomes **GO for the go request** if Wasawho fixes B4 and the re-run passes, or if Pras waives U-10 in writing. Stage B (phones, after deploy) is still required either way (§7).
+
+## 0. Re-run on `f334d3a` (B4 fix): U-10, U-06, U-13 ×2
+
+How: `git pull` → HEAD = `origin/tinju/2.0-royale` = `f334d3a`. `git archive f334d3a` into two fresh copies, `/tmp/ana-g3/C` (run 3) and `/tmp/ana-g3/D` (run 4). Ports 3330–3334, 3340–3344, 3350–3351, 3360–3361, 3370–3371. Never 3100/3200. `PLAYWRIGHT_BROWSERS_PATH=/home/prastuvwxyz/.cache/ms-playwright`. I ran the full gate-ui.mjs, not only the three cases. Stella's own single run (`/tmp/stella-gate/gate-ui-stella.log`, 23/0) is not counted here.
+
+| Check | Run 3 (copy C) | Run 4 (copy D) | Log |
+|---|---|---|---|
+| gate-ui.mjs, all sections | `== gate-ui RC1: PASS 23 / FAIL 0 ==` | `== gate-ui RD2: PASS 23 / FAIL 0 ==` | gate-ui-RC1/RD2.log |
+| U-10 focus line | `PASS U-10: spectator typing does nothing and the input is not focused \| {…"foc":""}` | same | gate-ui-RC1/RD2.log |
+| U-10 bar + emoji | `PASS U-10: KO'd player (iPhone 12): emoji bar visible with 8 emoji, line marked spectator \| {"bar":true,"n":8,"entrant":false,"out":"ko"}` · `PASS U-10: tapping an emoji reaches another player's socket` | same | gate-ui-RC1/RD2.log |
+| U-06 | `PASS U-06: iPhone 12, one tap in round 1, then 10 rounds: the hidden input has focus at every line reveal \| 10/10` · `PASS U-04/U-06: … 10/10` | same | gate-ui-RC1/RD2.log |
+| U-13 | `PASS U-13: 0 page errors and 0 console errors across every page in this run \| errors=0` | same | gate-ui-RC1/RD2.log |
+| U-01 (B1, regression) | `36/36 page-rounds ok` · `120/120` | same | gate-ui-RC1/RD2.log |
+| B4 standalone repro | `G round 2 (KO, spectator): {"focus":"","entrant":false,…}` (was `"focus":"typer"` at `49ad6b8`, gate-u10-repro.log) | same | gate-u10-repro-RC1/RD2.log |
+| Wasawho test-ui.mjs | `== test-ui: PASS 140 / FAIL 0 ==` (134 before + his new B4/U-10 lines on desktop, iPhone 12 and 320×480) | `== test-ui: PASS 140 / FAIL 0 ==` | gate-w-ui-RC1/RD2.log |
+
+The U-10 focus check really detects the bug: the same line FAILed on both `49ad6b8` copies (§5). `grep -c '^FAIL'` = 0 in all six re-run logs. After the runs, nothing of mine was listening on ≥ 3300.
 
 ## 1. Wasawho's suites, my runs
 
@@ -82,9 +108,9 @@ R1 = copy A, R2 = copy B. Evidence is quoted from the named log (A or B; the lin
 | U-02 320 px width | PASS | PASS | `PASS U-02: 10-player room at 320x480: no horizontal overflow on lobby, ring and result screens`, `PASS U-02: end screen at 320x480, 320x568, desktop, iPhone 12: no horizontal overflow` |
 | U-03 input attributes | PASS | PASS | `PASS U-03: … \| {"ac":"off","acor":"off","sp":"false","im":"text","fs":"16px","disp":"block"}` |
 | U-04 strict typos | PASS | PASS | `PASS U-04: a wrong char goes red and blocks … \| {"typed":"","bad":"#","typos":1,…,"redTile":true}`, `PASS U-04: backspace removes the red char, typos stays 1` (gate-ui-A-r3, see §6 / B) |
-| U-06 focus kept across rounds | PASS | PASS | `PASS U-06: iPhone 12, one tap in round 1, then 10 rounds: the hidden input has focus at every line reveal \| 10/10`; `PASS U-04/U-06: the line typed for real … 10/10` |
-| **U-10 spectator UI** | **FAIL** | **FAIL** | `FAIL U-10: spectator typing does nothing and the input is not focused \| {"typing":{"typed":"",…},"foc":"typer"}` (gate-ui-A-r3, gate-ui-B). The other U-10 lines pass: `… emoji bar visible with 8 emoji, line marked spectator \| {"bar":true,"n":8,"entrant":false,"out":"ko"}`, `… tapping an emoji reaches another player's socket` |
-| U-13 0 console errors | PASS | PASS | `PASS U-13: 0 page and 0 console errors across every page in this run \| errors=0` (mine); Wasawho: 134/0 per run |
+| U-06 focus kept across rounds (also PASS ×2 on `f334d3a`, §0) | PASS | PASS | `PASS U-06: iPhone 12, one tap in round 1, then 10 rounds: the hidden input has focus at every line reveal \| 10/10`; `PASS U-04/U-06: the line typed for real … 10/10` |
+| **U-10 spectator UI** (`49ad6b8`; on `f334d3a` PASS ×2, §0) | **FAIL** | **FAIL** | `FAIL U-10: spectator typing does nothing and the input is not focused \| {"typing":{"typed":"",…},"foc":"typer"}` (gate-ui-A-r3, gate-ui-B). The other U-10 lines pass: `… emoji bar visible with 8 emoji, line marked spectator \| {"bar":true,"n":8,"entrant":false,"out":"ko"}`, `… tapping an emoji reaches another player's socket` |
+| U-13 0 console errors (also PASS ×2 on `f334d3a`, §0) | PASS | PASS | `PASS U-13: 0 page and 0 console errors across every page in this run \| errors=0` (mine); Wasawho: 134/0 per run |
 | K-1 KO clustering | FAIL, waived pending Pras | FAIL, waived pending Pras | §4 |
 | K-2 10-bot length | PASS | PASS | `PASS K-2 [plan model (lines 15-40)] … \| 184/206/231`; real bank lengths `188/209/234` |
 | K-3 2-bot length | PASS | PASS | `PASS K-3 [plan model …] 2 bots: median 40-60 s \| 45/58/87`; real bank lengths `46/59/86` |
@@ -171,8 +197,8 @@ I **cannot** judge: whether the boxers read as astronauts, are appealing, are le
 
 | Item | Status | Who may waive |
 |---|---|---|
-| U-10 (B4, spectator focus) | FAIL ×2 | **Pras only**, or Wasawho fixes + A-na re-runs |
-| K-1 KO clustering | FAIL ×2 (97.1 % / 93.7 %) | **Pras**, pending; listed by Stella as not a build blocker |
+| U-10 (B4, spectator focus) | FAIL ×2 on `49ad6b8`; **fixed in `f334d3a`, PASS ×2** (§0) | closed, no waiver needed |
+| K-1 KO clustering | FAIL ×2 (97.1 % / 93.7 %) | **Pras**; Stella waived it pending Pras on 2026-10-30. Not a build blocker |
 | M-01…M-05 on iPhone + Android | Stage B, not run | **Pras only** |
 | B5 tap-to-blur (S2, not a listed case) | open | **Stella** (2.0.0 or 2.0.1); recommend fixing before Stage B |
 | B6 end card below the fold at 320×480 (S3) | open | **Stella** |
