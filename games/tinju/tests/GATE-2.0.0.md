@@ -6,7 +6,7 @@ How: `git archive 49ad6b8` into two separate copies, `/tmp/ana-g2/A` (run 1) and
 Logs: `tests/evidence/logs/gate-*` (copied from `/tmp/ana-g2/logs/`). My scripts: `tests/plan-2.0/gate/`.
 PM decisions gated against, not re-litigated: `BASE_PER_CHAR` 0.6, `RANK_WEIGHT` 1, `EXTRA_LAST_HIT` 0 (`PASS CFG defaults: BASE_PER_CHAR 0.6, RANK_WEIGHT 1, EXTRA_LAST_HIT 0, CAP 60, RECV_CAP 60`, gate-rules-A/B). B2 (44 px) stays waived. K-1 is reported as FAIL, waived pending Pras.
 
-## Verdict: GO for Stella's go request to Pras, as of `f334d3a` (re-run 2026-10-30 07:00–07:20 WIB, §0)
+## Verdict: GO for Stella's go request to Pras, as of `f334d3a` (re-run 2026-10-30 06:51–07:00 WIB, §0)
 
 Stage A passes. The one blocking failure at `49ad6b8`, U-10 (B4), is fixed in `f334d3a`. U-10, U-06 and U-13 passed twice on two fresh copies of `f334d3a`, and Wasawho's UI suite passed twice too (§0). `f334d3a` changes only `src/main.js` (+4/−1) and `CHANGELOG.md` outside `tests/`; server and engine are byte-identical to `49ad6b8`. So the protocol, rules, B3 and simulation results below still stand for `f334d3a`.
 
