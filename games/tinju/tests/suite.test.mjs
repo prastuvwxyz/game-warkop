@@ -24,6 +24,7 @@ async function check(t, script) {
 }
 
 test('rules (resolveRound, O-01…O-33, D-1…D-9, rank weight)', { timeout: 120_000 }, (t) => check(t, 'test-rules.mjs'));
+test('standings (ST-1…ST-11 rules, SP-1…SP-4 wire)', { timeout: 200_000 }, (t) => check(t, 'test-standings.mjs'));
 test('protocol', { timeout: 500_000 }, (t) => check(t, 'test-proto.mjs'));
 
 let hasPlaywright = true;

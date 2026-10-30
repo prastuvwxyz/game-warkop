@@ -122,4 +122,22 @@ function resolveRound(entrants, dones, line, cfg) {
   return { order, chain, hp, streak, fire, ko, noHits };
 }
 
-module.exports = { CFG_DEFAULTS, makeCfg, mulberry32, plainForm, linkDamage, resolveRound };
+// computeStandings(rows) -> rows + {place}, sorted by (place, seat). Pure; rows are not mutated.
+//   row: {id, seat, alive, hp, kind: 'ko'|'walkover'|null, outRound, outRank, outAt}
+// Comparator (DESIGN.md "Standings (2.1.0)"): survivors first by HP desc; then the later the round of going out, the higher;
+// same round: KO above walkover; KOs by their rank in that round's order (equal = shared); walkovers by later outAt.
+// place = 1 + number of rows that sort strictly higher (competition numbering 1, 2, 2, 4). seat only fixes the draw order.
+function cmpStanding(a, b) {
+  if (a.alive !== b.alive) return a.alive ? -1 : 1;
+  if (a.alive) return b.hp - a.hp;
+  if (a.outRound !== b.outRound) return b.outRound - a.outRound;
+  if (a.kind !== b.kind) return a.kind === 'ko' ? -1 : 1;
+  if (a.kind === 'ko') return a.outRank - b.outRank;
+  return b.outAt - a.outAt;
+}
+function computeStandings(rows) {
+  return rows.map(r => ({ ...r, place: 1 + rows.filter(x => cmpStanding(x, r) < 0).length }))
+    .sort((a, b) => a.place - b.place || a.seat - b.seat);
+}
+
+module.exports = { CFG_DEFAULTS, makeCfg, mulberry32, plainForm, linkDamage, resolveRound, computeStandings };

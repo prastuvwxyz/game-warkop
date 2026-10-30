@@ -404,7 +404,19 @@ function renderEnd() {
   $('btnRematch').disabled = !!(m && m.rematch); $('btnRematch').textContent = m && m.rematch ? 'Menunggu…' : 'Rematch';
   $('btnStartNow').hidden = !(m && m.isHost && votes >= 2 && votes < online);
   $('rematchHint').textContent = votes + '/' + online + ' siap rematch' + (S.players.length < 2 ? ' — menunggu pemain lain' : '');
+  renderStandings();
   $('status').textContent = '';
+}
+// Final table: the server computes the places (room.standings), the client only draws them.
+function renderStandings() {
+  const list = $('standings'), rows = (S && S.standings) || [];
+  list.hidden = !rows.length;
+  list.innerHTML = rows.map(r => {
+    const fate = r.out === 'ko' ? 'KO ronde ' + r.round : r.out === 'walkover' ? 'keluar ronde ' + r.round : 'HP ' + r.hp;
+    return '<li class="' + (r.id === me ? 'me' : '') + '" data-id="' + esc(r.id) + '"><span class="pl">' + r.place + '</span>'
+      + '<img alt="" src="' + imgUrl(r.skin, r.out === 'ko' ? 'ko' : 'idle') + '"><span class="nm">' + esc(r.name) + (r.id === me ? ' (kamu)' : '')
+      + '</span><span class="ft">' + esc(fate) + '</span></li>';
+  }).join('');
 }
 
 // ---------- buttons ----------
