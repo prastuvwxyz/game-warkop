@@ -66,16 +66,15 @@ async function round(cs, claims) { // claims: [{i, e}] ; returns the line round 
 }
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
-// SP-1, SP-2: 3 players, cs[2] always slowest -> KO; cs[1] leaves mid-match after that
+// SP-1: 3 players, cs[2] always slowest -> KO
 {
   const cs = await mkRoom(SV.ko.port, 3); cs[0].send({ t: 'start' });
-  let end = null, leftSent = false, koRound = null;
+  let end = null;
   for (let k = 0; k < 60 && !end; k++) {
     const live = cs.filter(c => !c.closed && c.ws.readyState === 1);
     const claims = [{ i: 0, e: 400 }, { i: 1, e: 1900 }, { i: 2, e: 2900 }].filter(x => live.includes(cs[x.i]));
     await Promise.all(live.map(c => c.wait('countdown', () => true, 6000).catch(() => {})));
-    const r = await round(live, claims.map(x => ({ i: live.indexOf(cs[x.i]), e: x.e })));
-    if (koRound === null && cs[0].state.players.find(p => p.id === cs[2].id).out === 'ko') koRound = r;
+    await round(live, claims.map(x => ({ i: live.indexOf(cs[x.i]), e: x.e })));
     end = cs[0].q.find(m => m.t === 'end') || await cs[0].wait('end', () => true, 600).catch(() => null);
   }
   end = end || await cs[0].wait('end', () => true, 3000);
@@ -113,6 +112,7 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
     for (const c of live) await c.wait('result', () => true, 9000).catch(() => {});
   }
   end = end || await cs[0].wait('end', () => true, 3000);
+  await until(() => cs[0].state && cs[0].state.state === 'ended' && cs[0].state.standings); // `end` is sent before the post-end state broadcast
   const row = end.standings.find(r => r.id === leaver.id);
   check('SP-2 the leaver still has a row with name and skin after the ghost is deleted from players', row && row.name === 'Pemain2' && row.skin === 1 && row.out === 'walkover' && Number.isInteger(row.round), JSON.stringify(end.standings));
   check('SP-2 the leaver is gone from state.players but present in state.room.standings; walkover places below the winner', !cs[0].state.players.some(p => p.id === leaver.id) && cs[0].state.standings.some(r => r.id === leaver.id) && end.standings[0].id !== leaver.id);
