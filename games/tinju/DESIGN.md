@@ -102,6 +102,63 @@ Removed from 1.x: `word` (→ `line`), `result.winner/tier/damage/margin` (→ `
 - Rematch: auto-starts when every online player voted (≥ 2); the host may `start` earlier with ≥ 2 votes —
   non-voters stay as `out:'sat'`. Offline 60 s in lobby/ended → removed (1.0 line 256).
 
+## Standings (2.1.0)   ·   Tier: Multiplayer (Stella) — `end` and `state` gain a field; protocol stays `v:2`, additive
+Brief: `README.md` "# Tinju Kata 2.1 — final standings" (12493c6); its Rules are reproduced here, not changed. Damage,
+domino, rank weight, look and lyric bank are untouched — `resolveRound()` and the rules suite's 90 checks stay as they are.
+
+**Player state (server only, never sent raw).** Each field is set **once**, when `p.out` first changes from `null`; it is never overwritten (a KO'd player who then leaves stays `ko`).
+| Field | Set where | Value |
+|---|---|---|
+| `outRound` | `closeRound()` where `p.out = 'ko'` (server.js:188) and `dropFromMatch()` (:229) | `room.round` at that moment. The `result` phase belongs to the round just resolved; countdown/paused already carry the next round (`afterResult` increments first) |
+| `outRank` | same line as `p.out='ko'` | that player's `rank` in `res.order` (unfinished share `fin.length + 1`). `null` for walkover |
+| `outAt` | `dropFromMatch()` | `Date.now()` when the walkover is decided (`leave` = at once, offline = after `WALKOVER_MS`), not when the socket dropped. Breaks same-round walkovers |
+All three reset to `null` in `resetMatch()`, `backToLobby()` and on a join in `ended` (:286).
+
+**Who is in the table:** every player with `out ∈ {null,'ko','walkover'}` when `endMatch()` runs — `out:'sat'` (did not vote the
+rematch) and anyone who joins after the end are not. The table MUST be computed in `endMatch()` **before** the loop that deletes
+`p.left` players (:216), so a player who left mid-match still has a row.
+
+**Comparator** — pure `computeStandings(rows)` in `engine.js` (exported; rule tests call it directly). Row =
+`{id, seat, alive, hp, kind:'ko'|'walkover'|null, outRound, outRank, outAt}`.
+```
+cmp(a, b):                                   // < 0 → a places higher; 0 → shared place
+  if a.alive != b.alive   return a.alive ? -1 : 1          // survivors first (bank; ko/walkover have ≤ 1)
+  if a.alive              return b.hp - a.hp                // bank: HP desc, equal HP = shared
+  if a.outRound != b.outRound  return b.outRound - a.outRound   // reverse order of leaving the ring
+  if a.kind != b.kind     return a.kind == 'ko' ? -1 : 1    // same round: walkover below every KO
+  if a.kind == 'ko'       return a.outRank - b.outRank      // finished earlier that round places higher; equal rank = shared
+  return b.outAt - a.outAt                                  // same-round walkovers: later leaver higher
+place(r) = 1 + count(x : cmp(x, r) < 0)      // competition numbering 1, 2, 2, 4
+rows sorted by (place, seat)                 // seat only for a stable draw order, never for place
+```
+| Ending | `winner` (2.0, unchanged) | Table |
+|---|---|---|
+| `ko`, one standing | the survivor | survivor 1st, then KO'd by the comparator |
+| `ko`, last ones KO'd in the same round | `null` | shared 1st possible (equal `outRank`); client draws "Seri" from `winner:null` |
+| `walkover`, one left (cancelled) | the one left | that player 1st; card still says "Pertandingan dibatalkan" |
+| `bank` | top HP if unique, else `null` | alive by HP desc (equal = shared), then KO'd/walkover by the comparator |
+
+**Messages** (amends the `end` and `state` rows above; a 2.0 client ignores the new field):
+| `t` | New field | When |
+|---|---|---|
+| `end` | `standings:[{id, name, skin, place:int, hp:int, out:null\|'ko'\|'walkover', round:int\|null}]`, sorted by place | match over; also the `end` re-sent to a rejoiner in `ended` (:306) |
+| `state` | `room.standings`: the same array when `state==='ended'`, else `null` | every `state` broadcast |
+`name` and `skin` are added to the brief's row shape (additive): a player who left mid-match is deleted from `players` at the end,
+so the client could not draw their row otherwise. `round` = `outRound`. Server stores the array once on `room.standings`; `end`,
+the rejoin `end` and `state` all send that same array, so they cannot disagree. `room.standings = null` in `resetMatch()`/`backToLobby()`.
+
+**Tests.** New rule cases on `computeStandings()` (test-rules): ST-1 KOs in rounds 2/5/7 → reverse order · ST-2 two KOs in one
+round by `outRank` · ST-3 3-way tie in one round → 1, 2, 2, 2, 5 · ST-4 walkover and KO in the same round → walkover below ·
+ST-5 two walkovers in one round → later leaver higher · ST-6 bank: HP 70/40/40 alive + KO'd → 1, 2, 2, 4 · ST-7 cancelled
+by walkover, one left → 1st · ST-8 last two KO'd together with equal rank → shared 1st · ST-9 KO'd then leaves → stays `ko` ·
+ST-10 unfinished KO'd in one round share a place · ST-11 `sat` excluded. New proto cases: SP-1 `end.standings` deep-equals a
+rejoiner's `state.room.standings` and its re-sent `end` · SP-2 a player who `leave`s mid-match still has a row (name, skin) ·
+SP-3 rematch → `state.room.standings === null` · SP-4 `reason:'bank'` end via a tiny bank (`TK_LYRICS` fixture +
+`TK_MIN_SONGS`/`TK_MIN_LINES`).
+**Re-run (they read `end`/`state` in `ended`):** test-proto S7 (KO → end, rematch P-20), S8 (host rematch with `sat`, leave,
+room of 2 → lobby), S9 (walkover down to one → `end{walkover}`, rejoin in `ended`), S13 (lobby leave/removal), plus the whole
+suite; test-rules 90/0 MUST stay 90/0 (proves damage untouched); test-ui end-screen checks and `tests/e2e/look.mjs`.
+
 ## Shared code
 `shared/server/ws.js` and `shared/server/static.js` unchanged. Nothing new in `shared/`: mulberry32 now exists in
 Flappy (`games/flappy/src/core.js` line 19) and here, but Flappy's copy lives in its vm-tested core block — extract
